@@ -1,0 +1,45 @@
+name: Build Project
+
+on:
+  push:
+    branches: main
+
+env:
+  MIRROR_URL: git@github.com:EpitechPromo2027/B-CPP-500-BDX-5-1-rtype-baptiste.caulier.git
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: epitechcontent/epitest-docker:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build project
+        run: echo $?
+
+      - name: Check binaries
+        run: |
+          if [ -f ./README.md ]; then
+            echo "::notice::Binary OK"
+          else
+            echo "::error file=./README.md::Binary does not exist"
+            exit 1
+          fi
+
+  mirror:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to mirror
+        uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url: ${{ env.MIRROR_URL }}
+          ssh_private_key: ${{ secrets.MIRROR_KEY }}
