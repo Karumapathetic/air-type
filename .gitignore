@@ -1,0 +1,10 @@
+#Hide Binaries
+*.o
+*.so
+rtype_server
+rtype_client
+
+.vscode
+
+#Hide CMake build
+build
