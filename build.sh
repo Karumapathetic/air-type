@@ -4,7 +4,7 @@
 if [ "$1" == "clean" ]; then
     rm -f rtype_client rtype_server
     rm -rf server/build client/build
-    echo "Success !"
+    echo "Successfully cleaned !"
     exit 0
 fi
 
@@ -35,7 +35,8 @@ if [ "$1" == "client" ]; then
     cd client
     mkdir -p build
     cmake -S . -B build
-    if ! cmake --build build -j; then
+    cmake --build build --clean-first -j
+    if [ $? -ne 0 ]; then
         echo "Failed to build the Client"
         exit 1
     fi
@@ -46,7 +47,8 @@ elif [ "$1" == "server" ]; then
     cd server
     mkdir -p build
     cmake -S . -B build
-    if ! cmake --build build -j; then
+    cmake --build build --clean-first -j
+    if [ $? -ne 0 ]; then
         echo "Failed to build the Client"
         exit 1
     fi
