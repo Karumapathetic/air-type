@@ -21,7 +21,6 @@ check_cmake() {
             sudo pacman -Syu cmake
         else
             echo "Package manager not supported. Please install CMake manually."
-            exit 1
         fi
     else
         echo "CMake is already installed."
@@ -32,28 +31,24 @@ check_cmake
 
 #Check if arg is client or server
 if [ "$1" == "client" ]; then
-    cd client
     mkdir -p build
-    cmake -S . -B build
-    cmake --build build --clean-first -j
+    cmake -DTARGET_TYPE=client -S . -B build
+    cmake --build build
     if [ $? -ne 0 ]; then
         echo "Failed to build the Client"
         exit 1
     fi
-    mv build/rtype_client ..
-    cd ..
+    mv build/client/rtype_client .
     exit 0
 elif [ "$1" == "server" ]; then
-    cd server
     mkdir -p build
-    cmake -S . -B build
-    cmake --build build --clean-first -j
+    cmake -DTARGET_TYPE=server -S . -B build
+    cmake --build build
     if [ $? -ne 0 ]; then
         echo "Failed to build the Client"
         exit 1
     fi
-    mv build/rtype_server ..
-    cd ..
+    mv build/server/rtype_server .
     exit 0
 else
     echo "Usage: $0 {client|server}"
