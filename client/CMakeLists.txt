@@ -4,6 +4,8 @@ project("R-Type client")
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
+include(../cmake/CPM.cmake)
+
 # Add raylib package
 CPMAddPackage("gh:raysan5/raylib#4.5.0")
 
