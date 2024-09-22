@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2024
+** air-type
+** File description:
+** Client main
+*/
+
 #include <iostream>
 #include "raylib.h"
 
