@@ -22,6 +22,8 @@ set(TARGET_TYPE "client" CACHE STRING "Select target to build: client or server"
 #     endif()
 # endif()
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
+
 if (TARGET_TYPE STREQUAL "client")
     message(STATUS "Building the client...")
     add_subdirectory(client)

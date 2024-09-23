@@ -38,7 +38,6 @@ if [ "$1" == "client" ]; then
         echo "Failed to build the Client"
         exit 1
     fi
-    mv build/client/rtype_client .
     exit 0
 elif [ "$1" == "server" ]; then
     mkdir -p build
@@ -48,7 +47,6 @@ elif [ "$1" == "server" ]; then
         echo "Failed to build the Client"
         exit 1
     fi
-    mv build/server/rtype_server .
     exit 0
 else
     echo "Usage: $0 {client|server}"
