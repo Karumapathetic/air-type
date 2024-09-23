@@ -7,6 +7,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/include/Components)
+include_directories(${PROJECT_SOURCE_DIR}/include/Systems)
+include_directories(${PROJECT_SOURCE_DIR}/include/Entities)
 
 add_executable(
     rtype_server

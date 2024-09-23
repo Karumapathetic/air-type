@@ -11,6 +11,10 @@ class Action {
     public:
         Action();
         ~Action();
+
+        getType() { return type; }
+        setType(std::string type) { this->type = type; }
     protected:
     private:
+        std::string type;
 };
