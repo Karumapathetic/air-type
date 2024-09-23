@@ -1,26 +1,30 @@
-/*
-** EPITECH PROJECT, 2024
-** air-type
-** File description:
-** Client main
-*/
-
 #include <iostream>
-#include "raylib.h"
+#include <vector>
+#include "Coordinator.hpp"
+
+struct Gravity {
+    float force;
+};
 
 int main() {
 
-    InitWindow(800, 600, "R-Type");
+    Coordinator gCoordinator;
+    gCoordinator.Init();
+    gCoordinator.RegisterComponent<Gravity>();
 
-    while (!WindowShouldClose()) {
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawText("Lezgong", 190, 200, 20, GRAY);
-        EndDrawing();
+    Signature signature;
+    signature.set(gCoordinator.GetComponentType<Gravity>());
+
+    std::vector<Entity> entities(MAX_ENTITIES);
+
+    for (auto& entity : entities) {
+        entity = gCoordinator.CreateEntity("test");
+        gCoordinator.AddComponent(entity, Gravity{10.0f});
     }
 
-    CloseWindow();
-
-    std::cout << "Hello client" << std::endl;
+    for (const auto& entity : entities) {
+        Gravity& gravity = gCoordinator.GetComponent<Gravity>(entity);
+        std::cout << "Entity: " << entity << " Gravity force: " << gravity.force << std::endl;
+    }
     return 0;
 }
