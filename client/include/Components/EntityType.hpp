@@ -14,6 +14,12 @@ class EntityType : public IComponent {
         EntityType();
         ~EntityType();
 
+        getType() { return type; }
+        getIsPlayer() { return isPlayer; }
+        setType(std::string type) { this->type = type; }
+        setIsPlayer(bool isPlayer) { this->isPlayer = isPlayer; }
     protected:
     private:
+        std::string type;
+        bool isPlayer;
 };
