@@ -1,13 +1,5 @@
 #!/bin/bash
 
-#Clean project
-if [ "$1" == "clean" ]; then
-    rm -f rtype_client rtype_server
-    rm -rf server/build client/build
-    echo "Successfully cleaned !"
-    exit 0
-fi
-
 # Function to check if cmake is installed
 check_cmake() {
     if ! command -v cmake &> /dev/null; then
@@ -31,22 +23,27 @@ check_cmake
 
 #Check if arg is client or server
 if [ "$1" == "client" ]; then
-    mkdir -p build
-    cmake -DTARGET_TYPE=client -S . -B build
-    cmake --build build
+    mkdir -p client/build
+    cmake -DTARGET_TYPE=client -S . -B client/build
+    cmake --build client/build
     if [ $? -ne 0 ]; then
         echo "Failed to build the Client"
         exit 1
     fi
     exit 0
 elif [ "$1" == "server" ]; then
-    mkdir -p build
-    cmake -DTARGET_TYPE=server -S . -B build
-    cmake --build build
+    mkdir -p server/build
+    cmake -DTARGET_TYPE=server -S . -B server/build
+    cmake --build server/build
     if [ $? -ne 0 ]; then
         echo "Failed to build the Client"
         exit 1
     fi
+    exit 0
+elif [ "$1" == "server" ]; then
+    rm -f rtype_client rtype_server
+    rm -rf server/build client/build
+    echo "Successfully cleaned !"
     exit 0
 else
     echo "Usage: $0 {client|server}"
