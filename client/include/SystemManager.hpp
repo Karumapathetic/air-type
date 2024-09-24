@@ -25,7 +25,7 @@ class SystemManager {
     public:
         template<typename T>
         std::shared_ptr<T> RegisterSystem() {
-            const char* typeName = typeid(T).name();
+            std::string typeName = typeid(T).name();
             assert(systems.find(typeName) == systems.end() && "Registering system more than once.");
 
             auto system = std::make_shared<T>();
@@ -35,7 +35,7 @@ class SystemManager {
 
         template<typename T>
         void SetSignature(Signature signature) {
-            const char* typeName = typeid(T).name();
+            std::string typeName = typeid(T).name();
             assert(systems.find(typeName) != systems.end() && "System used before registered.");
 
             signatures.insert({typeName, signature});
@@ -65,6 +65,6 @@ class SystemManager {
         }
 
     private:
-        std::unordered_map<const char*, Signature> signatures{};
-        std::unordered_map<const char*, std::shared_ptr<System>> systems{};
+        std::unordered_map<std::string, Signature> signatures{};
+        std::unordered_map<std::string, std::shared_ptr<System>> systems{};
 };

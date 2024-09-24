@@ -36,6 +36,18 @@ class Coordinator {
             return entityManager->GetEntityName(entity);
         }
 
+        void SetEntityName(Entity entity, const std::string& name) {
+            entityManager->SetEntityName(entity, name);
+        }
+
+        Signature GetEntitySignature(Entity entity) {
+            return entityManager->GetSignature(entity);
+        }
+
+        void SetEntitySignature(Entity entity, Signature signature) {
+            entityManager->SetSignature(entity, signature);
+        }
+
         template<typename T>
         void RegisterComponent() {
             componentManager->RegisterComponent<T>();
@@ -89,3 +101,5 @@ class Coordinator {
         std::unique_ptr<EntityManager> entityManager;
         std::unique_ptr<SystemManager> systemManager;
 };
+
+extern Coordinator gCoordinator;
