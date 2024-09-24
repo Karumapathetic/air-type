@@ -1,0 +1,64 @@
+name: Build Server
+
+on:
+  push:
+    branches: dev
+  pull_request:
+    branches: dev
+
+jobs:
+  build-linux:
+    name: Build on Linux
+    runs-on: ubuntu-latest
+    container:
+      image: epitechcontent/epitest-docker:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache build server
+        uses: actions/cache@v3
+        with:
+          path: ./server/build
+          key: ${{ runner.os }}-server-${{ hashFiles('**/server/CMakeLists.txt') }}
+          restore-keys: ${{ runner.os }}-server-
+
+      - name: Build server
+        run: ./build.sh server
+
+      - name: Check binaries
+        run: |
+          if [ ! -f ./rtype_server ]; then
+            echo "::error file=./rtype_server::server binary does not exist"
+            exit 1
+          else
+            echo "::notice::All binaries OK"
+          fi
+
+  build-windows:
+    name: Build on Windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache build server
+        uses: actions/cache@v3
+        with:
+          path: ./server/build
+          key: ${{ runner.os }}-server-${{ hashFiles('**/server/CMakeLists.txt') }}
+          restore-keys: ${{ runner.os }}-server-
+
+      - name: Build server
+        run: ./build.ps1 server
+
+      - name: Check binaries
+        run: |
+          if (-Not (Test-Path "./rtype_server.exe")) {
+            Write-Host "Server binary does not exist"
+            exit 1
+          } else {
+            Write-Host "All binaries OK"
+          }
