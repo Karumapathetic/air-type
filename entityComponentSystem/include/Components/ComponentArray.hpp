@@ -12,7 +12,7 @@
 template<typename T>
 class ComponentArray : public IComponentArray {
     public:
-        void InsertData(Entity entity, T component) {
+        void insertData(Entity entity, T component) {
             assert(entityToIndexMap.find(entity) == entityToIndexMap.end() && "Component added to same entity more than once.");
 
             size_t newIndex = size;
@@ -22,7 +22,7 @@ class ComponentArray : public IComponentArray {
             ++size;
         }
 
-        void RemoveData(Entity entity) {
+        void removeData(Entity entity) {
             assert(entityToIndexMap.find(entity) != entityToIndexMap.end() && "Removing non-existent component.");
 
             size_t indexOfRemovedEntity = entityToIndexMap[entity];
@@ -39,15 +39,15 @@ class ComponentArray : public IComponentArray {
             --size;
         }
 
-        T& GetData(Entity entity) {
+        T& getData(Entity entity) {
             assert(entityToIndexMap.find(entity) != entityToIndexMap.end() && "Retrieving non-existent component.");
 
             return componentArray[entityToIndexMap[entity]];
         }
 
-        void EntityDestroyed(Entity entity) override {
+        void entityDestroyed(Entity entity) override {
             if (entityToIndexMap.find(entity) != entityToIndexMap.end()) {
-                RemoveData(entity);
+                removeData(entity);
             }
         }
 

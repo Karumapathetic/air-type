@@ -7,9 +7,10 @@
 
 #include <iostream>
 #include "raylib.h"
+#include "Engine.hpp"
 
 int main() {
-
+    mainEngine();
     InitWindow(800, 600, "R-Type");
 
     while (!WindowShouldClose()) {

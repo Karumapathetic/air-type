@@ -19,7 +19,7 @@
 class ComponentManager {
     public:
         template<typename T>
-        void RegisterComponent(){
+        void registerComponent(){
             std::string typeName = typeid(T).name();
             assert(componentTypes.find(typeName) == componentTypes.end() && "Registering component type more than once.");
 
@@ -29,7 +29,7 @@ class ComponentManager {
         }
 
         template<typename T>
-        ComponentType GetComponentType() {
+        ComponentType getComponentType() {
             std::string typeName = typeid(T).name();
             assert(componentTypes.find(typeName) != componentTypes.end() && "Component not registered before use.");
 
@@ -37,24 +37,24 @@ class ComponentManager {
         }
 
         template<typename T>
-        void AddComponent(Entity entity, T component) {
-            GetComponentArray<T>()->InsertData(entity, component);
+        void addComponent(Entity entity, T component) {
+            getComponentArray<T>()->insertData(entity, component);
         }
 
         template<typename T>
-        void RemoveComponent(Entity entity) {
-            GetComponentArray<T>()->RemoveData(entity);
+        void removeComponent(Entity entity) {
+            getComponentArray<T>()->removeData(entity);
         }
 
         template<typename T>
-        T& GetComponent(Entity entity) {
-            return GetComponentArray<T>()->GetData(entity);
+        T& getComponent(Entity entity) {
+            return getComponentArray<T>()->getData(entity);
         }
 
-        void EntityDestroyed(Entity entity) {
+        void entityDestroyed(Entity entity) {
             for (auto const& pair : componentArrays) {
                 auto const& component = pair.second;
-                component->EntityDestroyed(entity);
+                component->entityDestroyed(entity);
             }
         }
 
@@ -64,7 +64,7 @@ class ComponentManager {
         ComponentType nextComponentType{};
 
         template<typename T>
-        std::shared_ptr<ComponentArray<T>> GetComponentArray() {
+        std::shared_ptr<ComponentArray<T>> getComponentArray() {
             std::string typeName = typeid(T).name();
             assert(componentTypes.find(typeName) != componentTypes.end() && "Component not registered before use.");
 

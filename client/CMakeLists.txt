@@ -20,6 +20,7 @@ CPMAddPackage("gh:raysan5/raylib#4.5.0")
 add_executable(
     rtype_client
     Main.cpp
+    src/Engine.cpp
 )
 
 target_link_libraries(rtype_client raylib)

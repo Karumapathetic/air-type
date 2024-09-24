@@ -10,9 +10,9 @@
 #include <raylib.h>
 #include <string>
 
-struct Image {
+struct Images {
     Texture2D texture;
-    float priority;
+    int priority;
 };
 
 struct Keybind {
@@ -31,7 +31,7 @@ struct Power {
     float amplifier;
 };
 
-struct Sound {
+struct Sounds {
     float volume;
     std::string desc;
 };
@@ -48,4 +48,9 @@ struct Speed {
 
 struct Action {
     std::string type;
+};
+
+struct EntityTypes {
+    std::string type;
+    bool isPlayer;
 };

@@ -18,7 +18,7 @@
 class SystemManager {
     public:
         template<typename T>
-        std::shared_ptr<T> RegisterSystem() {
+        std::shared_ptr<T> registerSystem() {
             std::string typeName = typeid(T).name();
             assert(systems.find(typeName) == systems.end() && "Registering system more than once.");
 
@@ -28,14 +28,14 @@ class SystemManager {
         }
 
         template<typename T>
-        void SetSignature(Signature signature) {
+        void setSignature(Signature signature) {
             std::string typeName = typeid(T).name();
             assert(systems.find(typeName) != systems.end() && "System used before registered.");
 
             signatures.insert({typeName, signature});
         }
 
-        void EntityDestroyed(Entity entity)
+        void entityDestroyed(Entity entity)
         {
             for (auto const& pair : systems) {
                 auto const& system = pair.second;
@@ -43,7 +43,7 @@ class SystemManager {
             }
         }
 
-        void EntitySignatureChanged(Entity entity, Signature entitySignature)
+        void entitySignatureChanged(Entity entity, Signature entitySignature)
         {
             for (auto const& pair : systems) {
                 auto const& type = pair.first;
