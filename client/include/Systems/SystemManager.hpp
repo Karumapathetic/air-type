@@ -7,19 +7,13 @@
 
 #pragma once
 
-#include <set>
 #include <memory>
 #include <unordered_map>
 #include <typeinfo>
 #include <cassert>
 #include <iostream>
 
-#include "EcsValues.hpp"
-
-class System {
-    public:
-        std::set<Entity> entities;
-};
+#include "ISystem.hpp"
 
 class SystemManager {
     public:
@@ -66,5 +60,5 @@ class SystemManager {
 
     private:
         std::unordered_map<std::string, Signature> signatures{};
-        std::unordered_map<std::string, std::shared_ptr<System>> systems{};
+        std::unordered_map<std::string, std::shared_ptr<ISystem>> systems{};
 };
