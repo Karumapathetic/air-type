@@ -45,3 +45,7 @@ struct Speed {
     float velocity;
     float acceleration;
 };
+
+struct Action {
+    std::string type;
+};

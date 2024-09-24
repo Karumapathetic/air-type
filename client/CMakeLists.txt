@@ -7,9 +7,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${PROJECT_SOURCE_DIR}/include/Components)
-include_directories(${PROJECT_SOURCE_DIR}/include/Systems)
-include_directories(${PROJECT_SOURCE_DIR}/include/Entities)
+include_directories(../entityComponentSystem/include/)
+include_directories(../entityComponentSystem/include/Components)
+include_directories(../entityComponentSystem/include/Entities)
+include_directories(../entityComponentSystem/include/Systems)
 
 include(../cmake/CPM.cmake)
 
