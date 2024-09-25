@@ -16,9 +16,15 @@ struct Images {
 };
 
 struct Keybind {
-    int key;
-    std::string action;
-    std::string desc;
+    std::unordered_map<KeyboardKey, std::pair<std::string, std::string>> keybinds;
+
+    Keybind() = default;
+    Keybind(KeyboardKey key, const std::string &action, const std::string &desc) {
+        keybinds[key] = std::make_pair(action, desc);
+    }
+    void addKeybind(KeyboardKey key, const std::string &action, const std::string &desc) {
+        keybinds[key] = std::make_pair(action, desc);
+    }
 };
 
 struct Life {
