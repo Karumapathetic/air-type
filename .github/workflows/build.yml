@@ -1,0 +1,70 @@
+name: Build Project
+
+on:
+  push:
+    branches: dev
+  pull_request:
+    branches: dev
+
+jobs:
+  build-linux:
+    name: Build on Linux
+    runs-on: ubuntu-latest
+    container:
+      image: epitechcontent/epitest-docker:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache build
+        uses: actions/cache@v3
+        with:
+          path: ./build
+          key: ${{ runner.os }}-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: ${{ runner.os }}-
+
+      - name: Build Project
+        run: ./build.sh
+
+      - name: Check binaries
+        run: |
+          if [ ! -f ./r-type_server ]; then
+            echo "::error file=./r-type_server::Server binary does not exist"
+            exit 1
+          elif [ ! -f ./r-type_client ]; then
+            echo "::error file=./r-type_client::Client binary does not exist"
+            exit 1
+          else
+            echo "::notice::All binaries OK"
+          fi
+
+  build-windows:
+    name: Build on Windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache build
+        uses: actions/cache@v3
+        with:
+          path: ./build
+          key: ${{ runner.os }}-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: ${{ runner.os }}-
+
+      - name: Build Project
+        run: ./build.ps1
+
+      - name: Check binaries
+        run: |
+          if (-Not (Test-Path "./r-type_server.exe")) {
+            Write-Host "Server binary does not exist"
+            exit 1
+          } elseif (-Not (Test-Path "./r-type_client.exe")) {
+            Write-Host "Client binary does not exist"
+            exit 1
+          } else {
+            Write-Host "All binaries OK"
+          }

@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 project(R-Type)
 
-set(TARGET_TYPE "client" CACHE STRING "Select target to build: client or server")
-
 # CPM.cmake download location
 # set(CPM_DOWNLOAD_LOCATION "cmake/CPM.cmake")
 
@@ -23,13 +21,13 @@ set(TARGET_TYPE "client" CACHE STRING "Select target to build: client or server"
 # endif()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(BUILD_STATIC_LIBRARIES ON)
 
-if (TARGET_TYPE STREQUAL "client")
-    message(STATUS "Building the client...")
-    add_subdirectory(client)
-elseif (TARGET_TYPE STREQUAL "server")
-    message(STATUS "Building the server...")
-    add_subdirectory(server)
-else()
-    message(STATUS "Invalid TARGET_TYPE. Must be 'client' or 'server'")
-endif()
+add_subdirectory(Server)
+add_subdirectory(Client)
+
+add_subdirectory(Libs/ECS)
+add_subdirectory(Libs/Network)
+add_subdirectory(Libs/Graphics)
