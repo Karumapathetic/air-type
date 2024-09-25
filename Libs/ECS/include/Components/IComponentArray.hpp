@@ -9,8 +9,10 @@
 
 #include "ECSValues.hpp"
 
-class IComponentArray {
-    public:
-        virtual ~IComponentArray() = default;
-        virtual void entityDestroyed(Entity entity) = 0;
-};
+namespace ECS {
+    class IComponentArray {
+        public:
+            virtual ~IComponentArray() = default;
+            virtual void entityDestroyed(Entity entity) = 0;
+    };
+}

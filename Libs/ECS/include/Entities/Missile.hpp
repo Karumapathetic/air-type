@@ -1,16 +1,15 @@
 /*
 ** EPITECH PROJECT, 2024
-** air-type
+** r-type
 ** File description:
-** Engine.hpp
+** missileEntity.hpp
 */
 
 #pragma once
 
-#include <iostream>
-#include <vector>
-#include <functional>
 #include "Coordinator.hpp"
 #include "Components.hpp"
 
-int mainEngine();
+namespace ECS {
+    void missileHandler(Coordinator &gCoordinator, u_int32_t entity);
+}

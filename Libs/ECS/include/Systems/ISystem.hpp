@@ -10,7 +10,9 @@
 #include <set>
 #include "ECSValues.hpp"
 
-class ISystem {
-    public:
-        std::set<Entity> entities;
-};
+namespace ECS {
+    class ISystem {
+        public:
+            std::set<Entity> entities;
+    };
+}

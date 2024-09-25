@@ -12,6 +12,14 @@ namespace ECS {
         componentManager = std::make_unique<ComponentManager>();
         entityManager = std::make_unique<EntityManager>();
         systemManager = std::make_unique<SystemManager>();
+        this->registerComponent<Spacial>();
+        this->registerComponent<Power>();
+        this->registerComponent<Life>();
+        this->registerComponent<Speed>();
+        this->registerComponent<Images>();
+        this->registerComponent<EntityTypes>();
+        this->registerComponent<Keybind>();
+        this->registerComponent<Sounds>();
     }
 
     Entity Coordinator::createEntity(const std::string& name) {

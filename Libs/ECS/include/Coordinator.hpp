@@ -78,12 +78,4 @@ namespace ECS {
             std::unique_ptr<EntityManager> entityManager;
             std::unique_ptr<SystemManager> systemManager;
     };
-
-    class CoordinatorInstance {
-        public:
-            static Coordinator& getInstance() {
-                static Coordinator instance;
-                return instance;
-            }
-    };
 }
