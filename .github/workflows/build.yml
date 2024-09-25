@@ -58,7 +58,9 @@ jobs:
         run: ./build.ps1
 
       - name: Check Project
-        run: ls
+        run: |
+          ls
+          ls build
 
       - name: Check binaries
         run: |
