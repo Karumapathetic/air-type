@@ -1,3 +1,5 @@
+project(ECSLib)
+
 add_library(
     ECS STATIC
     src/Coordinator.cpp

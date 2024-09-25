@@ -29,6 +29,7 @@ if ($args[0] -eq "--help") {
     Write-Host "Successfully cleaned!"
     exit 0
 } else {
+    git submodule update --init
     New-Item -ItemType Directory -Force -Path "build" | Out-Null
     cmake -S . -B build
     cmake --build build

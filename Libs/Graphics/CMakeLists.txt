@@ -1,3 +1,5 @@
+project(GraphicsLib)
+
 add_library(
     Graphics STATIC
     tmp.cpp

@@ -1,3 +1,5 @@
+project(NetworkLib)
+
 add_library(
     Network STATIC
     src/UDPClient.cpp
