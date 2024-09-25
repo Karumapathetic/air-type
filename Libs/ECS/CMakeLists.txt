@@ -1,3 +1,6 @@
+cmake_minimum_required(VERSION 3.27)
+project("R-Type ECS Lib")
+
 add_library(
     ECS STATIC
     src/Coordinator.cpp
