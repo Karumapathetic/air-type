@@ -3,8 +3,13 @@
 *.so
 r-type_server
 r-type_client
+r-type_server.exe
+r-type_client.exe
 
 .vscode
 
 #Hide CMake build
 build
+
+# Hide Windows build
+Debug
