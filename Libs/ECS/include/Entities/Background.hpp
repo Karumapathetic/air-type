@@ -11,5 +11,5 @@
 #include "Components.hpp"
 
 namespace ECS {
-    void backgroundHandler(Coordinator &gCoordinator, u_int32_t entity);
+    void backgroundHandler(Coordinator &gCoordinator, std::uint32_t entity);
 }

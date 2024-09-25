@@ -8,7 +8,7 @@
 #include "Settings.hpp"
 
 namespace ECS {
-    void settingsHandler(Coordinator &gCoordinator, u_int32_t entity) {
+    void settingsHandler(Coordinator &gCoordinator, std::uint32_t entity) {
         gCoordinator.addComponent(entity, Keybind());
         gCoordinator.addComponent(entity, Sounds{ 0, "Background Music" });
         Keybind& keybindComponent = gCoordinator.getComponent<Keybind>(entity);

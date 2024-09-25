@@ -8,7 +8,7 @@
 #include "Missile.hpp"
 
 namespace ECS {
-    void missileHandler(Coordinator &gCoordinator, u_int32_t entity) {
+    void missileHandler(Coordinator &gCoordinator, std::uint32_t entity) {
         gCoordinator.addComponent(entity, Spacial{1.0f, 0.0f});
         gCoordinator.addComponent(entity, Power{1.0f, 0.0f});
         gCoordinator.addComponent(entity, Speed{2.0f, 1.0f});

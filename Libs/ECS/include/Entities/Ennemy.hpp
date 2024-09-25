@@ -11,5 +11,5 @@
 #include "Components.hpp"
 
 namespace ECS {
-    void ennemyHandler(Coordinator &gCoordinator, u_int32_t entity);
+    void ennemyHandler(Coordinator &gCoordinator, std::uint32_t entity);
 }

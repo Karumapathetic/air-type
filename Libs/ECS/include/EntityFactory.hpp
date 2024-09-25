@@ -26,10 +26,10 @@ namespace ECS {
         public:
             EntityFactory();
 
-            void createEntity(Coordinator &gCoordinator, const std::string &type, u_int32_t entity);
+            void createEntity(Coordinator &gCoordinator, const std::string &type, std::uint32_t entity);
 
         private:
-            std::unordered_map<std::string, std::function<void(Coordinator&, u_int32_t)>> entityHandlers;
+            std::unordered_map<std::string, std::function<void(Coordinator&, std::uint32_t)>> entityHandlers;
     };
 
     int mainEngine();

@@ -11,5 +11,5 @@
 #include "Components.hpp"
 
 namespace ECS {
-    void playerHandler(Coordinator &gCoordinator, u_int32_t entity);
+    void playerHandler(Coordinator &gCoordinator, std::uint32_t entity);
 }

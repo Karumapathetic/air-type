@@ -11,5 +11,5 @@
 #include "Components.hpp"
 
 namespace ECS {
-    void collectibleHandler(Coordinator &gCoordinator, u_int32_t entity);
+    void collectibleHandler(Coordinator &gCoordinator, std::uint32_t entity);
 }

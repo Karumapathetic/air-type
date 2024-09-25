@@ -8,7 +8,7 @@
 #include "Ennemy.hpp"
 
 namespace ECS {
-    void ennemyHandler(Coordinator &gCoordinator, u_int32_t entity) {
+    void ennemyHandler(Coordinator &gCoordinator, std::uint32_t entity) {
         gCoordinator.addComponent(entity, Spacial{1.0f, 0.0f});
         gCoordinator.addComponent(entity, Power{1.0f, 0.0f});
         gCoordinator.addComponent(entity, Life{3.0f, 1.0f});

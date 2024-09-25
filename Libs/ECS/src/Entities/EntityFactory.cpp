@@ -8,7 +8,7 @@
 #include "EntityFactory.hpp"
 
 namespace ECS {
-    void EntityFactory::createEntity(Coordinator &gCoordinator, const std::string &type, u_int32_t entity) {
+    void EntityFactory::createEntity(Coordinator &gCoordinator, const std::string &type, std::uint32_t entity) {
         auto it = entityHandlers.find(type);
         if (it != entityHandlers.end()) {
             it->second(gCoordinator, entity);

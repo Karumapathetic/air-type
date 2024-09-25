@@ -8,7 +8,7 @@
 #include "Player.hpp"
 
 namespace ECS {
-    void playerHandler(Coordinator &gCoordinator, u_int32_t entity) {
+    void playerHandler(Coordinator &gCoordinator, std::uint32_t entity) {
         gCoordinator.addComponent(entity, Spacial{1.0f, 0.0f});
         gCoordinator.addComponent(entity, Power{5.0f, 0.0f});
         gCoordinator.addComponent(entity, Life{10.0f, 1.0f});
