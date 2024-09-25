@@ -57,6 +57,9 @@ jobs:
       - name: Build Project
         run: ./build.ps1
 
+      - name: Check Project
+        run: ls
+
       - name: Check binaries
         run: |
           if (-Not (Test-Path "./r-type_server.exe")) {
