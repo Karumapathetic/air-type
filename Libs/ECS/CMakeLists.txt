@@ -13,7 +13,7 @@ add_library(
 
     src/Entities/EntityFactory.cpp
     src/Entities/Player.cpp
-    src/Entities/Ennemy.cpp
+    src/Entities/Enemy.cpp
     src/Entities/Missile.cpp
     src/Entities/Background.cpp
     src/Entities/Settings.cpp

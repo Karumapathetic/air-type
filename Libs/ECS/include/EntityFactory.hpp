@@ -15,7 +15,7 @@
 #include "Coordinator.hpp"
 #include "Components.hpp"
 #include "Player.hpp"
-#include "Ennemy.hpp"
+#include "Enemy.hpp"
 #include "Missile.hpp"
 #include "Background.hpp"
 #include "Settings.hpp"

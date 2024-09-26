@@ -18,7 +18,7 @@ namespace ECS {
     EntityFactory::EntityFactory() {
         entityHandlers = {
             {"player", playerHandler},
-            {"ennemy", ennemyHandler},
+            {"enemy", enemyHandler},
             {"missile", missileHandler},
             {"background", backgroundHandler},
             {"settings", settingsHandler},
@@ -26,25 +26,13 @@ namespace ECS {
         };
     }
 
-    int mainEngine() {
+    Coordinator mainEngine() {
         Coordinator gCoordinator;
         EntityFactory entityFactory;
 
         // Init engine and register components and systems
         gCoordinator.init();
         std::vector<Entity> entities(MAX_ENTITIES);
-
-        // Create entities
-        entities[0] = gCoordinator.createEntity("background");
-        entities[1] = gCoordinator.createEntity("settings");
-        entities[2] = gCoordinator.createEntity("player");
-        entities[3] = gCoordinator.createEntity("missile");
-        for (int x = 4; x < 10; ++x) {
-            entities[x] = gCoordinator.createEntity("ennemy");
-        }
-        for (int x = 11; x < 15; ++x) {
-            entities[x] = gCoordinator.createEntity("collectible");
-        }
 
         for (const Entity& entity : entities) {
             std::string name = gCoordinator.getEntityName(entity);
@@ -55,6 +43,6 @@ namespace ECS {
                 entityFactory.createEntity(gCoordinator, name, entity);
             }
         }
-        return 0;
+        return gCoordinator;
     }
 }
