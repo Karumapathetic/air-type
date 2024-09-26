@@ -24,8 +24,8 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/CMakeLists.txt') }}
           restore-keys: ${{ runner.os }}-
 
-      - name: test
-        run:  tree
+      - name: Making repo safe
+        run: git config --global --add safe.directory ${pwd}
 
       - name: Build Project
         run: ./build.sh
