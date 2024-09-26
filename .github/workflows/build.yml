@@ -24,6 +24,9 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/CMakeLists.txt') }}
           restore-keys: ${{ runner.os }}-
 
+      - name: test
+        run:  tree
+
       - name: Build Project
         run: ./build.sh
 
