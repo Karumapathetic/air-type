@@ -1,11 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 project("R-Type client")
 
-include(../CPM/CPM.cmake)
-
-# Add raylib package
-CPMAddPackage("gh:raysan5/raylib#4.5.0")
-
 add_executable(r-type_client
     Main.cpp
 )
@@ -28,10 +23,4 @@ target_link_libraries(
 target_include_directories(
     r-type_client PUBLIC
     "include"
-    "../Libs/ECS/include"
-    "../Libs/ECS/include/Components"
-    "../Libs/ECS/include/Entities"
-    "../Libs/ECS/include/Systems"
-    "../Libs/Network/include"
-    "../Libs/Graphics/include"
 )
