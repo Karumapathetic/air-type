@@ -6,6 +6,7 @@
 */
 
 #pragma once
+#include "EntityFactory.hpp"
 
 namespace Graphics {
     enum class GameState {
@@ -27,6 +28,7 @@ namespace Graphics {
         protected:
         private:
             GameState _gameState;
+            ECS::Coordinator _coordinator;
     };
     int LaunchGame();
 } // namespace Graphics

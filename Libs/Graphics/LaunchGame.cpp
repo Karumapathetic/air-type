@@ -5,28 +5,31 @@
 ** LaunchGame
 */
 
+#include <iostream>
 #include "raylib.h"
-#include "EntityFactory.hpp"
 #include "Game.hpp"
 
 namespace Graphics {
     void Game::InitGraphics() {
-        InitWindow(800, 600, "R-Type");
+        int screenWidth = GetMonitorWidth(0);
+        int screenHeight = GetMonitorHeight(0);
+        InitWindow(screenWidth, screenHeight, "R-Type");
         SetTargetFPS(60);
         InitAudioDevice();
+        SetExitKey(KEY_BACKSPACE);
     }
 
     int Game::LaunchGame() {
-        ECS::Coordinator = ECS::mainEngine();
+        ECS::Coordinator coord = ECS::mainEngine();
+        InitGraphics();
 
         std::cout << "Hello client" << std::endl;
         while (!WindowShouldClose()) {
-            BeginDrawing();
             DrawGraphics();
-            EndDrawing();
         }
 
         CloseWindow();
+        CloseAudioDevice();
         return 0;
     }
 
@@ -34,10 +37,10 @@ namespace Graphics {
         BeginDrawing();
         ClearBackground(RAYWHITE);
         switch (getGameState()) {
-            case MENU:
+            case Graphics::GameState::MENU :
                 DrawMenu();
                 break;
-            case GAME:
+            case Graphics::GameState::GAME:
                 DrawGame();
                 break;
             default:
@@ -45,12 +48,10 @@ namespace Graphics {
         }
         EndDrawing();
     }
-
-    void Game::DrawMenu() {
-        DrawText("Menu", 400, 200, 20, GRAY);
-    }
-
-    void Game::DrawGame() {
-        DrawText("Game", 400, 200, 20, GRAY);
-    }
 }
+
+/*
+Doit faire HandleKey
+Mettre premiers sound
+Chercher parallax star-field
+*/

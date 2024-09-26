@@ -32,5 +32,5 @@ namespace ECS {
             std::unordered_map<std::string, std::function<void(Coordinator&, std::uint32_t)>> entityHandlers;
     };
 
-    int mainEngine();
+    Coordinator mainEngine();
 }
