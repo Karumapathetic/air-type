@@ -21,40 +21,30 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Cache build client
+      - name: Cache build
         uses: actions/cache@v3
         with:
-          path: ./client/build
-          key: ${{ runner.os }}-client-${{ hashFiles('**/client/CMakeLists.txt') }}
-          restore-keys: ${{ runner.os }}-client-
+          path: ./build
+          key: ${{ runner.os }}-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: ${{ runner.os }}-
 
-      - name: Cache build server
-        uses: actions/cache@v3
-        with:
-          path: ./server/build
-          key: ${{ runner.os }}-server-${{ hashFiles('**/server/CMakeLists.txt') }}
-          restore-keys: ${{ runner.os }}-server-
-
-      - name: Build client
-        run: ./build.sh client
-
-      - name: Build server
-        run: ./build.sh server
+      - name: Build Project
+        run: ./build.sh
 
       - name: Check binaries
         run: |
-          if [ ! -f ./rtype_client ]; then
-            echo "::error file=./rtype_client::Client binary does not exist"
+          if [ ! -f ./r-type_client ]; then
+            echo "::error file=./r-type_client::Client binary does not exist"
             exit 1
-          elif [ ! -f ./rtype_server ]; then
-            echo "::error file=./rtype_server::Server binary does not exist"
+          elif [ ! -f ./r-type_server ]; then
+            echo "::error file=./r-type_server::Server binary does not exist"
             exit 1
           else
             echo "::notice::All binaries OK"
           fi
 
       - name: Bundle Binary
-        run: tar -czf rtype-${{ github.sha }}-linux.tar.gz rtype_client rtype_server
+        run: tar -czf rtype-${{ github.sha }}-linux.tar.gz r-type_client r-type_server
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
@@ -74,37 +64,27 @@ jobs:
       - name: Cache build client
         uses: actions/cache@v3
         with:
-          path: ./client/build
-          key: ${{ runner.os }}-client-${{ hashFiles('**/client/CMakeLists.txt') }}
-          restore-keys: ${{ runner.os }}-client-
+          path: ./build
+          key: ${{ runner.os }}-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: ${{ runner.os }}-
 
-      - name: Cache build server
-        uses: actions/cache@v3
-        with:
-          path: ./server/build
-          key: ${{ runner.os }}-server-${{ hashFiles('**/server/CMakeLists.txt') }}
-          restore-keys: ${{ runner.os }}-server-
-
-      - name: Build client
-        run: ./build.ps1 client
-
-      - name: Build server
-        run: ./build.ps1 server
+      - name: Build Project
+        run: ./build.ps1
 
       - name: Check binaries
         run: |
-          if (-Not (Test-Path "./rtype_client.exe")) {
+          if (-Not (Test-Path "./r-type_client.exe")) {
             Write-Host "Client binary does not exist"
             exit 1
-          } elseif(-Not (Test-Path "./rtype_client.exe")) {
-            Write-Host "Client binary does not exist"
+          } elseif(-Not (Test-Path "./r-type_server.exe")) {
+            Write-Host "Server binary does not exist"
             exit 1
           } else {
             Write-Host "All binaries OK"
           }
 
       - name: Bundle Binary
-        run: tar -czf rtype-${{ github.sha }}-windows.tar.gz rtype_client.exe rtype_server.exe
+        run: tar -czf rtype-${{ github.sha }}-windows.tar.gz r-type_client.exe r-type_server.exe
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
