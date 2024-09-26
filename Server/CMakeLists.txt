@@ -1,4 +1,6 @@
-project(r-type_server)
+cmake_minimum_required(VERSION 3.27)
+project("R-Type server")
+
 
 add_executable(r-type_server
     Main.cpp

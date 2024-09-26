@@ -7,10 +7,10 @@
 
 #include <iostream>
 #include "raylib.h"
-#include "Engine.hpp"
+#include "EntityFactory.hpp"
 
 int main() {
-    mainEngine();
+    ECS::mainEngine();
     InitWindow(800, 600, "R-Type");
 
     while (!WindowShouldClose()) {

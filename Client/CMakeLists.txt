@@ -1,4 +1,5 @@
-project(r-type_client)
+cmake_minimum_required(VERSION 3.27)
+project("R-Type client")
 
 add_executable(r-type_client
     Main.cpp
