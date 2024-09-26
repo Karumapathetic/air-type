@@ -6,22 +6,18 @@
 */
 
 #include <iostream>
-#include "raylib.h"
-#include "EntityFactory.hpp"
+#include "UDPClient.hpp"
 
-int main() {
-    ECS::mainEngine();
-    InitWindow(800, 600, "R-Type");
-
-    while (!WindowShouldClose()) {
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawText("Lezgong", 190, 200, 20, GRAY);
-        EndDrawing();
+int main (int argc, char const* const* argv) {
+    if ((argc == 2 && argv[1] == "--help") || (argc < 2 || argc > 3)) {
+        std::cout << "Usage : ./r-type_client <host> <port>" << std::endl;
+        return 0;
     }
 
-    CloseWindow();
-
-    std::cout << "Hello client" << std::endl;
-    return 0;
+    try {
+        Network::UDPClient udpClient(argv[1], argv[2]);
+        udpClient.run();
+    } catch (std::exception& err) {
+        std::cerr << err.what() << std::endl;
+    }
 }

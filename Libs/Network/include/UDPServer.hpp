@@ -17,13 +17,12 @@ namespace Network {
             ~UDPServer();
 
             void run();
-            void send();
-            void receive();
+            void send(std::string);
+            std::string receive();
 
         private:
             bool _isRunning;
             asio::io_context _io_context;
             asio::ip::udp::socket _socket;
-            // asio::ip::udp::endpoint _endpoint;
     };
 }

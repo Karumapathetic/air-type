@@ -10,4 +10,5 @@ add_library(
 target_include_directories(
     Network PUBLIC
     "include"
+    "../../3rdParties/asio/asio/include"
 )
