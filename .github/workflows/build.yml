@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Cache build
         uses: actions/cache@v3
@@ -56,12 +58,6 @@ jobs:
 
       - name: Build Project
         run: ./build.ps1
-
-      - name: Check Project
-        run: |
-          ls
-          ls Server
-          ls Client
 
       - name: Check binaries
         run: |
