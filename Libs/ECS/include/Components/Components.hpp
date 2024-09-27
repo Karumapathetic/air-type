@@ -39,6 +39,7 @@ namespace ECS {
     };
 
     struct Sounds {
+        Sound sound;
         float volume;
         std::string desc;
     };

@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2024
 ** r-type
 ** File description:
-** ennemyEntity.hpp
+** enemyEntity.hpp
 */
 
 #pragma once
@@ -11,5 +11,5 @@
 #include "Components.hpp"
 
 namespace ECS {
-    void ennemyHandler(Coordinator &gCoordinator, std::uint32_t entity);
+    void enemyHandler(Coordinator &gCoordinator, std::uint32_t entity);
 }

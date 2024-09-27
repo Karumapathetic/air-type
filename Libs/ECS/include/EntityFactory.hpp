@@ -15,7 +15,7 @@
 #include "Coordinator.hpp"
 #include "Components.hpp"
 #include "Player.hpp"
-#include "Ennemy.hpp"
+#include "Enemy.hpp"
 #include "Missile.hpp"
 #include "Background.hpp"
 #include "Settings.hpp"
@@ -32,5 +32,5 @@ namespace ECS {
             std::unordered_map<std::string, std::function<void(Coordinator&, std::uint32_t)>> entityHandlers;
     };
 
-    int mainEngine();
+    Coordinator mainEngine();
 }
