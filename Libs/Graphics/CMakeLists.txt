@@ -7,6 +7,8 @@ add_library(
     src/Game.cpp
     src/DrawGame.cpp
     src/DrawMenu.cpp
+    src/DrawPause.cpp
+    src/HandleInput.cpp
 )
 
 target_include_directories(

@@ -13,7 +13,9 @@ namespace Graphics {
     enum class GameState {
         MENU,
         GAME,
-        GAMEOVER
+        PAUSE,
+        GAMEOVER,
+        WIN
     };
     /// @brief Struct that define a star for the background
     struct Star {
@@ -50,6 +52,30 @@ namespace Graphics {
 
             /// @brief Draw the game
             void DrawGame();
+
+            /// @brief Draw the pause
+            void DrawPause();
+
+            /// @brief Handle the keyboard input
+            void HandleKeyboardInput();
+
+            /// @brief Handle the key space
+            void KeySpace();
+
+            /// @brief Handle the key up
+            void KeyUp();
+
+            /// @brief Handle the key down
+            void KeyDown();
+
+            /// @brief Handle the key left
+            void KeyLeft();
+
+            /// @brief Handle the key right
+            void KeyRight();
+
+            /// @brief Handle the key escape
+            void KeyEscape();
         protected:
         private:
             GameState _gameState;
