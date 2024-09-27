@@ -18,13 +18,15 @@ namespace Network {
 
             void run();
             void send(std::string message);
-            std::string receive();
+            void start_receive();
 
         private:
             asio::io_context _io_context;
             asio::ip::udp::resolver _resolver;
             asio::ip::udp::socket _socket;
             asio::ip::udp::endpoint _endpoint;
+            asio::ip::udp::endpoint _sender_endpoint;
+            std::array<char, 1024> _recv_buf;
     };
 }
 
