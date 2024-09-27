@@ -3,7 +3,8 @@ project("R-Type Graphics Lib")
 
 add_library(
     Graphics STATIC
-    LaunchGame.cpp
+    Core.cpp
+    src/Game.cpp
     src/DrawGame.cpp
     src/DrawMenu.cpp
 )

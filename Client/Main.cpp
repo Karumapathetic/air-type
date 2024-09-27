@@ -6,12 +6,12 @@
 */
 
 #include <iostream>
-#include "Game.hpp"
+#include "Core.hpp"
 
 int main() {
     try {
-        Graphics::Game game;
-        game.LaunchGame();
+        Graphics::Core core;
+        core.LaunchGame();
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
         return 84;
