@@ -35,7 +35,7 @@ namespace ECS {
         std::vector<Entity> entities(MAX_ENTITIES);
 
         // Create entities
-        entities[0] = gCoordinator.createEntity("player");
+        entities[0] = gCoordinator.createEntity("settings");
 
         for (const Entity& entity : entities) {
             std::string name = gCoordinator.getEntityName(entity);

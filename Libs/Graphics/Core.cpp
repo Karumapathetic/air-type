@@ -34,7 +34,7 @@ namespace Graphics {
         SetTargetFPS(60);
         InitAudioDevice();
         SetExitKey(KEY_BACKSPACE);
-        InitStars(120);
+        InitStars(500);
         _game.InitCoordinator();
     }
 
