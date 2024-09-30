@@ -2,13 +2,13 @@ name: Build Project
 
 on:
   push:
-    branches: main
-
-env:
-  MIRROR_URL: git@github.com:EpitechPromo2027/B-CPP-500-BDX-5-1-rtype-baptiste.caulier.git
+    branches: dev
+  pull_request:
+    branches: dev
 
 jobs:
-  build:
+  build-linux:
+    name: Build on Linux
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
@@ -16,30 +16,57 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-      - name: Build project
-        run: echo $?
+      - name: Cache build
+        uses: actions/cache@v3
+        with:
+          path: ./build
+          key: ${{ runner.os }}-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: ${{ runner.os }}-
+
+      - name: Build Project
+        run: ./build.sh
 
       - name: Check binaries
         run: |
-          if [ -f ./README.md ]; then
-            echo "::notice::Binary OK"
-          else
-            echo "::error file=./README.md::Binary does not exist"
+          if [ ! -f ./r-type_server ]; then
+            echo "::error file=./r-type_server::Server binary does not exist"
             exit 1
+          elif [ ! -f ./r-type_client ]; then
+            echo "::error file=./r-type_client::Client binary does not exist"
+            exit 1
+          else
+            echo "::notice::All binaries OK"
           fi
 
-  mirror:
-    needs: build
-    runs-on: ubuntu-latest
+  build-windows:
+    name: Build on Windows
+    runs-on: windows-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Push to mirror
-        uses: pixta-dev/repository-mirroring-action@v1
+      - name: Cache build
+        uses: actions/cache@v3
         with:
-          target_repo_url: ${{ env.MIRROR_URL }}
-          ssh_private_key: ${{ secrets.MIRROR_KEY }}
+          path: ./build
+          key: ${{ runner.os }}-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: ${{ runner.os }}-
+
+      - name: Build Project
+        run: ./build.ps1
+
+      - name: Check binaries
+        run: |
+          if (-Not (Test-Path "./r-type_server.exe")) {
+            Write-Host "Server binary does not exist"
+            exit 1
+          } elseif (-Not (Test-Path "./r-type_client.exe")) {
+            Write-Host "Client binary does not exist"
+            exit 1
+          } else {
+            Write-Host "All binaries OK"
+          }

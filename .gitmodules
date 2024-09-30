@@ -1,0 +1,6 @@
+[submodule "3rdParties/raylib"]
+	path = 3rdParties/raylib
+	url = https://github.com/raysan5/raylib.git
+[submodule "3rdParties/asio"]
+	path = 3rdParties/asio
+	url = https://github.com/chriskohlhoff/asio.git
