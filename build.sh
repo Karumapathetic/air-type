@@ -30,7 +30,7 @@ elif [ "$1" == "--help" ]; then
     echo "Usage: $0 [clean]"
     exit 1
 else
-    git submodule update --remote --merge
+    git submodule update --init
     mkdir -p build
     cmake -S . -B build
     cmake --build build
