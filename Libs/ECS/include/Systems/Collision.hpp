@@ -7,10 +7,17 @@
 
 #pragma once
 
-class Collision {
-    public:
-        Collision();
-        ~Collision();
-    protected:
-    private:
-};
+#include "ISystem.hpp"
+
+namespace ECS {
+    /**
+     * @brief System that handles the collision between entities.
+     */
+    class Collision : public ISystem {
+        public:
+            Collision();
+            ~Collision();
+        protected:
+        private:
+    };
+}

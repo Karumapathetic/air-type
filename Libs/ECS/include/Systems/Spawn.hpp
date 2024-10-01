@@ -9,10 +9,15 @@
 
 #include "ISystem.hpp"
 
-class Spawn : public ISystem {
-    public:
-        Spawn();
-        ~Spawn();
-    protected:
-    private:
-};
+namespace ECS {
+    /**
+     * @brief System that handles the spawning of entities.
+     */
+    class Spawn : public ISystem {
+        public:
+            Spawn();
+            ~Spawn();
+        protected:
+        private:
+    };
+}

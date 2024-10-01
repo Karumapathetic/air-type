@@ -7,10 +7,17 @@
 
 #pragma once
 
-class Shoot {
-    public:
-        Shoot();
-        ~Shoot();
-    protected:
-    private:
-};
+#include "ISystem.hpp"
+
+namespace ECS {
+    /**
+     * @brief System that handles the shooting of entities.
+     */
+    class Shoot : public ISystem {
+        public:
+            Shoot();
+            ~Shoot();
+        protected:
+        private:
+    };
+}
