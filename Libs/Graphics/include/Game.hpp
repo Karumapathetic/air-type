@@ -6,7 +6,7 @@
 */
 
 #pragma once
-#include "EntityFactory.hpp"
+#include "Coordinator.hpp"
 
 namespace Graphics {
     /// @brief Enum that define the state of the game

@@ -5,7 +5,7 @@
 ** playerEntity
 */
 
-#include "Player.hpp"
+#include "Coordinator.hpp"
 
 namespace ECS {
     void playerHandler(Coordinator &gCoordinator, std::uint32_t entity) {

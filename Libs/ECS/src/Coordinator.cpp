@@ -8,10 +8,22 @@
 #include "Coordinator.hpp"
 
 namespace ECS {
-    void Coordinator::init() {
+void Coordinator::init() {
         componentManager = std::make_unique<ComponentManager>();
         entityManager = std::make_unique<EntityManager>();
         systemManager = std::make_unique<SystemManager>();
+        _entities.resize(MAX_ENTITIES);
+
+        // Initialisation des handlers
+        entityHandlers = {
+            {"player", playerHandler},
+            {"enemy", enemyHandler},
+            {"missile", missileHandler},
+            {"background", backgroundHandler},
+            {"settings", settingsHandler},
+            {"collectible", collectibleHandler}
+        };
+
         this->registerComponent<Spacial>();
         this->registerComponent<Power>();
         this->registerComponent<Life>();
@@ -55,4 +67,41 @@ namespace ECS {
     void Coordinator::setEntitySignature(Entity entity, Signature signature) {
         entityManager->setSignature(entity, signature);
     }
+
+    std::vector<Entity> Coordinator::getEntities() {
+        return _entities;
+    }
+
+    void Coordinator::initEntities() {
+        for (const Entity& entity : this->getEntities()) {
+            std::string name = this->getEntityName(entity);
+            bool initialized = this->getEntityInitialized(entity);
+
+            if (!initialized) {
+                this->createEntityFromType(name, entity);
+                std::cout << "Created entity: " << name << std::endl;
+            }
+        }
+    }
+
+    void Coordinator::createEntityFromType(const std::string &type, std::uint32_t entity) {
+        auto it = entityHandlers.find(type);
+        if (it != entityHandlers.end()) {
+            it->second(*this, entity);
+        }
+    }
+
+    Coordinator Coordinator::initEngine() {
+        Coordinator gCoordinator;
+
+        // Init engine and register components and systems
+        gCoordinator.init();
+
+        // Create entities
+        gCoordinator.getEntities()[0] = gCoordinator.createEntity("settings");
+        gCoordinator.initEntities();
+
+        return gCoordinator;
+    }
+
 }

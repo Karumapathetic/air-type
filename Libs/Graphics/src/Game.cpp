@@ -12,7 +12,7 @@
 
 namespace Graphics {
     void Game::InitCoordinator() {
-        _coordinator = ECS::mainEngine();
+        _coordinator = ECS::Coordinator::initEngine();
     }
 
     void Game::DrawGraphics() {

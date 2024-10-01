@@ -7,7 +7,10 @@
 
 #pragma once
 
+#include <iostream>
 #include <memory>
+#include <functional>
+#include <unordered_map>
 
 #include "ComponentManager.hpp"
 #include "EntityManager.hpp"
@@ -63,7 +66,9 @@ namespace ECS {
                 systemManager->setSignature<T>(signature);
             }
 
+            static Coordinator initEngine();
             void init();
+            void initEntities();
             Entity createEntity(const std::string& name);
             void destroyEntity(Entity entity);
             std::string getEntityName(Entity entity);
@@ -72,10 +77,21 @@ namespace ECS {
             void setEntityInitialized(Entity entity, bool initialized);
             Signature getEntitySignature(Entity entity);
             void setEntitySignature(Entity entity, Signature signature);
+            std::vector<Entity> getEntities();
 
         private:
             std::unique_ptr<ComponentManager> componentManager;
             std::unique_ptr<EntityManager> entityManager;
             std::unique_ptr<SystemManager> systemManager;
+            std::unordered_map<std::string, std::function<void(Coordinator&, std::uint32_t)>> entityHandlers;
+            std::vector<Entity> _entities;
+            void createEntityFromType(const std::string &type, std::uint32_t entity);
     };
+
+    void playerHandler(Coordinator &gCoordinator, std::uint32_t entity);
+    void enemyHandler(Coordinator &gCoordinator, std::uint32_t entity);
+    void missileHandler(Coordinator &gCoordinator, std::uint32_t entity);
+    void backgroundHandler(Coordinator &gCoordinator, std::uint32_t entity);
+    void settingsHandler(Coordinator &gCoordinator, std::uint32_t entity);
+    void collectibleHandler(Coordinator &gCoordinator, std::uint32_t entity);
 }

@@ -5,7 +5,7 @@
 ** Entity.cpp
 */
 
-#include "Enemy.hpp"
+#include "Coordinator.hpp"
 
 namespace ECS {
     void enemyHandler(Coordinator &gCoordinator, std::uint32_t entity) {

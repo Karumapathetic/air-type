@@ -5,7 +5,7 @@
 ** settingsEntity.cpp
 */
 
-#include "Settings.hpp"
+#include "Coordinator.hpp"
 
 namespace ECS {
     void settingsHandler(Coordinator &gCoordinator, std::uint32_t entity) {

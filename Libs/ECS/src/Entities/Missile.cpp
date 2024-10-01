@@ -5,7 +5,7 @@
 ** missileEntity.cpp
 */
 
-#include "Missile.hpp"
+#include "Coordinator.hpp"
 
 namespace ECS {
     void missileHandler(Coordinator &gCoordinator, std::uint32_t entity) {

@@ -5,7 +5,7 @@
 ** CollectibleEntity.cpp
 */
 
-#include "Collectible.hpp"
+#include "Coordinator.hpp"
 
 namespace ECS {
     void collectibleHandler(Coordinator &gCoordinator, std::uint32_t entity) {
