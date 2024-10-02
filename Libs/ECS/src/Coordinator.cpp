@@ -38,13 +38,16 @@ void Coordinator::init() {
     }
 
     Entity Coordinator::createEntity(const std::string& name) {
-        return entityManager->createEntity(name);
+        Entity id = entityManager->createEntity(name);
+        this->setEntities(id, id);
+        return id;
     }
 
     void Coordinator::destroyEntity(Entity entity) {
         entityManager->destroyEntity(entity);
         componentManager->entityDestroyed(entity);
         systemManager->entityDestroyed(entity);
+        this->setEntities(entity, INVALID_ENTITY);
     }
 
     std::string Coordinator::getEntityName(Entity entity) {
@@ -83,9 +86,7 @@ void Coordinator::init() {
         }
     }
 
-
     void Coordinator::initEntities() {
-        std::cout << "Entities size : " << this->getEntities().size() << std::endl;
         auto entities = this->getEntities();
         for (const Entity& entity : entities) {
             std::string name = this->getEntityName(entity);
@@ -93,6 +94,13 @@ void Coordinator::init() {
 
             if (!initialized) {
                 this->createEntityFromType(name, entity);
+            }
+        }
+    }
+
+    void Coordinator::createEntityFromType(const std::string &type, std::uint32_t entity) {
+        auto it = entityHandlers.find(type);
+        if (it != entityHandlers.end()) {
                 std::cout << "Created entity: " << name << std::endl;
             }
         }
@@ -122,22 +130,9 @@ void Coordinator::init() {
         gCoordinator.setSystemSignature<ECS::Draw>(drawSignature);
 
         // Create entities
-        std::cout << "Entities in Coordinator:" << std::endl;
-        for (const Entity& entity : gCoordinator.getEntities()) {
-            std::string name = gCoordinator.getEntityName(entity);
-            bool initialized = gCoordinator.getEntityInitialized(entity);
-            std::cout << "Entity ID: " << entity << ", Name: " << name << ", Initialized: " << initialized << std::endl;
-        }
-        //gCoordinator.setEntities(0, gCoordinator.createEntity("settings"));
-        //gCoordinator.setEntities(1, gCoordinator.createEntity("player"));
-        //std::cout << "Entities in Coordinator:" << std::endl;
-        //for (const Entity& entity : gCoordinator.getEntities()) {
-        //    std::string name = gCoordinator.getEntityName(entity);
-        //    bool initialized = gCoordinator.getEntityInitialized(entity);
-        //    std::cout << "Entity ID: " << entity << ", Name: " << name << ", Initialized: " << initialized << std::endl;
-        //}
-
-        //gCoordinator.initEntities();
+        gCoordinator.createEntity("settings");
+        gCoordinator.createEntity("player");
+        gCoordinator.initEntities();
 
         return gCoordinator;
     }

@@ -53,18 +53,18 @@ namespace Graphics {
         float lastTime = GetTime();
 
         // Main game loop
-        //while (!WindowShouldClose()) {
-        //    float currentTime = GetTime();
-        //    float frameTime = currentTime - lastTime;
-        //    lastTime = currentTime;
-        //    accumulator += frameTime;
-//
-        //    while (accumulator >= fixedTimeStep) {
-        //        accumulator -= fixedTimeStep;
-        //    }
-//
-        //    _game.DrawGraphics(); // Render the game state
-        //}
+        while (!WindowShouldClose()) {
+            float currentTime = GetTime();
+            float frameTime = currentTime - lastTime;
+            lastTime = currentTime;
+            accumulator += frameTime;
+
+            while (accumulator >= fixedTimeStep) {
+                accumulator -= fixedTimeStep;
+            }
+
+            _game.DrawGraphics(); // Render the game state
+        }
 
         CloseGraphics();
     }
