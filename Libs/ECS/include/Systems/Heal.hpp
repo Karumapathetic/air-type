@@ -7,10 +7,17 @@
 
 #pragma once
 
-class Heal {
-    public:
-        Heal();
-        ~Heal();
-    protected:
-    private:
-};
+#include "ISystem.hpp"
+
+namespace ECS {
+    /**
+     * @brief System that handles the healing of entities.
+     */
+    class Heal : public ISystem {
+        public:
+            Heal();
+            ~Heal();
+        protected:
+        private:
+    };
+}

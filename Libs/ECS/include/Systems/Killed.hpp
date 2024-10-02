@@ -9,10 +9,15 @@
 
 #include "ISystem.hpp"
 
-class Killed : public ISystem {
-    public:
-        Killed();
-        ~Killed();
-    protected:
-    private:
-};
+namespace ECS {
+    /**
+     * @brief System that handles the killed of entities.
+     */
+    class Killed : public ISystem {
+        public:
+            Killed();
+            ~Killed();
+        protected:
+        private:
+    };
+}

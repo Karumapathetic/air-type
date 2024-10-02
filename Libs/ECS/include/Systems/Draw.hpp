@@ -9,10 +9,15 @@
 
 #include "ISystem.hpp"
 
-class Draw : public ISystem {
-    public:
-        Draw();
-        ~Draw();
-    protected:
-    private:
-};
+namespace ECS {
+    /**
+     * @brief System that handles the drawing of entities.
+     */
+    class Draw : public ISystem {
+        public:
+            Draw();
+            ~Draw();
+        protected:
+        private:
+    };
+}
