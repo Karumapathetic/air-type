@@ -7,10 +7,17 @@
 
 #pragma once
 
-class Damage {
-    public:
-        Damage();
-        ~Damage();
-    protected:
-    private:
-};
+#include "ISystem.hpp"
+
+namespace ECS {
+    /**
+     * @brief System that handles the damage between entities.
+     */
+    class Damage : public ISystem {
+        public:
+            Damage();
+            ~Damage();
+        protected:
+        private:
+    };
+}

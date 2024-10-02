@@ -9,10 +9,15 @@
 
 #include "ISystem.hpp"
 
-class Update : public ISystem {
-    public:
-        Update();
-        ~Update();
-    protected:
-    private:
-};
+namespace ECS {
+    /**
+     * @brief System that handles the update of entities.
+     */
+    class Update : public ISystem {
+        public:
+            Update();
+            ~Update();
+        protected:
+        private:
+    };
+}

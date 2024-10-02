@@ -9,8 +9,11 @@
 
 namespace ECS {
     void settingsHandler(Coordinator &gCoordinator, std::uint32_t entity) {
+        std::cout << "Step 1" << std::endl;
         gCoordinator.addComponent(entity, Keybind());
-        gCoordinator.addComponent(entity, Sounds{LoadSound(""), 50, "Background Music" });
+        std::cout << "Step 1" << std::endl;
+        //gCoordinator.addComponent(entity, Sounds{LoadSound(""), 50, "Background Music" });
+        std::cout << "Step 1" << std::endl;
         Keybind& keybindComponent = gCoordinator.getComponent<Keybind>(entity);
         keybindComponent.addKeybind(KEY_SPACE, "Shoot", "Shoot");
         keybindComponent.addKeybind(KEY_UP, "Up", "Move Up");
@@ -18,6 +21,7 @@ namespace ECS {
         keybindComponent.addKeybind(KEY_LEFT, "Left", "Move Left");
         keybindComponent.addKeybind(KEY_RIGHT, "Right", "Move Right");
         keybindComponent.addKeybind(KEY_ESCAPE, "Pause", "Pause");
+        std::cout << "Step 1" << std::endl;
         gCoordinator.setEntityInitialized(entity, true);
     }
 }

@@ -8,9 +8,16 @@
 #pragma once
 
 #include <set>
+#include "raylib.h"
 #include "ECSValues.hpp"
 
 namespace ECS {
+    /**
+     * @brief Interface for the systems.
+     * 
+     * This interface is used to create the systems for the ECS.
+     * 
+     */
     class ISystem {
         public:
             std::set<Entity> entities;

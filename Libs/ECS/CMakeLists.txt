@@ -11,7 +11,6 @@ add_library(
     src/Components/Components.cpp
     src/Components/IComponentArray.cpp
 
-    src/Entities/EntityFactory.cpp
     src/Entities/Player.cpp
     src/Entities/Enemy.cpp
     src/Entities/Missile.cpp
