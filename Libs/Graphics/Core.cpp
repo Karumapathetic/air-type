@@ -10,13 +10,12 @@
 
 #include "raylib.h"
 
-
 namespace Graphics {
     void Core::InitStars(int numStars) {
         std::srand(std::time(nullptr));
         std::vector<Graphics::Star> stars;
         for (int i = 0; i < numStars; ++i) {
-            Color colors[] = {WHITE, GRAY, DARKGRAY};
+            const Color colors[] = {WHITE, GRAY, DARKGRAY};
             stars.push_back({
                 static_cast<float>(std::rand() % GetScreenWidth()),
                 static_cast<float>(std::rand() % GetScreenHeight()),
@@ -24,6 +23,9 @@ namespace Graphics {
                 colors[std::rand() % 3]
                 });
         }
+        stars[std::rand() % numStars].color = GREEN;
+        stars[std::rand() % numStars].color = RED;
+        stars[std::rand() % numStars].color = BLUE;
         _game.setStars(stars);
     }
 
@@ -46,9 +48,22 @@ namespace Graphics {
     void Core::LaunchGame() {
         InitGraphics();
 
+        const float fixedTimeStep = 1.0f / 60.0f;
+        float accumulator = 0.0f;
+        float lastTime = GetTime();
+
         // Main game loop
         while (!WindowShouldClose()) {
-            _game.DrawGraphics();
+            float currentTime = GetTime();
+            float frameTime = currentTime - lastTime;
+            lastTime = currentTime;
+            accumulator += frameTime;
+
+            while (accumulator >= fixedTimeStep) {
+                accumulator -= fixedTimeStep;
+            }
+
+            _game.DrawGraphics(); // Render the game state
         }
 
         CloseGraphics();
