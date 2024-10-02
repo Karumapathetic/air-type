@@ -13,3 +13,6 @@ build
 
 # Hide Windows build
 Debug
+
+# Hide Doxygen html code
+Doc/html

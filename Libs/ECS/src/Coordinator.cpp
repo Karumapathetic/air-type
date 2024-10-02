@@ -101,6 +101,17 @@ void Coordinator::init() {
     void Coordinator::createEntityFromType(const std::string &type, std::uint32_t entity) {
         auto it = entityHandlers.find(type);
         if (it != entityHandlers.end()) {
+                std::cout << "Created entity: " << name << std::endl;
+            }
+        }
+        std::cout << "End of initEntities" << std::endl;
+    }
+
+    void Coordinator::createEntityFromType(const std::string &type, std::uint32_t entity) {
+        std::cout << "Creating entity from type: " << type << std::endl;
+        auto it = entityHandlers.find(type);
+        if (it != entityHandlers.end()) {
+            std::cout << "Found handler for entity type: " << type << std::endl;
             it->second(*this, entity);
         }
     }
