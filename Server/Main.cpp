@@ -16,7 +16,11 @@ int main (int argc, char const* const* argv) {
 
     try {
         Network::UDPServer udpServer(std::atoi(argv[1]));
+        udpServer.add_send_queue("Hello client");
         udpServer.run();
+        std::queue<std::string> test = udpServer.get_recv_queue();
+        std::cout << test.front() << std::endl;
+        udpServer.pop_recv_queue();
     } catch (std::exception& err) {
         std::cerr << err.what() << std::endl;
     }
