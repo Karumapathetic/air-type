@@ -88,6 +88,9 @@ namespace Graphics {
             /// @brief Display the pause menu
             void DrawPause();
 
+            /// @brief Display the settings menu
+            void DrawSettings();
+
             /// @brief Handle the keyboard input
             void HandleKeyboardInput();
 

@@ -16,6 +16,7 @@ namespace Graphics {
             (float)GetScreenHeight() / 20
         };
         DrawStars();
+        DrawText("Pause", GetScreenWidth() / 2 - MeasureText("Pause", 40) / 2, GetScreenHeight() / 4, 40, WHITE);
         std::vector<std::string> options = {"Resume", "Settings", "Quit"};
         for (int i = 0; i < options.size(); i++) {
             DrawRectangleRounded(rec_option, 0.3, 0, BLACK);

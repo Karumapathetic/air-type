@@ -29,6 +29,9 @@ namespace Graphics {
             case Graphics::GameState::PAUSE:
                 DrawPause();
                 break;
+            case Graphics::GameState::SETTINGS:
+                DrawSettings();
+                break;
             case Graphics::GameState::GAMEOVER:
                 break;
             case Graphics::GameState::WIN:
