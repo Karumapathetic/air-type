@@ -8,6 +8,7 @@ add_library(
     src/DrawGame.cpp
     src/DrawMenu.cpp
     src/DrawPause.cpp
+    src/DrawStars.cpp
     src/HandleInput.cpp
 )
 
