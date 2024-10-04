@@ -56,10 +56,18 @@ namespace Graphics {
     }
 
     void Game::KeyEscape() {
-        if (_gameState == GameState::GAME) {
-            setGameState(GameState::PAUSE);
-        } else if (_gameState == GameState::PAUSE) {
-            setGameState(GameState::GAME);
+        switch (_gameState) {
+            case GameState::GAME:
+                setGameState(GameState::PAUSE);
+                break;
+            case GameState::PAUSE:
+                setGameState(GameState::GAME);
+                break;
+            case GameState::SETTINGS:
+                setGameState(GameState::PAUSE);
+                break;
+            default:
+                break;
         }
     }
 } // namespace Graphics

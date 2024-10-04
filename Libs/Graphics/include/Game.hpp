@@ -50,7 +50,7 @@ namespace Graphics {
     class Game {
         public:
             /// @brief Constructor of the game
-            Game() : _gameState(GameState::MENU) {}
+            Game() : _gameState(GameState::MENU), _selected("") {}
 
             /// @brief Destructor of the game
             ~Game() {}
@@ -91,6 +91,9 @@ namespace Graphics {
             /// @brief Display the settings menu
             void DrawSettings();
 
+            /// @brief Draw the settings titles
+            void DrawSettingsTitles();
+
             /// @brief Handle the keyboard input
             void HandleKeyboardInput();
 
@@ -130,5 +133,12 @@ namespace Graphics {
              * @brief The stars of the background
              */
             std::vector<Star> _stars;
+
+            /**
+             * @brief Indicate that a string is hovered or selected
+             * 
+             * This will be used to change the color of rectangles when hovered or selected.
+             */
+            std::string _selected;
     };
 }

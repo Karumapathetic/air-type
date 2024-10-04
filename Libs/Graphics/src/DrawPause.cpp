@@ -18,8 +18,12 @@ namespace Graphics {
         DrawStars();
         DrawText("Pause", GetScreenWidth() / 2 - MeasureText("Pause", 40) / 2, GetScreenHeight() / 4, 40, WHITE);
         std::vector<std::string> options = {"Resume", "Settings", "Quit"};
+        bool hovering = false;
         for (int i = 0; i < options.size(); i++) {
-            DrawRectangleRounded(rec_option, 0.3, 0, BLACK);
+            if (_selected == options[i])
+                DrawRectangleRounded(rec_option, 0.3, 0, DARKGRAY);
+            else
+                DrawRectangleRounded(rec_option, 0.3, 0, BLACK);
             DrawRectangleRoundedLines(rec_option, 0.3, 2, GRAY);
             DrawText(options[i].c_str(), GetScreenWidth() / 2 - MeasureText(options[i].c_str(), 25) / 2, rec_option.y + 15, 25, WHITE);
             if (CheckCollisionPointRec(GetMousePosition(), rec_option) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
@@ -37,7 +41,13 @@ namespace Graphics {
                         break;
                 }
             }
+            if (CheckCollisionPointRec(GetMousePosition(), rec_option)) {
+                _selected = options[i];
+                hovering = true;
+            }
             rec_option.y += GetScreenHeight() / 20 + 25;
         }
+        if (!hovering)
+            _selected = "";
     }
 }
