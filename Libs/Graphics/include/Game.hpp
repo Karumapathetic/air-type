@@ -21,6 +21,8 @@ namespace Graphics {
         MENU,       // The menu state
         GAME,       // The game state
         PAUSE,      // The pause state
+        SETTINGS,   // The settings state
+        QUIT,       // The quit state
         GAMEOVER,   // The game over state
         WIN         // The win state
     };
@@ -67,6 +69,12 @@ namespace Graphics {
             /// @brief Set the stars
             /// @param stars The stars to set
             void setStars(std::vector<Star> stars) { _stars = stars; }
+
+            /** @brief Draw the stars of the background
+             * 
+             * This function is responsible for rendering stars in the game's graphical interface.
+             */
+            void DrawStars();
 
             /// @brief Draw the client graphics
             void DrawGraphics();
