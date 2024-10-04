@@ -43,10 +43,7 @@ namespace Graphics {
         }
     }
 
-    void Game::DrawSettings() {
-        DrawStars();
-        DrawRectangleBackground();
-        DrawSettingsTitles();
+    void Game::DrawSettingsOptions() {
         // if (_selected == "General") {
         //     ;
         // } else if (_selected == "Video") {
@@ -56,5 +53,14 @@ namespace Graphics {
         // } else if (_selected == "Controls") {
         //     ;
         // }
+        _selected = "General";
+    }
+
+    void Game::DrawSettings() {
+        _selected = "General";
+        DrawStars();
+        DrawRectangleBackground();
+        DrawSettingsTitles();
+        DrawSettingsOptions();
     }
 } // namespace Graphics

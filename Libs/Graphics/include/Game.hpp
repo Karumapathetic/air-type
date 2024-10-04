@@ -94,6 +94,9 @@ namespace Graphics {
             /// @brief Draw the settings titles
             void DrawSettingsTitles();
 
+            /// @brief Draw the settings options
+            void DrawSettingsOptions();
+
             /// @brief Handle the keyboard input
             void HandleKeyboardInput();
 
