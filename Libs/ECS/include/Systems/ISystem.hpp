@@ -8,6 +8,7 @@
 #pragma once
 
 #include <set>
+#include "raylib.h"
 #include "ECSValues.hpp"
 
 namespace ECS {

@@ -6,7 +6,7 @@
 */
 
 #pragma once
-#include "EntityFactory.hpp"
+#include "Coordinator.hpp"
 
 /**
  * @brief Namespace that contains all the graphics related classes
@@ -55,8 +55,18 @@ namespace Graphics {
             /// @brief Destructor of the game
             ~Game() {}
 
-            /// @brief Initialize the coordinator with all of the entities
+            /**
+             * @brief Initialize the coordinator with all of the entities
+             * 
+             * This function initializes the ECS::Coordinator with all the necessary entities
+             * for the game. It creates entities for the player, enemies, background, etc.,
+             * and sets up their components and systems.
+             * 
+             * @return void
+             */
             void InitCoordinator();
+
+            void InitTextures();
 
             /// @brief Set the enum game state
             /// @param gameState The game state to set
