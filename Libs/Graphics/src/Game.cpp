@@ -11,6 +11,10 @@
 #include "Game.hpp"
 
 namespace Graphics {
+    Game::Game() : _gameState(GameState::MENU) {
+        _option = new Option(*this);
+    }
+
     void Game::InitCoordinator() {
         _coordinator = ECS::Coordinator::initEngine();
     }

@@ -5,12 +5,14 @@ add_library(
     Graphics STATIC
     Core.cpp
     src/Game.cpp
+    src/Option.cpp
     src/DrawGame.cpp
     src/DrawMenu.cpp
     src/DrawPause.cpp
     src/DrawSettings.cpp
     src/DrawStars.cpp
     src/HandleInput.cpp
+    src/Keys.cpp
 )
 
 target_include_directories(

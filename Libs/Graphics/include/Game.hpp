@@ -7,6 +7,7 @@
 
 #pragma once
 #include "Coordinator.hpp"
+#include "Option.hpp"
 
 /**
  * @brief Namespace that contains all the graphics related classes
@@ -15,6 +16,7 @@
  * 
  */
 namespace Graphics {
+    class Option;
     /// @brief Enum that define the state of the game
     /// @enum GameState
     enum class GameState {
@@ -50,7 +52,7 @@ namespace Graphics {
     class Game {
         public:
             /// @brief Constructor of the game
-            Game() : _gameState(GameState::MENU), _selected("") {}
+            Game();
 
             /// @brief Destructor of the game
             ~Game() {}
@@ -104,29 +106,8 @@ namespace Graphics {
             /// @brief Draw the settings titles
             void DrawSettingsTitles();
 
-            /// @brief Draw the settings options
-            void DrawSettingsOptions();
-
             /// @brief Handle the keyboard input
             void HandleKeyboardInput();
-
-            /// @brief Handle the key 'space'
-            void KeySpace();
-
-            /// @brief Handle the key 'up' arrow
-            void KeyUp();
-
-            /// @brief Handle the key 'down' arrow
-            void KeyDown();
-
-            /// @brief Handle the key 'left' arrow
-            void KeyLeft();
-
-            /// @brief Handle the key 'right' arrow
-            void KeyRight();
-
-            /// @brief Handle the key 'escape'
-            void KeyEscape();
         protected:
         private:
             /**
@@ -147,11 +128,6 @@ namespace Graphics {
              */
             std::vector<Star> _stars;
 
-            /**
-             * @brief Indicate that a string is hovered or selected
-             * 
-             * This will be used to change the color of rectangles when hovered or selected.
-             */
-            std::string _selected;
+            Option *_option;
     };
 }

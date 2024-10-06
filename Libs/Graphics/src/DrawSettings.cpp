@@ -28,12 +28,12 @@ namespace Graphics {
             (float)GetScreenHeight() / 20
         };
         DrawText("Settings", GetScreenWidth() / 2 - MeasureText("Settings", 25) / 2, 40, 25, WHITE);
-        std::vector<std::string> options = {"General", "Video", "Audio", "Controls"};
+        std::vector<std::string> options = {"Video", "Audio", "Controls"};
         for (int i = 0; i < options.size(); i++) {
             if (CheckCollisionPointRec(GetMousePosition(), rec_option)) {
                 DrawRectangleRounded(rec_option, 0.2, 10, DARKGRAY);
                 if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    _selected = options[i];
+                    _option->setSelected(options[i]);
                 }
             } else {
                 DrawRectangleRoundedLines(rec_option, 0.2, 1, GRAY);
@@ -43,24 +43,10 @@ namespace Graphics {
         }
     }
 
-    void Game::DrawSettingsOptions() {
-        // if (_selected == "General") {
-        //     ;
-        // } else if (_selected == "Video") {
-        //     ;
-        // } else if (_selected == "Audio") {
-        //     ;
-        // } else if (_selected == "Controls") {
-        //     ;
-        // }
-        _selected = "General";
-    }
-
     void Game::DrawSettings() {
-        _selected = "General";
         DrawStars();
         DrawRectangleBackground();
         DrawSettingsTitles();
-        DrawSettingsOptions();
+        _option->DrawSettingsOptions();
     }
 } // namespace Graphics

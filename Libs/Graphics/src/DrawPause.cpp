@@ -20,7 +20,7 @@ namespace Graphics {
         std::vector<std::string> options = {"Resume", "Settings", "Quit"};
         bool hovering = false;
         for (int i = 0; i < options.size(); i++) {
-            if (_selected == options[i])
+            if (_option->getSelected() == options[i])
                 DrawRectangleRounded(rec_option, 0.3, 0, DARKGRAY);
             else
                 DrawRectangleRounded(rec_option, 0.3, 0, BLACK);
@@ -33,7 +33,8 @@ namespace Graphics {
                         break;
                     case 1:
                         _gameState = GameState::SETTINGS;
-                        break;
+                        _option->setSelected("Controls");
+                        return;
                     case 2:
                         _gameState = GameState::QUIT;
                         break;
@@ -42,12 +43,12 @@ namespace Graphics {
                 }
             }
             if (CheckCollisionPointRec(GetMousePosition(), rec_option)) {
-                _selected = options[i];
+                _option->setSelected(options[i]);
                 hovering = true;
             }
             rec_option.y += GetScreenHeight() / 20 + 25;
         }
         if (!hovering)
-            _selected = "";
+            _option->setSelected("");
     }
 }

@@ -58,7 +58,6 @@ namespace Graphics {
         float accumulator = 0.0f;
         float lastTime = GetTime();
 
-        // Main game loop
         while (!WindowShouldClose() && _game.getGameState() != GameState::QUIT) {
             float currentTime = GetTime();
             float frameTime = currentTime - lastTime;
@@ -69,9 +68,8 @@ namespace Graphics {
                 accumulator -= fixedTimeStep;
             }
 
-            _game.DrawGraphics(); // Render the game state
+            _game.DrawGraphics();
         }
-
         CloseGraphics();
     }
 }
