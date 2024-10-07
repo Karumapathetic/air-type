@@ -19,9 +19,6 @@ namespace Graphics {
                 std::string oldAction = _option->getChanging();
                 auto& keybinds = getCoordinator().getComponent<ECS::Keybind>(getCoordinator().getEntity("settings")).keybinds;
                 int oldKey = keybinds[oldAction].first;
-                std::cout << "Key pressed: " << key << std::endl;
-                std::cout << "Old action: " << oldAction << std::endl;
-                std::cout << "Old key: " << oldKey << std::endl;
                 keybinds[oldAction] = std::make_pair((KeyboardKey)key, keybinds[oldAction].second);
                 std::function<void()> handler = keyHandlers[oldKey];
                 keyHandlers.erase(oldKey);
