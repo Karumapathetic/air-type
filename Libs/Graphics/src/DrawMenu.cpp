@@ -14,50 +14,43 @@ namespace Graphics {
         SetTargetFPS(60);
         int screenWidth = GetScreenWidth();
         int screenHeight = GetScreenHeight();
-        while (!WindowShouldClose()) {
-            Vector2 mousePoint = GetMousePosition();
-            ClearBackground(BLACK);
-            DrawText("Menu", 400, 100, 20, GRAY);
-            // Join button
-            Rectangle joinButton = DrawButton("Join", 400, 200, screenWidth, screenHeight, DARKGRAY, GRAY, {0.5, 0.2});
-            if (CheckCollisionPointRec(mousePoint, joinButton)) {
-                DrawButton("Join", 400, 200, screenWidth, screenHeight, RED, WHITE, {0.5, 0.2});
-                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    setGameState(GameState::GAME);
-                    break;
-                }
+        Vector2 mousePoint = GetMousePosition();
+        ClearBackground(BLACK);
+        DrawText("Menu", 400, 100, 20, GRAY);
+        // Join button
+        Rectangle joinButton = DrawButton("Join", 400, 200, screenWidth, screenHeight, DARKGRAY, GRAY, {0.5, 0.2});
+        if (CheckCollisionPointRec(mousePoint, joinButton)) {
+            DrawButton("Join", 400, 200, screenWidth, screenHeight, RED, WHITE, {0.5, 0.2});
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                setGameState(GameState::GAME);
             }
+        }
 
-            // Host button
-            Rectangle hostButton = DrawButton("Host", 400, 300, screenWidth, screenHeight, DARKGRAY, GRAY, {0.5, 0.3});
-            if (CheckCollisionPointRec(mousePoint, hostButton)) {
-                DrawButton("Host", 400, 300, screenWidth, screenHeight, RED, WHITE, {0.5, 0.3});
-                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    setGameState(GameState::GAME);
-                    break;
-                }
+        // Host button
+        Rectangle hostButton = DrawButton("Host", 400, 300, screenWidth, screenHeight, DARKGRAY, GRAY, {0.5, 0.3});
+        if (CheckCollisionPointRec(mousePoint, hostButton)) {
+            DrawButton("Host", 400, 300, screenWidth, screenHeight, RED, WHITE, {0.5, 0.3});
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                setGameState(GameState::GAME);
             }
+        }
 
-            // Settings button
-            Rectangle settingsButton = DrawButton("Settings", 400, 400, screenWidth, screenHeight, DARKGRAY, GRAY, {0.5, 0.4});
-            if (CheckCollisionPointRec(mousePoint, settingsButton)) {
-                DrawButton("Settings", 400, 400, screenWidth, screenHeight, RED, WHITE, {0.5, 0.4});
-                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    CloseWindow();
-                    break;
-                }
+        // Settings button
+        Rectangle settingsButton = DrawButton("Settings", 400, 400, screenWidth, screenHeight, DARKGRAY, GRAY, {0.5, 0.4});
+        if (CheckCollisionPointRec(mousePoint, settingsButton)) {
+            DrawButton("Settings", 400, 400, screenWidth, screenHeight, RED, WHITE, {0.5, 0.4});
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                CloseWindow();
             }
+        }
 
-            // Exit button
-            Rectangle exitButton = DrawButton("Exit", 400, 500, screenWidth, screenHeight, DARKGRAY, GRAY, {0.5, 0.5});
-            if (CheckCollisionPointRec(mousePoint, exitButton)) {
-                DrawButton("Exit", 400, 500, screenWidth, screenHeight, RED, WHITE, {0.5, 0.5});
-                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    CloseWindow();
-                    break;
-                }
+        // Exit button
+        Rectangle exitButton = DrawButton("Exit", 400, 500, screenWidth, screenHeight, DARKGRAY, GRAY, {0.5, 0.5});
+        if (CheckCollisionPointRec(mousePoint, exitButton)) {
+            DrawButton("Exit", 400, 500, screenWidth, screenHeight, RED, WHITE, {0.5, 0.5});
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                CloseWindow();
             }
-            EndDrawing();
         }
     }
 
