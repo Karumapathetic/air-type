@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.27)
 project("R-Type Graphics Lib")
 
 add_library(
-    Graphics STATIC
+    Graphics SHARED
     Core.cpp
     src/Game.cpp
     src/Option.cpp
