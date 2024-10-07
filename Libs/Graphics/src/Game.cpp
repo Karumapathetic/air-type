@@ -29,23 +29,23 @@ namespace Graphics {
         BeginDrawing();
         ClearBackground(BLACK);
         //HandleKeyboardInput();
-        //switch (getGameState()) {
-        //    case Graphics::GameState::MENU:
-        //        DrawMenu();
-        //        break;
-        //    case Graphics::GameState::GAME:
-        //        DrawGame();
-        //        break;
-        //    case Graphics::GameState::PAUSE:
-        //        DrawPause();
-        //        break;
-        //    case Graphics::GameState::GAMEOVER:
-        //        break;
-        //    case Graphics::GameState::WIN:
-        //        break;
-        //    default:
-        //        break;
-        //}
+        switch (getGameState()) {
+            case Graphics::GameState::MENU:
+                DrawMenu();
+                break;
+            // case Graphics::GameState::GAME:
+            //     DrawGame();
+            //     break;
+            // case Graphics::GameState::PAUSE:
+            //     DrawPause();
+            //     break;
+            // case Graphics::GameState::GAMEOVER:
+            //     break;
+            // case Graphics::GameState::WIN:
+            //     break;
+            default:
+                break;
+        }
         EndDrawing();
     }
 }

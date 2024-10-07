@@ -110,6 +110,24 @@ namespace Graphics {
 
             /// @brief Handle the key 'escape'
             void KeyEscape();
+
+            /// @brief Draw a button
+            /// @param text The text of the button
+            /// @param x The x position of the button
+            /// @param y The y position of the button
+            /// @param width The width of the screen
+            /// @param height The height of the screen
+            /// @param color The color of the button
+            /// @param textColor The color of the text
+            /// @param percentage The percentage of the screen where the button will be
+            Rectangle DrawButton(const char *text, int x, int y, int width, int height, Color color, Color textColor, Vector2 percentage);
+
+            /// @brief Center an object
+            /// @param objectSize The size of the object
+            /// @param screenSize The size of the screen
+            /// @param percentage The percentage of the screen where the object will be
+            Vector2 Center(Vector2 objectSize, Vector2 screenSize, Vector2 percentage);
+
         protected:
         private:
             /**
