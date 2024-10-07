@@ -9,18 +9,23 @@
 #include <ctime>
 #include "raylib.h"
 #include "Game.hpp"
+#include "Draw.hpp"
 
 namespace Graphics {
     void Game::InitCoordinator() {
         _coordinator = ECS::Coordinator::initEngine();
     }
 
-    void Game::InitTextures() {
-        for (const auto& entity : _coordinator.getEntities()) {
-            auto images = _coordinator.getComponent<ECS::Images>(entity);
-            if (images.texture.id == 0 && _coordinator.getEntityName(entity) == "player") {
-                std::cout << "Loading player texture..." << std::endl;
-                images.texture = LoadTexture("Libs/Graphics/assets/texture/PlayerShip.gif");
+    void Game::DrawSprites() {
+        auto drawSystem = _coordinator.getCoordSystem<ECS::Draw>();
+        ECS::Signature texturesSignature = _coordinator.getComponentType<ECS::Images>();
+        for (const ECS::Entity& entity : _coordinator.getEntities()) {
+            auto entityName = _coordinator.getEntityName(entity);
+            ECS::Signature entitySignature = _coordinator.getEntitySignature(entity);
+            if ((entitySignature & texturesSignature) == texturesSignature) {
+                ECS::Images entityImages = _coordinator.getComponent<ECS::Images>(entity);
+                ECS::Spacial entitySpacial = _coordinator.getComponent<ECS::Spacial>(entity);
+                drawSystem->RenderEntitiesWithImages(entityImages.texture, entityImages.cropArea, entitySpacial.position, entitySpacial.scale);
             }
         }
     }

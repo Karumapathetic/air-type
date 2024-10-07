@@ -64,7 +64,7 @@ namespace Graphics {
              */
             void InitCoordinator();
 
-            void InitTextures();
+            void DrawSprites();
 
             /// @brief Set the enum game state
             /// @param gameState The game state to set

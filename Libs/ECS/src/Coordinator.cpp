@@ -40,6 +40,7 @@ void Coordinator::init() {
     Entity Coordinator::createEntity(const std::string& name) {
         Entity id = entityManager->createEntity(name);
         this->setEntities(id, id);
+        std::cout << "Entity : " << name << " have the ID : " << id << std::endl;
         return id;
     }
 
@@ -118,6 +119,7 @@ void Coordinator::init() {
 
         Signature drawSignature;
         drawSignature.set(gCoordinator.getComponentType<Images>());
+        drawSignature.set(gCoordinator.getComponentType<Spacial>());
         gCoordinator.setSystemSignature<ECS::Draw>(drawSignature);
 
         // Create entities

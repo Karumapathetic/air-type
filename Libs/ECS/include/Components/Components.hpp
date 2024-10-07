@@ -20,6 +20,7 @@ namespace ECS {
      */
     struct Images {
         Texture2D texture;
+        Rectangle cropArea;
         int priority;
     };
 
@@ -89,8 +90,8 @@ namespace ECS {
      * 
      */
     struct Spacial {
-        float position;
-        float scale;
+        Vector2 position;
+        Vector2 scale;
     };
 
     /**
