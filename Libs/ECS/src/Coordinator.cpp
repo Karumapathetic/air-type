@@ -6,9 +6,10 @@
 */
 
 #include "Coordinator.hpp"
+#include "Draw.hpp"
 
 namespace ECS {
-void Coordinator::init() {
+    void Coordinator::init() {
         componentManager = std::make_unique<ComponentManager>();
         entityManager = std::make_unique<EntityManager>();
         systemManager = std::make_unique<SystemManager>();
@@ -78,6 +79,15 @@ void Coordinator::init() {
         return _entities;
     }
 
+    Entity Coordinator::getEntity(std::string name) {
+        for (Entity entity : _entities) {
+            if (this->getEntityName(entity) == name) {
+                return entity;
+            }
+        }
+        return INVALID_ENTITY;
+    }
+
     void Coordinator::setEntities(std::size_t index, Entity entity) {
         if (index < _entities.size()) {
             _entities[index] = entity;
@@ -107,8 +117,6 @@ void Coordinator::init() {
         }
     }
 
-    #include "Draw.hpp"
-
     Coordinator Coordinator::initEngine() {
         Coordinator gCoordinator;
 
@@ -127,5 +135,4 @@ void Coordinator::init() {
 
         return gCoordinator;
     }
-
 }
