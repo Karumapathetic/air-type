@@ -20,7 +20,7 @@ namespace Graphics {
             auto images = _coordinator.getComponent<ECS::Images>(entity);
             if (images.texture.id == 0 && _coordinator.getEntityName(entity) == "player") {
                 std::cout << "Loading player texture..." << std::endl;
-                LoadTexture("Libs/Graphics/assets/texture/PlayerShip.gif");
+                images.texture = LoadTexture("Libs/Graphics/assets/texture/PlayerShip.gif");
             }
         }
     }
@@ -28,24 +28,24 @@ namespace Graphics {
     void Game::DrawGraphics() {
         BeginDrawing();
         ClearBackground(BLACK);
-        //HandleKeyboardInput();
-        //switch (getGameState()) {
-        //    case Graphics::GameState::MENU:
-        //        DrawMenu();
-        //        break;
-        //    case Graphics::GameState::GAME:
-        //        DrawGame();
-        //        break;
-        //    case Graphics::GameState::PAUSE:
-        //        DrawPause();
-        //        break;
-        //    case Graphics::GameState::GAMEOVER:
-        //        break;
-        //    case Graphics::GameState::WIN:
-        //        break;
-        //    default:
-        //        break;
-        //}
+        HandleKeyboardInput();
+        switch (getGameState()) {
+            case Graphics::GameState::MENU:
+                DrawMenu();
+                break;
+            case Graphics::GameState::GAME:
+                DrawGame();
+                break;
+            case Graphics::GameState::PAUSE:
+                DrawPause();
+                break;
+            case Graphics::GameState::GAMEOVER:
+                break;
+            case Graphics::GameState::WIN:
+                break;
+            default:
+                break;
+        }
         EndDrawing();
     }
 }
