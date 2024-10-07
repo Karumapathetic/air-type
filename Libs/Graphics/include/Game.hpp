@@ -7,6 +7,7 @@
 
 #pragma once
 #include "Coordinator.hpp"
+#include "Option.hpp"
 
 /**
  * @brief Namespace that contains all the graphics related classes
@@ -15,12 +16,15 @@
  * 
  */
 namespace Graphics {
+    class Option;
     /// @brief Enum that define the state of the game
     /// @enum GameState
     enum class GameState {
         MENU,       // The menu state
         GAME,       // The game state
         PAUSE,      // The pause state
+        SETTINGS,   // The settings state
+        QUIT,       // The quit state
         GAMEOVER,   // The game over state
         WIN         // The win state
     };
@@ -48,7 +52,7 @@ namespace Graphics {
     class Game {
         public:
             /// @brief Constructor of the game
-            Game() : _gameState(GameState::MENU) {}
+            Game();
 
             /// @brief Destructor of the game
             ~Game() {}
@@ -64,6 +68,14 @@ namespace Graphics {
              */
             void InitCoordinator();
 
+            /**
+             * @brief Initialize the textures of the game
+             * 
+             * This function initializes the textures of the game. It loads the textures
+             * for the player, enemies, background, etc., and sets them up for rendering.
+             * 
+             * @return void
+             */
             void InitTextures();
 
             /// @brief Set the enum game state
@@ -78,6 +90,16 @@ namespace Graphics {
             /// @param stars The stars to set
             void setStars(std::vector<Star> stars) { _stars = stars; }
 
+            /// @brief Get the coordinator
+            /// @return The coordinator of the game
+            ECS::Coordinator &getCoordinator() { return _coordinator; }
+
+            /** @brief Draw the stars of the background
+             * 
+             * This function is responsible for rendering stars in the game's graphical interface.
+             */
+            void DrawStars();
+
             /// @brief Draw the client graphics
             void DrawGraphics();
 
@@ -90,26 +112,17 @@ namespace Graphics {
             /// @brief Display the pause menu
             void DrawPause();
 
+            /// @brief Display the settings menu
+            void DrawSettings();
+
+            /// @brief Draw the settings titles
+            void DrawSettingsTitles();
+
+            /// @brief Draw add ons like FPS, etc.
+            void DrawAddOns();
+
             /// @brief Handle the keyboard input
             void HandleKeyboardInput();
-
-            /// @brief Handle the key 'space'
-            void KeySpace();
-
-            /// @brief Handle the key 'up' arrow
-            void KeyUp();
-
-            /// @brief Handle the key 'down' arrow
-            void KeyDown();
-
-            /// @brief Handle the key 'left' arrow
-            void KeyLeft();
-
-            /// @brief Handle the key 'right' arrow
-            void KeyRight();
-
-            /// @brief Handle the key 'escape'
-            void KeyEscape();
         protected:
         private:
             /**
@@ -129,5 +142,10 @@ namespace Graphics {
              * @brief The stars of the background
              */
             std::vector<Star> _stars;
+
+            /**
+             * @brief The option of the game
+             */
+            Option *_option;
     };
 }

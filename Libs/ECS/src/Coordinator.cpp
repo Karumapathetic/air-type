@@ -6,9 +6,10 @@
 */
 
 #include "Coordinator.hpp"
+#include "Draw.hpp"
 
 namespace ECS {
-void Coordinator::init() {
+    void Coordinator::init() {
         componentManager = std::make_unique<ComponentManager>();
         entityManager = std::make_unique<EntityManager>();
         systemManager = std::make_unique<SystemManager>();
@@ -78,6 +79,15 @@ void Coordinator::init() {
         return _entities;
     }
 
+    Entity Coordinator::getEntity(std::string name) {
+        for (Entity entity : _entities) {
+            if (this->getEntityName(entity) == name) {
+                return entity;
+            }
+        }
+        return INVALID_ENTITY;
+    }
+
     void Coordinator::setEntities(std::size_t index, Entity entity) {
         if (index < _entities.size()) {
             _entities[index] = entity;
@@ -99,15 +109,6 @@ void Coordinator::init() {
     }
 
     void Coordinator::createEntityFromType(const std::string &type, std::uint32_t entity) {
-        auto it = entityHandlers.find(type);
-        if (it != entityHandlers.end()) {
-                std::cout << "Created entity: " << name << std::endl;
-            }
-        }
-        std::cout << "End of initEntities" << std::endl;
-    }
-
-    void Coordinator::createEntityFromType(const std::string &type, std::uint32_t entity) {
         std::cout << "Creating entity from type: " << type << std::endl;
         auto it = entityHandlers.find(type);
         if (it != entityHandlers.end()) {
@@ -115,8 +116,6 @@ void Coordinator::init() {
             it->second(*this, entity);
         }
     }
-
-    #include "Draw.hpp"
 
     Coordinator Coordinator::initEngine() {
         Coordinator gCoordinator;
@@ -136,5 +135,4 @@ void Coordinator::init() {
 
         return gCoordinator;
     }
-
 }
