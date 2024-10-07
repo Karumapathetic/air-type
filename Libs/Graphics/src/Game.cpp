@@ -24,7 +24,7 @@ namespace Graphics {
             auto images = _coordinator.getComponent<ECS::Images>(entity);
             if (images.texture.id == 0 && _coordinator.getEntityName(entity) == "player") {
                 std::cout << "Loading player texture..." << std::endl;
-                LoadTexture("Libs/Graphics/assets/texture/PlayerShip.gif");
+                images.texture = LoadTexture("Libs/Graphics/assets/texture/PlayerShip.gif");
             }
         }
     }

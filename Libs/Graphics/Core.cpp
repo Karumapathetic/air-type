@@ -44,6 +44,7 @@ namespace Graphics {
         SetExitKey(KEY_BACKSPACE);
         InitStars(500);
         _game.InitCoordinator();
+        _game.InitTextures();
     }
 
     void Core::CloseGraphics() {
