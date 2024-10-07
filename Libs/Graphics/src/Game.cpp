@@ -29,10 +29,17 @@ namespace Graphics {
         }
     }
 
+    void Game::DrawAddOns() {
+        if (_option->getDisplayfps()) {
+            DrawFPS(10, 10);
+        }
+    }
+
     void Game::DrawGraphics() {
         BeginDrawing();
         ClearBackground(BLACK);
         HandleKeyboardInput();
+        DrawAddOns();
         switch (getGameState()) {
             case Graphics::GameState::MENU:
                 DrawMenu();

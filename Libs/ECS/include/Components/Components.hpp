@@ -32,14 +32,14 @@ namespace ECS {
      * 
      */
     struct Keybind {
-        std::unordered_map<KeyboardKey, std::pair<std::string, std::string>> keybinds;
+        std::unordered_map<std::string, std::pair<KeyboardKey, std::string>> keybinds;
 
         Keybind() = default;
         Keybind(KeyboardKey key, const std::string &action, const std::string &desc) {
-            keybinds[key] = std::make_pair(action, desc);
+            keybinds[action] = std::make_pair(key, desc);
         }
         void addKeybind(KeyboardKey key, const std::string &action, const std::string &desc) {
-            keybinds[key] = std::make_pair(action, desc);
+            keybinds[action] = std::make_pair(key, desc);
         }
     };
 

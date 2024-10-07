@@ -33,7 +33,7 @@ namespace Graphics {
                         break;
                     case 1:
                         _gameState = GameState::SETTINGS;
-                        _option->setSelected("Controls");
+                        _option->setSelected("Video");
                         return;
                     case 2:
                         _gameState = GameState::QUIT;

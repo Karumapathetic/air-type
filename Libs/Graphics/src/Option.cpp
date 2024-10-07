@@ -12,12 +12,6 @@ namespace Graphics {
     Option::Option(Graphics::Game& game) : _selected("Controls"),
                         _changing(""),
                         _game(game),
-                        _Keybinds({{"Up", KEY_UP},
-                                   {"Down", KEY_DOWN},
-                                   {"Left", KEY_LEFT},
-                                   {"Right", KEY_RIGHT},
-                                   {"Shoot", KEY_SPACE},
-                                   {"Escape", KEY_ESCAPE}}),
                         _BindedKeys({{KEY_UP, [this] { KeyUp(); }},
                                      {KEY_DOWN, [this] { KeyDown(); }},
                                      {KEY_LEFT, [this] { KeyLeft(); }},
@@ -25,13 +19,61 @@ namespace Graphics {
                                      {KEY_SPACE, [this] { KeyShoot(); }},
                                      {KEY_ESCAPE, [this] { KeyEscape(); }}}) { }
 
-    void Option::DrawControls() {
+    void Option::DrawVideoSettings() {
+        std::vector<std::string> options = {"Resolution", "FPS max", "Display FPS"};
+        for (int i = 0; i < options.size(); i++) {
+            DrawRectangleRoundedLines({50, (float)200 + i * 60, (float)GetScreenWidth() - 100, 50}, 0.2, 10, GRAY);
+            DrawText(options[i].c_str(), 60, 215 + i * 60, 20, WHITE);
+        }
+
+        std::vector<std::pair<int, int>> resolutions = {{800, 600}, {1024, 768}, {1280, 720}, {1920, 1080}};
+        for (int i = 0; i < resolutions.size(); i++) {
+            std::string resolutionText = std::to_string(resolutions[i].first) + "x" + std::to_string(resolutions[i].second);
+            DrawText(resolutionText.c_str(), (GetScreenWidth() / 6 + i * (GetScreenWidth() / 7 + 15)) + GetScreenWidth() / 7 / 2 - MeasureText(resolutionText.c_str(), 20) / 2, 215, 20, WHITE);
+            if (CheckCollisionPointRec(GetMousePosition(), {(float)GetScreenWidth() / 6 + i * (GetScreenWidth() / 7 + 15), (float)205, (float)GetScreenWidth() / 7, 40})) {
+                DrawRectangleRoundedLines({(float)GetScreenWidth() / 6 + i * (GetScreenWidth() / 7 + 15), (float)205, (float)GetScreenWidth() / 7, 40}, 0.2, 10, LIGHTGRAY);
+                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    SetWindowSize(resolutions[i].first, resolutions[i].second);
+                }
+            } else {
+                DrawRectangleRoundedLines({(float)GetScreenWidth() / 6 + i * (GetScreenWidth() / 7 + 15), (float)205, (float)GetScreenWidth() / 7, 40}, 0.2, 10, GRAY);
+            }
+        }
+
+        std::vector<int> fpsList = {30, 60, 120, 144};
+        for (int i = 0; i < fpsList.size(); i++) {
+            std::string fps = std::to_string(fpsList[i]);
+            DrawText(fps.c_str(), (GetScreenWidth() / 6 + i * (GetScreenWidth() / 7 + 15)) + GetScreenWidth() / 7 / 2 - MeasureText(fps.c_str(), 20) / 2, 275, 20, WHITE);
+            if (CheckCollisionPointRec(GetMousePosition(), {(float)GetScreenWidth() / 6 + i * (GetScreenWidth() / 7 + 15), (float)265, (float)GetScreenWidth() / 7, 40})) {
+                DrawRectangleRoundedLines({(float)GetScreenWidth() / 6 + i * (GetScreenWidth() / 7 + 15), (float)265, (float)GetScreenWidth() / 7, 40}, 0.2, 10, LIGHTGRAY);
+                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    SetTargetFPS(fpsList[i]);
+                }
+            } else {
+                DrawRectangleRoundedLines({(float)GetScreenWidth() / 6 + i * (GetScreenWidth() / 7 + 15), (float)265, (float)GetScreenWidth() / 7, 40}, 0.2, 10, GRAY);
+            }
+        }
+
+        if (_displayfps) {
+            DrawText("x", (GetScreenWidth() / 6 + 4 * (GetScreenWidth() / 7 + 15)) + GetScreenWidth() / 7 / 2 - MeasureText("x", 20) / 2, 335, 20, WHITE);
+        }
+        if (CheckCollisionPointRec(GetMousePosition(), {(float)GetScreenWidth() / 6 + 4 * (GetScreenWidth() / 7 + 15), (float)325, (float)GetScreenWidth() / 7, 40})) {
+            DrawRectangleRoundedLines({(float)GetScreenWidth() / 6 + 4 * (GetScreenWidth() / 7 + 15), (float)325, (float)GetScreenWidth() / 7, 40}, 0.2, 10, LIGHTGRAY);
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                _displayfps = !_displayfps;
+            }
+        } else {
+            DrawRectangleRoundedLines({(float)GetScreenWidth() / 6 + 4 * (GetScreenWidth() / 7 + 15), (float)325, (float)GetScreenWidth() / 7, 40}, 0.2, 10, GRAY);
+        }
+    }
+
+    void Option::DrawControlsSettings() {
         auto keyHandlers = _BindedKeys;
         int i = 0;
 
         DrawText("Click on a key name (rectangle) to change its keybind", GetScreenWidth() / 2 - MeasureText("Click on a key name (rectangle) to change its keybind", 20) / 2, 160, 20, WHITE);
-        for (const auto& keybind : _Keybinds) {
-            int key = keybind.second;
+        for (const auto& keybind : _game.getCoordinator().getComponent<ECS::Keybind>(_game.getCoordinator().getEntity("settings")).keybinds) {
+            int key = keybind.second.first;
             std::string action = "Action : " + keybind.first;
             std::string keyName = "Key : " + std::to_string(key);
 
@@ -51,14 +93,12 @@ namespace Graphics {
     }
 
     void Option::DrawSettingsOptions() {
-        if (_selected == "General") {
-            DrawText("Coming soon...", 50, 100, 20, WHITE);
-        } else if (_selected == "Video") {
-            DrawText("Coming soon...", 50, 100, 20, WHITE);
+        if (_selected == "Video") {
+            DrawVideoSettings();
         } else if (_selected == "Audio") {
             DrawText("Coming soon...", 50, 100, 20, WHITE);
         } else if (_selected == "Controls") {
-            DrawControls();
+            DrawControlsSettings();
         }
         if (_changing != "") {
             DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(BLACK, 0.5));

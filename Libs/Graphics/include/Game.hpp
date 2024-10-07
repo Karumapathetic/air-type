@@ -68,6 +68,14 @@ namespace Graphics {
              */
             void InitCoordinator();
 
+            /**
+             * @brief Initialize the textures of the game
+             * 
+             * This function initializes the textures of the game. It loads the textures
+             * for the player, enemies, background, etc., and sets them up for rendering.
+             * 
+             * @return void
+             */
             void InitTextures();
 
             /// @brief Set the enum game state
@@ -81,6 +89,10 @@ namespace Graphics {
             /// @brief Set the stars
             /// @param stars The stars to set
             void setStars(std::vector<Star> stars) { _stars = stars; }
+
+            /// @brief Get the coordinator
+            /// @return The coordinator of the game
+            ECS::Coordinator &getCoordinator() { return _coordinator; }
 
             /** @brief Draw the stars of the background
              * 
@@ -106,6 +118,9 @@ namespace Graphics {
             /// @brief Draw the settings titles
             void DrawSettingsTitles();
 
+            /// @brief Draw add ons like FPS, etc.
+            void DrawAddOns();
+
             /// @brief Handle the keyboard input
             void HandleKeyboardInput();
         protected:
@@ -128,6 +143,9 @@ namespace Graphics {
              */
             std::vector<Star> _stars;
 
+            /**
+             * @brief The option of the game
+             */
             Option *_option;
     };
 }
