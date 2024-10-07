@@ -12,7 +12,17 @@
 
 namespace Graphics {
     void Game::InitCoordinator() {
-        _coordinator = ECS::mainEngine();
+        _coordinator = ECS::Coordinator::initEngine();
+    }
+
+    void Game::InitTextures() {
+        for (const auto& entity : _coordinator.getEntities()) {
+            auto images = _coordinator.getComponent<ECS::Images>(entity);
+            if (images.texture.id == 0 && _coordinator.getEntityName(entity) == "player") {
+                std::cout << "Loading player texture..." << std::endl;
+                images.texture = LoadTexture("Libs/Graphics/assets/texture/PlayerShip.gif");
+            }
+        }
     }
 
     void Game::DrawGraphics() {

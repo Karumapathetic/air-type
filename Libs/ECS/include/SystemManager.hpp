@@ -44,6 +44,12 @@ namespace ECS {
                 return system;
             }
 
+            template<typename T>
+            Signature getSystemSignature() {
+                std::string typeName = typeid(T).name();
+                return signatures.at(typeName);
+            }
+
             /**
              * @brief Sets the signature of a system.
              * 

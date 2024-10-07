@@ -7,7 +7,10 @@
 
 #pragma once
 
+#include <iostream>
 #include <memory>
+#include <functional>
+#include <unordered_map>
 
 #include "ComponentManager.hpp"
 #include "EntityManager.hpp"
@@ -102,8 +105,13 @@ namespace ECS {
              * @return The system.
              */
             template<typename T>
-            std::shared_ptr<T> registerSystem() {
+            std::shared_ptr<T> registerCoordSystem() {
                 return systemManager->registerSystem<T>();
+            }
+
+            template<typename T>
+            Signature getSystemSignature() {
+                return systemManager->getSystemSignature<T>();
             }
 
             /**
@@ -117,6 +125,26 @@ namespace ECS {
                 systemManager->setSignature<T>(signature);
             }
 
+            /**
+             * @brief Initializes the ECS coordinator.
+             * 
+             * This function creates and initializes the component manager, entity manager, and system manager.
+             * It also registers the component types.
+             * 
+             * @return The initialized Coordinator instance.
+             */
+            static Coordinator initEngine();
+
+            /**
+             * @brief Initializes the entities in the ECS.
+             * 
+             * This function is responsible for creating and initializing various entities in the ECS.
+             * It registers entity handlers for different entity types and calls the respective handlers
+             * to create and initialize the entities.
+             * 
+             * @return void
+             */
+            void initEntities();
             /**
              * @brief Initializes the coordinator.
              * 
@@ -191,6 +219,8 @@ namespace ECS {
              * @param signature The signature of the entity.
              */
             void setEntitySignature(Entity entity, Signature signature);
+            std::vector<Entity> getEntities();
+            void setEntities(std::size_t index, Entity entity);
 
         private:
             /**
@@ -207,5 +237,15 @@ namespace ECS {
              * @brief Variable that stores the system manager.
              */
             std::unique_ptr<SystemManager> systemManager;
+            std::unordered_map<std::string, std::function<void(Coordinator&, std::uint32_t)>> entityHandlers;
+            std::vector<Entity> _entities;
+            void createEntityFromType(const std::string &type, std::uint32_t entity);
     };
+
+    void playerHandler(Coordinator &gCoordinator, std::uint32_t entity);
+    void enemyHandler(Coordinator &gCoordinator, std::uint32_t entity);
+    void missileHandler(Coordinator &gCoordinator, std::uint32_t entity);
+    void backgroundHandler(Coordinator &gCoordinator, std::uint32_t entity);
+    void settingsHandler(Coordinator &gCoordinator, std::uint32_t entity);
+    void collectibleHandler(Coordinator &gCoordinator, std::uint32_t entity);
 }

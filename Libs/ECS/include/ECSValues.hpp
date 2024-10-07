@@ -9,6 +9,7 @@
 
 #include <cstdint>
 #include <bitset>
+#include <limits>
 
 /**
  * @brief Namespace for the ECS library.
@@ -29,6 +30,16 @@ namespace ECS {
      * This constant defines the maximum number of entities that can be created in the ECS system.
      */
     const Entity MAX_ENTITIES = 1000;
+
+    /**
+     * @brief Constant representing an invalid entity identifier.
+     * 
+     * This constant is used to indicate that an entity is not valid or does not exist.
+     * It is set to the maximum value of the Entity type minus one.
+     * 
+     * @return The constant value representing an invalid entity identifier.
+     */
+    constexpr Entity INVALID_ENTITY = std::numeric_limits<Entity>::max() - 1;
 
     /**
      * @brief Type alias for a component type.
