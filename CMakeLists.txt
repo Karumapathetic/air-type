@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.27)
 project(R-Type)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+
 # CPM.cmake download location
 # set(CPM_DOWNLOAD_LOCATION "cmake/CPM.cmake")
 
