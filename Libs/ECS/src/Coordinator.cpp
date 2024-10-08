@@ -117,20 +117,52 @@ namespace ECS {
         }
     }
 
-    void spawnEntity(Coordinator coordinator, std::string name, std::string params)
-    {
-        Vector2 position = {0, 0};
-        ECS::Entity newEntity = coordinator.createEntity(name);
-        coordinator.initEntities();
-        size_t posIndex = params.find("pos:");
+    void Coordinator::updateComponentVector(Coordinator& coordinator, Entity entity, const std::string& params, const std::string& key) {
+        Vector2 value;
+        size_t posIndex = params.find(key);
         if (posIndex != std::string::npos) {
             size_t endPos = params.find(';', posIndex);
-            std::string posStr = params.substr(posIndex + 4, endPos - (posIndex + 4));
-            sscanf(posStr.c_str(), "%f,%f", &position.x, &position.y);
-            ECS::Spacial currentPos = coordinator.getComponent<Spacial>(newEntity);
-            currentPos.position = position;
+            std::string newValue = params.substr(posIndex + key.length(), endPos - (posIndex + key.length()));
+            sscanf(newValue.c_str(), "%f,%f", &value.x, &value.y);
+            ECS::Spacial currentPos = coordinator.getComponent<Spacial>(entity);
+            if (key == "pos:") {
+                currentPos.position = value;
+            } else {
+                currentPos.scale = value;
+            }
         }
     }
+
+    template <typename T, typename MemberType>
+    void Coordinator::updateComponentValue(Coordinator& coordinator, Entity entity, const std::string& params, const std::string& key, MemberType T::*member) {
+        float value;
+        size_t posIndex = params.find(key);
+        if (posIndex != std::string::npos) {
+            size_t endPos = params.find(';', posIndex);
+            std::string newValue = params.substr(posIndex + key.length(), endPos - (posIndex + key.length()));
+            sscanf(newValue.c_str(), "%f", &value);
+
+            auto& component = coordinator.getComponent<T>(entity);
+            component.*member = value;
+        } else {
+            std::cout << "Key not found" << std::endl;
+        }
+    }
+
+
+    void Coordinator::spawnEntity(Coordinator& coordinator, const std::string& name, const std::string& params) {
+        Vector2 position = {0, 0}, scale = {0, 0};
+        float damage = 0, health = 0, armor = 0;
+
+        ECS::Entity newEntity = coordinator.createEntity(name);
+        coordinator.initEntities();
+        updateComponentVector(coordinator, newEntity, params, "pos:");
+        updateComponentVector(coordinator, newEntity, params, "scale:");
+        updateComponentValue<Power>(coordinator, newEntity, params, "damage:", &Power::damage);
+        updateComponentValue<Life>(coordinator, newEntity, params, "health:", &Life::health);
+        updateComponentValue<Life>(coordinator, newEntity, params, "armor:", &Life::armor);
+    }
+
 
     Coordinator Coordinator::initEngine() {
         Coordinator gCoordinator;
@@ -147,6 +179,8 @@ namespace ECS {
         gCoordinator.createEntity("settings");
         gCoordinator.createEntity("player");
         gCoordinator.initEntities();
+
+
 
         return gCoordinator;
     }

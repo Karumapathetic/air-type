@@ -274,8 +274,10 @@ namespace ECS {
              * @brief Variable that stores the entity names.
              */
             void createEntityFromType(const std::string &type, std::uint32_t entity);
-
-            void spawnEntity(std::string name, std::string params);
+            template <typename T, typename MemberType>
+            void updateComponentValue(Coordinator& coordinator, Entity entity, const std::string& params, const std::string& key, MemberType T::*member);
+            void updateComponentVector(Coordinator& coordinator, Entity entity, const std::string& params, const std::string& key);
+            void spawnEntity(Coordinator& coordinator, const std::string& name, const std::string& params);
     };
 
     /**
