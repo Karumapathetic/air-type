@@ -125,6 +125,7 @@ void Coordinator::init() {
         // Create entities
         gCoordinator.createEntity("settings");
         gCoordinator.createEntity("player");
+        gCoordinator.createEntity("enemy");
         gCoordinator.initEntities();
 
         return gCoordinator;

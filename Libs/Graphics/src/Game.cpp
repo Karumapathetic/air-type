@@ -33,6 +33,7 @@ namespace Graphics {
     void Game::DrawGraphics() {
         BeginDrawing();
         ClearBackground(BLACK);
+        DrawSprites();
         HandleKeyboardInput();
         switch (getGameState()) {
             case Graphics::GameState::MENU:
