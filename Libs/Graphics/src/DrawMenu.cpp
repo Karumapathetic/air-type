@@ -40,7 +40,7 @@ namespace Graphics {
         if (CheckCollisionPointRec(mousePoint, settingsButton)) {
             DrawButton("Settings", 400, 400, screenWidth, screenHeight, RED, WHITE, {0.5, 0.4});
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                CloseWindow();
+                setGameState(GameState::SETTINGS);
             }
         }
 

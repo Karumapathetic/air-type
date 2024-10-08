@@ -22,7 +22,8 @@ namespace Graphics {
         GAME,       // The game state
         PAUSE,      // The pause state
         GAMEOVER,   // The game over state
-        WIN         // The win state
+        WIN,        // The win state
+        SETTINGS    // The settings state
     };
 
     /// @brief Struct that define a star for the background
