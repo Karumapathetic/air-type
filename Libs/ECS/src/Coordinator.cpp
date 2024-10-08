@@ -41,6 +41,7 @@ namespace ECS {
     Entity Coordinator::createEntity(const std::string& name) {
         Entity id = entityManager->createEntity(name);
         this->setEntities(id, id);
+        std::cout << "Entity : " << name << " have the ID : " << id << std::endl;
         return id;
     }
 
@@ -126,11 +127,13 @@ namespace ECS {
 
         Signature drawSignature;
         drawSignature.set(gCoordinator.getComponentType<Images>());
+        drawSignature.set(gCoordinator.getComponentType<Spacial>());
         gCoordinator.setSystemSignature<ECS::Draw>(drawSignature);
 
         // Create entities
         gCoordinator.createEntity("settings");
         gCoordinator.createEntity("player");
+        gCoordinator.createEntity("enemy");
         gCoordinator.initEntities();
 
         return gCoordinator;
