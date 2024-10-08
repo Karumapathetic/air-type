@@ -43,6 +43,7 @@ if ($args[0] -eq "help") {
         Write-Host "Failed to build the Project"
         exit 1
     }
+    $env:LD_LIBRARY_PATH = "Libs/ECS:Libs/Graphics:Libs/Network" + $env:LD_LIBRARY_PATH
     exit 0
 }
 

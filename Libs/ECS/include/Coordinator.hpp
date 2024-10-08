@@ -224,7 +224,29 @@ namespace ECS {
              * @param signature The signature of the entity.
              */
             void setEntitySignature(Entity entity, Signature signature);
+
+            /**
+             * @brief Retrieves the entities.
+             * 
+             * @return The entities.
+             */
             std::vector<Entity> getEntities();
+
+            /**
+             * @brief Retrieves the entity.
+             * 
+             * @param name The name of the entity.
+             * 
+             * @return The entity.
+             */
+            Entity getEntity(std::string name);
+
+            /**
+             * @brief Sets the entities.
+             * 
+             * @param index The index of the entity.
+             * @param entity The entity.
+             */
             void setEntities(std::size_t index, Entity entity);
 
         private:
@@ -242,15 +264,68 @@ namespace ECS {
              * @brief Variable that stores the system manager.
              */
             std::unique_ptr<SystemManager> systemManager;
+
+            /**
+             * @brief Variable that stores the entity handlers.
+             */
             std::unordered_map<std::string, std::function<void(Coordinator&, std::uint32_t)>> entityHandlers;
+
+            /**
+             * @brief Variable that stores the entities.
+             */
             std::vector<Entity> _entities;
+
+            /**
+             * @brief Variable that stores the entity names.
+             */
             void createEntityFromType(const std::string &type, std::uint32_t entity);
     };
 
+    /**
+     * @brief Function that handles the player entity.
+     * 
+     * @param gCoordinator The coordinator.
+     * @param entity The entity.
+     */
     void playerHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the enemy entity.
+     * 
+     * @param gCoordinator The coordinator.
+     * @param entity The entity.
+     */
     void enemyHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the missile entity.
+     * 
+     * @param gCoordinator The coordinator.
+     * @param entity The entity.
+     */
     void missileHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the background entity.
+     * 
+     * @param gCoordinator The coordinator.
+     * @param entity The entity.
+     */
     void backgroundHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the settings entity.
+     * 
+     * @param gCoordinator The coordinator.
+     * @param entity The entity.
+     */
     void settingsHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the collectible entity.
+     * 
+     * @param gCoordinator The coordinator.
+     * @param entity The entity.
+     */
     void collectibleHandler(Coordinator &gCoordinator, std::uint32_t entity);
 }

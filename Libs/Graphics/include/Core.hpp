@@ -33,7 +33,7 @@ namespace Graphics {
              * This destructor destroys the game object.
              */
             ~Core() {}
-            
+
             /**
              * @brief Initialize the graphics.
              * 

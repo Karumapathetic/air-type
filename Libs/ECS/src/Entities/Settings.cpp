@@ -12,12 +12,12 @@ namespace ECS {
         gCoordinator.addComponent(entity, Keybind());
         //gCoordinator.addComponent(entity, Sounds{LoadSound(""), 50, "Background Music" });
         Keybind& keybindComponent = gCoordinator.getComponent<Keybind>(entity);
-        keybindComponent.addKeybind(KEY_SPACE, "Shoot", "Shoot");
         keybindComponent.addKeybind(KEY_UP, "Up", "Move Up");
         keybindComponent.addKeybind(KEY_DOWN, "Down", "Move Down");
         keybindComponent.addKeybind(KEY_LEFT, "Left", "Move Left");
         keybindComponent.addKeybind(KEY_RIGHT, "Right", "Move Right");
-        keybindComponent.addKeybind(KEY_ESCAPE, "Pause", "Pause");
+        keybindComponent.addKeybind(KEY_SPACE, "Shoot", "Shoot/Select");
+        keybindComponent.addKeybind(KEY_ESCAPE, "Pause", "Pause/Unpause");
         gCoordinator.setEntityInitialized(entity, true);
     }
 }

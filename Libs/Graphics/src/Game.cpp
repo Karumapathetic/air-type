@@ -12,6 +12,10 @@
 #include "Draw.hpp"
 
 namespace Graphics {
+    Game::Game() : _gameState(GameState::MENU) {
+        _option = new Option(*this);
+    }
+
     void Game::InitCoordinator() {
         _coordinator = ECS::Coordinator::initEngine();
     }
@@ -30,11 +34,18 @@ namespace Graphics {
         }
     }
 
+    void Game::DrawAddOns() {
+        if (_option->getDisplayfps()) {
+            DrawFPS(10, 10);
+        }
+    }
+
     void Game::DrawGraphics() {
         BeginDrawing();
         ClearBackground(BLACK);
         DrawSprites();
         HandleKeyboardInput();
+        DrawAddOns();
         switch (getGameState()) {
             case Graphics::GameState::MENU:
                 DrawMenu();
@@ -44,6 +55,9 @@ namespace Graphics {
                 break;
             case Graphics::GameState::PAUSE:
                 DrawPause();
+                break;
+            case Graphics::GameState::SETTINGS:
+                DrawSettings();
                 break;
             case Graphics::GameState::GAMEOVER:
                 break;
