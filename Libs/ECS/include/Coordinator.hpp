@@ -274,6 +274,8 @@ namespace ECS {
              * @brief Variable that stores the entity names.
              */
             void createEntityFromType(const std::string &type, std::uint32_t entity);
+
+            void spawnEntity(std::string name, std::string params);
     };
 
     /**

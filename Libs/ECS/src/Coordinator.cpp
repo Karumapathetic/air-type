@@ -117,6 +117,21 @@ namespace ECS {
         }
     }
 
+    void spawnEntity(Coordinator coordinator, std::string name, std::string params)
+    {
+        Vector2 position = {0, 0};
+        ECS::Entity newEntity = coordinator.createEntity(name);
+        coordinator.initEntities();
+        size_t posIndex = params.find("pos:");
+        if (posIndex != std::string::npos) {
+            size_t endPos = params.find(';', posIndex);
+            std::string posStr = params.substr(posIndex + 4, endPos - (posIndex + 4));
+            sscanf(posStr.c_str(), "%f,%f", &position.x, &position.y);
+            ECS::Spacial currentPos = coordinator.getComponent<Spacial>(newEntity);
+            currentPos.position = position;
+        }
+    }
+
     Coordinator Coordinator::initEngine() {
         Coordinator gCoordinator;
 
