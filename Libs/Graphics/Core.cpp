@@ -43,7 +43,6 @@ namespace Graphics {
         InitAudioDevice();
         SetExitKey(KEY_BACKSPACE);
         InitStars(500);
-        _game.InitCoordinator();
     }
 
     void Core::CloseGraphics() {

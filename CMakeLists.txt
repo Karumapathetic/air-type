@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.27)
 project(R-Type)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+
 # CPM.cmake download location
 # set(CPM_DOWNLOAD_LOCATION "cmake/CPM.cmake")
 
@@ -19,6 +22,10 @@ project(R-Type)
 #         message(FATAL_ERROR "Error downloading CPM.cmake: ${download_status}")
 #     endif()
 # endif()
+
+if (WIN32)
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 set(CMAKE_CXX_STANDARD 17)

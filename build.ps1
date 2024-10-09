@@ -37,7 +37,7 @@ if ($args[0] -eq "help") {
     New-Item -ItemType Directory -Force -Path "build" | Out-Null
     cmake -S . -B build
     cmake --build build
-    Move-Item -Path "Debug\r-type_client.exe" -Destination "./"
+    Move-Item -Path "Debug/r-type_client.exe" -Destination "./"
     Move-Item -Path "Debug/r-type_server.exe" -Destination "./"
     if ($LASTEXITCODE -ne 0) {
         Write-Host "Failed to build the Project"

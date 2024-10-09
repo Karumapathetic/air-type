@@ -25,7 +25,6 @@ add_library(
     src/Systems/Killed.cpp
     src/Systems/Move.cpp
     src/Systems/Shoot.cpp
-    src/Systems/Spawn.cpp
     src/Systems/Update.cpp
 )
 

@@ -12,15 +12,13 @@
 #include "Draw.hpp"
 
 namespace Graphics {
-    Game::Game() : _gameState(GameState::MENU) {
+    Game::Game() : _gameState(GameState::MENU)
+    {
         _option = new Option(*this);
     }
 
-    void Game::InitCoordinator() {
-        _coordinator = ECS::Coordinator::initEngine();
-    }
-
-    void Game::DrawSprites() {
+    void Game::DrawSprites()
+    {
         auto drawSystem = _coordinator.getCoordSystem<ECS::Draw>();
         ECS::Signature texturesSignature = _coordinator.getComponentType<ECS::Images>();
         for (const ECS::Entity& entity : _coordinator.getEntities()) {
@@ -34,13 +32,15 @@ namespace Graphics {
         }
     }
 
-    void Game::DrawAddOns() {
+    void Game::DrawAddOns()
+    {
         if (_option->getDisplayfps()) {
             DrawFPS(10, 10);
         }
     }
 
-    void Game::DrawGraphics() {
+    void Game::DrawGraphics()
+    {
         BeginDrawing();
         ClearBackground(BLACK);
         DrawSprites();
