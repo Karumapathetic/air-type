@@ -117,6 +117,12 @@ namespace ECS {
             }
 
             template<typename T>
+            std::shared_ptr<T> getCoordSystem()
+            {
+                return systemManager->getSystem<T>();
+            }
+
+            template<typename T>
             Signature getSystemSignature()
             {
                 return systemManager->getSystemSignature<T>();

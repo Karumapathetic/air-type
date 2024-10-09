@@ -57,15 +57,7 @@ namespace Graphics {
             /// @brief Destructor of the game
             ~Game() {}
 
-            /**
-             * @brief Initialize the textures of the game
-             * 
-             * This function initializes the textures of the game. It loads the textures
-             * for the player, enemies, background, etc., and sets them up for rendering.
-             * 
-             * @return void
-             */
-            void InitTextures();
+            void DrawSprites();
 
             /// @brief Set the enum game state
             /// @param gameState The game state to set

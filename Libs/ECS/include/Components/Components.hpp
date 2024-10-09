@@ -20,6 +20,7 @@ namespace ECS {
      */
     struct Images {
         Texture2D texture;
+        Rectangle cropArea;
         int priority;
     };
 

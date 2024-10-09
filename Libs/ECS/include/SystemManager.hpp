@@ -46,6 +46,14 @@ namespace ECS {
             }
 
             template<typename T>
+            std::shared_ptr<T> getSystem()
+            {
+                std::string typeName = typeid(T).name();
+                auto system = std::make_shared<T>();
+                return system;
+            }
+
+            template<typename T>
             Signature getSystemSignature()
             {
                 std::string typeName = typeid(T).name();

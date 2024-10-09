@@ -51,6 +51,7 @@ namespace ECS {
     Entity Coordinator::createEntity(const std::string& name) {
         Entity id = entityManager->createEntity(name);
         this->setEntities(id, id);
+        std::cout << "Entity : " << name << " have the ID : " << id << std::endl;
         return id;
     }
 
@@ -163,7 +164,6 @@ namespace ECS {
             std::cout << "Key not found" << std::endl;
         }
     }
-
 
     void Coordinator::spawnEntity(Coordinator& coordinator, const std::string& name, const std::string& params)
     {
