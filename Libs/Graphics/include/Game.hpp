@@ -58,17 +58,6 @@ namespace Graphics {
             ~Game() {}
 
             /**
-             * @brief Initialize the coordinator with all of the entities
-             * 
-             * This function initializes the ECS::Coordinator with all the necessary entities
-             * for the game. It creates entities for the player, enemies, background, etc.,
-             * and sets up their components and systems.
-             * 
-             * @return void
-             */
-            void InitCoordinator();
-
-            /**
              * @brief Initialize the textures of the game
              * 
              * This function initializes the textures of the game. It loads the textures

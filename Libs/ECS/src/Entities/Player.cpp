@@ -18,7 +18,7 @@ namespace ECS {
         std::cout << "Step 4" << std::endl;
         gCoordinator.addComponent(entity, Speed{1.0f, 1.0f});
         std::cout << "Step 5" << std::endl;
-        gCoordinator.addComponent(entity, Images{LoadTexture("Libs/Graphics/assets/texture/PlayerShip.gif")  , 1});
+        gCoordinator.addComponent(entity, Images{0});
         std::cout << "Step 6" << std::endl;
         gCoordinator.addComponent(entity, EntityTypes{"player", 1});
         std::cout << "Step 7" << std::endl;

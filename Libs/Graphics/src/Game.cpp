@@ -15,10 +15,6 @@ namespace Graphics {
         _option = new Option(*this);
     }
 
-    void Game::InitCoordinator() {
-        _coordinator = ECS::Coordinator::initEngine();
-    }
-
     void Game::InitTextures() {
         for (const auto& entity : _coordinator.getEntities()) {
             auto images = _coordinator.getComponent<ECS::Images>(entity);

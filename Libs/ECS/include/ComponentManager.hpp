@@ -39,7 +39,8 @@ namespace ECS {
              * @throws std::runtime_error if the component type is registered more than once.
              */
             template<typename T>
-            void registerComponent(){
+            void registerComponent()
+            {
                 std::string typeName = typeid(T).name();
                 assert(componentTypes.find(typeName) == componentTypes.end() && "Registering component type more than once.");
 
@@ -61,7 +62,8 @@ namespace ECS {
              * @throws std::runtime_error if the component is not registered before use.
              */
             template<typename T>
-            ComponentType getComponentType() {
+            ComponentType getComponentType()
+            {
                 std::string typeName = typeid(T).name();
                 assert(componentTypes.find(typeName) != componentTypes.end() && "Component not registered before use.");
 
@@ -81,7 +83,8 @@ namespace ECS {
              * @throws std::runtime_error if the entity already has the component associated with it.
              */
             template<typename T>
-            void addComponent(Entity entity, T component) {
+            void addComponent(Entity entity, T component)
+            {
                 getComponentArray<T>()->insertData(entity, component);
             }
 
@@ -97,7 +100,8 @@ namespace ECS {
              * @throws std::runtime_error if the entity does not have the component associated with it.
              */
             template<typename T>
-            void removeComponent(Entity entity) {
+            void removeComponent(Entity entity)
+            {
                 getComponentArray<T>()->removeData(entity);
             }
 
@@ -125,7 +129,8 @@ namespace ECS {
              * 
              * @param entity The entity that is destroyed.
              */
-            void entityDestroyed(Entity entity) {
+            void entityDestroyed(Entity entity)
+            {
                 for (auto const& pair : componentArrays) {
                     auto const& component = pair.second;
                     component->entityDestroyed(entity);
@@ -161,7 +166,8 @@ namespace ECS {
              * @throws std::runtime_error if the component is not registered before use.
              */
             template<typename T>
-            std::shared_ptr<ComponentArray<T>> getComponentArray() {
+            std::shared_ptr<ComponentArray<T>> getComponentArray()
+            {
                 std::string typeName = typeid(T).name();
                 assert(componentTypes.find(typeName) != componentTypes.end() && "Component not registered before use.");
 
