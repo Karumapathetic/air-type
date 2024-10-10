@@ -35,7 +35,8 @@ namespace ECS {
              * @throw std::runtime_error if the system is registered more than once.
              */
             template<typename T>
-            std::shared_ptr<T> registerSystem() {
+            std::shared_ptr<T> registerSystem()
+            {
                 std::string typeName = typeid(T).name();
                 assert(systems.find(typeName) == systems.end() && "Registering system more than once.");
 
@@ -45,7 +46,16 @@ namespace ECS {
             }
 
             template<typename T>
-            Signature getSystemSignature() {
+            std::shared_ptr<T> getSystem()
+            {
+                std::string typeName = typeid(T).name();
+                auto system = std::make_shared<T>();
+                return system;
+            }
+
+            template<typename T>
+            Signature getSystemSignature()
+            {
                 std::string typeName = typeid(T).name();
                 return signatures.at(typeName);
             }
@@ -59,7 +69,8 @@ namespace ECS {
              * @throw std::runtime_error if the system is used before registered.
              */
             template<typename T>
-            void setSignature(Signature signature) {
+            void setSignature(Signature signature)
+            {
                 std::string typeName = typeid(T).name();
                 assert(systems.find(typeName) != systems.end() && "System used before registered.");
 
@@ -73,13 +84,7 @@ namespace ECS {
              * 
              * @param entity The entity to be destroyed.
              */
-            void entityDestroyed(Entity entity)
-            {
-                for (auto const& pair : systems) {
-                    auto const& system = pair.second;
-                    system->entities.erase(entity);
-                }
-            }
+            void entityDestroyed(Entity entity);
 
             /**
              * @brief Handles the change of an entity signature.
@@ -89,20 +94,7 @@ namespace ECS {
              * @param entity The entity whose signature has changed.
              * @param entitySignature The new signature of the entity.
              */
-            void entitySignatureChanged(Entity entity, Signature entitySignature)
-            {
-                for (auto const& pair : systems) {
-                    auto const& type = pair.first;
-                    auto const& system = pair.second;
-                    auto const& systemSignature = signatures[type];
-
-                    if ((entitySignature & systemSignature) == systemSignature) {
-                        system->entities.insert(entity);
-                    } else {
-                        system->entities.erase(entity);
-                    }
-                }
-            }
+            void entitySignatureChanged(Entity entity, Signature entitySignature);
 
         private:
             /**

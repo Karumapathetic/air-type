@@ -23,9 +23,15 @@ namespace Graphics {
                 colors[std::rand() % 3]
                 });
         }
-        stars[std::rand() % numStars].color = GREEN;
-        stars[std::rand() % numStars].color = RED;
-        stars[std::rand() % numStars].color = BLUE;
+        for (int i = 0; i < 5; ++i) {
+            const Color colors[] = {RED, GREEN, BLUE, YELLOW, ORANGE};
+            stars.push_back({
+                static_cast<float>(std::rand() % GetScreenWidth()),
+                static_cast<float>(std::rand() % GetScreenHeight()),
+                std::rand() % 3 + 4,
+                colors[std::rand() % 5]
+                });
+        }
         _game.setStars(stars);
     }
 
@@ -37,7 +43,6 @@ namespace Graphics {
         InitAudioDevice();
         SetExitKey(KEY_BACKSPACE);
         InitStars(500);
-        _game.InitCoordinator();
     }
 
     void Core::CloseGraphics() {
@@ -52,8 +57,7 @@ namespace Graphics {
         float accumulator = 0.0f;
         float lastTime = GetTime();
 
-        // Main game loop
-        while (!WindowShouldClose()) {
+        while (!WindowShouldClose() && _game.getGameState() != GameState::QUIT) {
             float currentTime = GetTime();
             float frameTime = currentTime - lastTime;
             lastTime = currentTime;
@@ -63,9 +67,8 @@ namespace Graphics {
                 accumulator -= fixedTimeStep;
             }
 
-            _game.DrawGraphics(); // Render the game state
+            _game.DrawGraphics();
         }
-
         CloseGraphics();
     }
 }

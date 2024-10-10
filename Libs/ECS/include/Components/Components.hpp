@@ -20,6 +20,7 @@ namespace ECS {
      */
     struct Images {
         Texture2D texture;
+        Rectangle cropArea;
         int priority;
     };
 
@@ -32,14 +33,14 @@ namespace ECS {
      * 
      */
     struct Keybind {
-        std::unordered_map<KeyboardKey, std::pair<std::string, std::string>> keybinds;
+        std::unordered_map<std::string, std::pair<KeyboardKey, std::string>> keybinds;
 
         Keybind() = default;
         Keybind(KeyboardKey key, const std::string &action, const std::string &desc) {
-            keybinds[key] = std::make_pair(action, desc);
+            keybinds[action] = std::make_pair(key, desc);
         }
         void addKeybind(KeyboardKey key, const std::string &action, const std::string &desc) {
-            keybinds[key] = std::make_pair(action, desc);
+            keybinds[action] = std::make_pair(key, desc);
         }
     };
 
@@ -89,8 +90,8 @@ namespace ECS {
      * 
      */
     struct Spacial {
-        float position;
-        float scale;
+        Vector2 position;
+        Vector2 scale;
     };
 
     /**

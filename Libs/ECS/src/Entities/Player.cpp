@@ -9,19 +9,12 @@
 
 namespace ECS {
     void playerHandler(Coordinator &gCoordinator, std::uint32_t entity) {
-        std::cout << "Step 1" << std::endl;
-        gCoordinator.addComponent(entity, Spacial{1.0f, 0.0f});
-        std::cout << "Step 2" << std::endl;
+        gCoordinator.addComponent(entity, Spacial{{100.0f, 100.0f}, {86.0f, 48.0f}});
         gCoordinator.addComponent(entity, Power{5.0f, 0.0f});
-        std::cout << "Step 3" << std::endl;
         gCoordinator.addComponent(entity, Life{10.0f, 1.0f});
-        std::cout << "Step 4" << std::endl;
         gCoordinator.addComponent(entity, Speed{1.0f, 1.0f});
-        std::cout << "Step 5" << std::endl;
-        gCoordinator.addComponent(entity, Images{LoadTexture("Libs/Graphics/assets/texture/PlayerShip.gif")  , 1});
-        std::cout << "Step 6" << std::endl;
+        gCoordinator.addComponent(entity, Images{LoadTexture("Libs/Graphics/assets/texture/PlayerShip.gif"), {0.0f, 0.0f, 32.0f, 16.0f}, 1});
         gCoordinator.addComponent(entity, EntityTypes{"player", 1});
-        std::cout << "Step 7" << std::endl;
         gCoordinator.setEntityInitialized(entity, true);
     }
 }

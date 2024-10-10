@@ -28,11 +28,7 @@ namespace ECS {
             /**
              * @brief Constructor of the EntityManager.
              */
-            EntityManager() {
-                for (Entity entity = 0; entity < MAX_ENTITIES; ++entity) {
-                    availableEntities.push(entity);
-                }
-            }
+            EntityManager();
 
             /**
              * @brief Creates an entity.
@@ -43,17 +39,7 @@ namespace ECS {
              * 
              * @throw std::runtime_error if there are too many entities in existence.
              */
-            Entity createEntity(const std::string& name) {
-                assert(livingEntityCount < MAX_ENTITIES && "Too many entities in existence.");
-
-                Entity id = availableEntities.front();
-                availableEntities.pop();
-                ++livingEntityCount;
-                entityNames[id] = name;
-                entityInitialized[id] = false;
-
-                return id;
-            }
+            Entity createEntity(const std::string& name);
 
             /**
              * @brief Destroys an entity.
@@ -62,15 +48,7 @@ namespace ECS {
              * 
              * @throw std::runtime_error if the entity is out of range.
              */
-            void destroyEntity(Entity entity) {
-                assert(entity < MAX_ENTITIES && "Entity out of range.");
-
-                signatures[entity].reset();
-                entityNames.erase(entity);
-                entityInitialized.erase(entity);
-                availableEntities.push(entity);
-                --livingEntityCount;
-            }
+            void destroyEntity(Entity entity);
 
             /**
              * @brief Sets the signature of an entity.
@@ -80,10 +58,7 @@ namespace ECS {
              * 
              * @throw std::runtime_error if the entity is out of range.
              */
-            void setSignature(Entity entity, Signature signature) {
-                assert(entity < MAX_ENTITIES && "Entity out of range.");
-                signatures[entity] = signature;
-            }
+            void setSignature(Entity entity, Signature signature);
 
             /**
              * @brief Retrieves the signature of an entity.
@@ -94,11 +69,7 @@ namespace ECS {
              * 
              * @throw std::runtime_error if the entity is out of range.
              */
-            Signature getSignature(Entity entity) {
-                assert(entity < MAX_ENTITIES && "Entity out of range.");
-                return signatures[entity];
-            }
-
+            Signature getSignature(Entity entity);
             /**
              * @brief Set the Entity Name object
              * 
@@ -107,10 +78,7 @@ namespace ECS {
              * 
              * @throw std::runtime_error if the entity is out of range.
              */
-            void setEntityName(Entity entity, const std::string& name) {
-                assert(entity < MAX_ENTITIES && "Entity out of range.");
-                entityNames[entity] = name;
-            }
+            void setEntityName(Entity entity, const std::string& name);
 
             /**
              * @brief Retrieves the name of an entity.
@@ -121,10 +89,7 @@ namespace ECS {
              * 
              * @throw std::runtime_error if the entity is out of range.
              */
-            std::string getEntityName(Entity entity) {
-                assert(entity < MAX_ENTITIES && "Entity out of range.");
-                return entityNames[entity];
-            }
+            std::string getEntityName(Entity entity);
 
             /**
              * @brief Sets the initialized status of an entity.
@@ -134,10 +99,7 @@ namespace ECS {
              * 
              * @throw std::runtime_error if the entity is out of range.
              */
-            void setEntityInitialized(Entity entity, const bool initialized) {
-                assert(entity < MAX_ENTITIES && "Entity out of range.");
-                entityInitialized[entity] = initialized;
-            }
+            void setEntityInitialized(Entity entity, const bool initialized);
 
             /**
              * @brief Retrieves the initialized status of an entity.
@@ -148,10 +110,7 @@ namespace ECS {
              * 
              * @throw std::runtime_error if the entity is out of range.
              */
-            bool getEntityInitialized(Entity entity) {
-                assert(entity < MAX_ENTITIES && "Entity out of range.");
-                return entityInitialized[entity];
-            }
+            bool getEntityInitialized(Entity entity);
 
         private:
             /**
