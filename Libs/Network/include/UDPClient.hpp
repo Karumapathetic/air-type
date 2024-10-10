@@ -14,24 +14,16 @@
 namespace Network {
     class UDPClient {
         public:
-            UDPClient(std::string host, std::string port);
+            UDPClient(std::string host, int port);
             ~UDPClient();
 
-            void run();
-            void send();
-            void receive();
-
-            void add_send_queue(std::string new_message);
-            void pop_recv_queue();
-            std::queue<std::string> get_recv_queue();
+            void send_data(const std::string& data);
+            void receive_data(bool *stop);
 
         private:
             asio::io_context _io_context;
             asio::ip::udp::socket _socket;
-            asio::ip::udp::resolver::results_type _endpoints;
-            asio::ip::udp::endpoint _sender_endpoint;
-            std::array<char, 1024> _recv_buf;
-            std::queue<std::string> _recv_queue;
-            std::queue<std::string> _send_queue;
+            std::string _address;
+            int _port;
     };
 }

@@ -15,12 +15,20 @@ int main (int argc, char const* const* argv) {
     }
 
     try {
-        Network::UDPClient udpClient(argv[1], argv[2]);
-        udpClient.add_send_queue("Hello server");
-        udpClient.run();
-        std::queue<std::string> test = udpClient.get_recv_queue();
-        std::cout << test.front() << std::endl;
-        udpClient.pop_recv_queue();
+        Network::UDPClient udpClient(argv[1], std::atoi(argv[2]));
+        bool stop = false;
+        std::thread clientThread(&Network::UDPClient::receive_data, &udpClient, &stop);
+        std::string input;
+
+        while (!stop) {
+            std::getline(std::cin, input);
+            if (input == "exit")
+                stop = true;
+            else
+                udpClient.send_data(input.data());
+        }
+        if (clientThread.joinable())
+            clientThread.join();
     } catch (std::exception& err) {
         std::cerr << err.what() << std::endl;
     }

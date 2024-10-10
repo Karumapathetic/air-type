@@ -15,12 +15,21 @@ int main (int argc, char const* const* argv) {
     }
 
     try {
-        Network::UDPServer udpServer(std::atoi(argv[1]));
-        udpServer.add_send_queue("Hello client");
-        udpServer.run();
-        std::queue<std::string> test = udpServer.get_recv_queue();
-        std::cout << test.front() << std::endl;
-        udpServer.pop_recv_queue();
+        Network::UDPServer udpServer("127.0.0.1", std::atoi(argv[1]));
+
+        bool stop = false;
+        std::thread serverThread(&Network::UDPServer::receive_data, &udpServer, &stop);
+        std::string input;
+
+        while (!stop) {
+            std::getline(std::cin, input);
+            if (input == "exit")
+                stop = true;
+            else
+                udpServer.send_all_data(input.data());
+        }
+        if (serverThread.joinable())
+            serverThread.join();
     } catch (std::exception& err) {
         std::cerr << err.what() << std::endl;
     }

@@ -5,58 +5,55 @@
 ** UDPServer
 */
 
+#include <thread>
+
 #include "UDPServer.hpp"
 
 namespace Network {
-    UDPServer::UDPServer(int port) : _socket(_io_context, asio::ip::udp::endpoint(asio::ip::udp::v4(), port)) {
+    UDPServer::UDPServer(std::string address, int port) : _socket(_io_context, asio::ip::udp::endpoint(asio::ip::udp::v4(), port)), _resolver(_io_context) {
+        _address = address;
+        _port = port;
     }
 
     UDPServer::~UDPServer() {
     }
 
-    void UDPServer::receive() {
-        _socket.async_receive_from(
-            asio::buffer(_recv_buf), _remote_endpoint,
-            [this](std::error_code ec, std::size_t bytes_recvd) {
-                if (!ec && bytes_recvd > 0) {
-                    std::cout << "Received: " << std::string(_recv_buf.data(), bytes_recvd) << std::endl;
-                    _recv_queue.push(std::string(_recv_buf.data(), bytes_recvd));
-                    send();
-                } else {
-                    receive();
-                }
-        });
+    void UDPServer::receive_data(bool *stop) {
+        while (!(*stop)) {
+            std::string recv_buf(1024, '\0');
+            asio::ip::udp::endpoint sender_endpoint;
+            size_t len = _socket.receive_from(asio::buffer(recv_buf.data(), 1024), sender_endpoint);
+            bool isRegistered = false;
+            for (auto client : _clients) {
+                if (client.s_endpoint.address() == sender_endpoint.address()
+                    && client.s_endpoint.port() == sender_endpoint.port())
+                        isRegistered = true;
+            }
+            if (!isRegistered) {
+                Client_t newClient;
+                std::string recv_data = recv_buf;
+                newClient.s_address = recv_data.substr(0, recv_data.find(':', 0));
+                newClient.s_port = recv_data.substr(newClient.s_address.length() + 1, recv_data.length() - newClient.s_address.length() - 1);
+                newClient.s_endpoint = sender_endpoint;
+                _clients.push_back(newClient);
+            }
+            std::cout << "Received: \"" << recv_buf << "\" from : \"" << sender_endpoint.address() << ":" << sender_endpoint.port() << "\"" << std::endl;
+        }
     }
 
-    void UDPServer::send() {
-        std::string message = _send_queue.front();
-        if (_send_queue.size() == 0)
-        std::cout << "Queue is empty" << std::endl;
-        std::cout << "Sending : " << message << std::endl;
-        _socket.async_send_to(
-            asio::buffer(message), _remote_endpoint,
-            [this](std::error_code ec, std::size_t bytes_recvd) {
-                if (!ec)
-                    _send_queue.pop();
-                receive();
-        });
+    void UDPServer::send_data(const std::string& data, std::string host, std::string port) {
+        asio::ip::udp::resolver::results_type endpoint = _resolver.resolve(asio::ip::udp::v4(), host, port);
+        asio::ip::udp::socket socket(_io_context);
+        socket.open(asio::ip::udp::v4());
+        socket.send_to(asio::buffer(data.data(), data.length()), *endpoint.begin());
     }
 
-    void UDPServer::run() {
-        receive();
-        _io_context.run();
-    }
-
-    void UDPServer::add_send_queue(std::string new_message) {
-        std::cout << "Adding : \"" << new_message << "\" to the queue" << std::endl;
-        _send_queue.push(new_message);
-    }
-
-    std::queue<std::string> UDPServer::get_recv_queue() {
-        return _recv_queue;
-    }
-
-    void UDPServer::pop_recv_queue() {
-        _recv_queue.pop();
+    void UDPServer::send_all_data(const std::string& data) {
+        for (auto client : _clients) {
+            asio::ip::udp::resolver::results_type endpoint = _resolver.resolve(asio::ip::udp::v4(), client.s_address, client.s_port);
+            asio::ip::udp::socket socket(_io_context);
+            socket.open(asio::ip::udp::v4());
+            socket.send_to(asio::buffer(data.data(), data.length()), *endpoint.begin());
+        }
     }
 }
