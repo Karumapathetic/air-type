@@ -43,7 +43,6 @@ namespace Graphics {
     {
         BeginDrawing();
         ClearBackground(BLACK);
-        DrawSprites();
         HandleKeyboardInput();
         DrawAddOns();
         switch (getGameState()) {
