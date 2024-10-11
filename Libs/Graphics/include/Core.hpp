@@ -71,5 +71,7 @@ namespace Graphics {
              * @brief The game object.
              */
             Graphics::Game _game;
+
+            
     };
 }

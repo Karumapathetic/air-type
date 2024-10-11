@@ -40,6 +40,7 @@ namespace Graphics {
                         _gameState = GameState::GAME;
                         break;
                     case 1:
+                        _previousState = GameState::MENU;
                         _gameState = GameState::SETTINGS;
                         _option->setSelected("Video");
                         return;

@@ -7,6 +7,7 @@
 
 #include "Coordinator.hpp"
 #include "Draw.hpp"
+#include "Collision.hpp"
 
 namespace ECS {
     Coordinator::Coordinator() {
@@ -37,13 +38,19 @@ namespace ECS {
         this->registerComponent<Keybind>();
         this->registerComponent<Sounds>();
 
-        auto drawSystem = this->registerSystem<ECS::Draw>();
+        this->registerSystem<ECS::Draw>();
+        this->registerSystem<ECS::Collision>();
 
         Signature drawSignature;
         drawSignature.set(this->getComponentType<Images>());
         this->setSystemSignature<ECS::Draw>(drawSignature);
 
+        Signature collisionSignature;
+        collisionSignature.set(this->getComponentType<Spacial>());
+        this->setSystemSignature<ECS::Collision>(drawSignature);
+
         this->createEntity("settings");
+        this->createEntity("player");
         this->createEntity("player");
         this->initEntities();
     }
