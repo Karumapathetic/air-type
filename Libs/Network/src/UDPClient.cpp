@@ -18,7 +18,7 @@ namespace Network {
 
     void UDPClient::receive_data(bool *stop) {
         asio::ip::udp::socket socket(_io_context, asio::ip::udp::endpoint(asio::ip::udp::v4(), _port));
-        while (!(*stop)) {
+        while (*stop) {
             std::string recv_buf(1024, '\0');
             asio::ip::udp::endpoint sender_endpoint;
             size_t len = socket.receive_from(asio::buffer(recv_buf.data(), 1024), sender_endpoint);
