@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.27)
 project("R-Type ECS Lib")
 
 add_library(
-    ECS STATIC
+    ECS SHARED
     src/Coordinator.cpp
     src/EntityManager.cpp
     src/SystemManager.cpp
@@ -11,9 +11,8 @@ add_library(
     src/Components/Components.cpp
     src/Components/IComponentArray.cpp
 
-    src/Entities/EntityFactory.cpp
     src/Entities/Player.cpp
-    src/Entities/Ennemy.cpp
+    src/Entities/Enemy.cpp
     src/Entities/Missile.cpp
     src/Entities/Background.cpp
     src/Entities/Settings.cpp
@@ -26,7 +25,6 @@ add_library(
     src/Systems/Killed.cpp
     src/Systems/Move.cpp
     src/Systems/Shoot.cpp
-    src/Systems/Spawn.cpp
     src/Systems/Update.cpp
 )
 
@@ -39,6 +37,6 @@ target_include_directories(
 )
 
 target_link_libraries(
-    ECS 
+    ECS
     raylib
 )

@@ -26,9 +26,13 @@ if [ "$1" == "clean" ]; then
     rm -rf build build
     echo "Successfully cleaned !"
     exit 0
-elif [ "$1" == "--help" ]; then
+elif [ "$1" == "help" ]; then
     echo "Usage: $0 [clean]"
     exit 1
+elif [ "$1" == "doc" ]; then
+    doxygen Doc/Doxyfile
+    xdg-open ./Doc/html/index.html
+    exit 0
 else
     git submodule update --init
     mkdir -p build
@@ -38,6 +42,7 @@ else
         echo "Failed to build the Project"
         exit 1
     fi
+    export LD_LIBRARY_PATH=Libs/ECS:Libs/Graphics:Libs/Network$LD_LIBRARY_PATH
     exit 0
 fi
 

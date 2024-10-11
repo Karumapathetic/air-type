@@ -7,10 +7,17 @@
 
 #pragma once
 
-class Move {
-    public:
-        Move();
-        ~Move();
-    protected:
-    private:
-};
+#include "ISystem.hpp"
+
+namespace ECS {
+    /**
+     * @brief System that handles the movement of entities.
+     */
+    class Move : public ISystem {
+        public:
+            Move();
+            ~Move();
+        protected:
+        private:
+    };
+}

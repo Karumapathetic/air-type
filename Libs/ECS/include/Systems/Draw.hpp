@@ -9,10 +9,19 @@
 
 #include "ISystem.hpp"
 
-class Draw : public ISystem {
-    public:
-        Draw();
-        ~Draw();
-    protected:
-    private:
-};
+    namespace ECS {
+        /**
+         * @brief System that handles the drawing of entities.
+         */
+        class Draw : public ISystem {
+            public:
+                void RenderEntitiesWithImages(Texture2D image, Rectangle cropArea, Vector2 position, Vector2 scale) {
+                    if (image.id != 0) {
+                        Rectangle destinationRectangle = {position.x, position.y, scale.x, scale.y};
+                        DrawTexturePro(image, cropArea, destinationRectangle, {0.0f, 0.0f}, 0.0f, WHITE);
+                    }
+                }
+            protected:
+            private:
+        };
+}
