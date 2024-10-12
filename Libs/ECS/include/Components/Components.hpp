@@ -7,10 +7,21 @@
 
 #pragma once
 
-#include <raylib.h>
 #include <string>
 
 namespace ECS {
+
+    struct Rectangle {
+        float x;
+        float y;
+        float width;
+        float height;
+    };
+
+    struct Vector2 {
+        float x;
+        float y;
+    };
     /**
      * @brief A struct that represents the texture of an entity.
      * 
@@ -19,7 +30,7 @@ namespace ECS {
      * 
      */
     struct Images {
-        Texture2D texture;
+        std::string texture;
         Rectangle cropArea;
         int priority;
     };
@@ -33,13 +44,13 @@ namespace ECS {
      * 
      */
     struct Keybind {
-        std::unordered_map<std::string, std::pair<KeyboardKey, std::string>> keybinds;
+        std::unordered_map<std::string, std::pair<int, std::string>> keybinds;
 
         Keybind() = default;
-        Keybind(KeyboardKey key, const std::string &action, const std::string &desc) {
+        Keybind(int key, const std::string &action, const std::string &desc) {
             keybinds[action] = std::make_pair(key, desc);
         }
-        void addKeybind(KeyboardKey key, const std::string &action, const std::string &desc) {
+        void addKeybind(int key, const std::string &action, const std::string &desc) {
             keybinds[action] = std::make_pair(key, desc);
         }
     };
@@ -77,7 +88,7 @@ namespace ECS {
      * 
      */
     struct Sounds {
-        Sound sound;
+        std::string sound;
         float volume;
         std::string desc;
     };
