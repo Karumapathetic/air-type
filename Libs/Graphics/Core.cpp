@@ -51,14 +51,12 @@ namespace Graphics {
         CloseAudioDevice();
     }
 
-    void Core::LaunchGame() {
-        InitGraphics();
-
-        const float fixedTimeStep = 1.0f / 60.0f;
+    void Core::Caillou(bool *isRunning) {
+        const float fixedTimeStep = 1.0f / GetFPS();
         float accumulator = 0.0f;
         float lastTime = GetTime();
 
-        while (!WindowShouldClose() && _game.getGameState() != GameState::QUIT) {
+        if (!WindowShouldClose() && _game.getGameState() != GameState::QUIT) {
             float currentTime = GetTime();
             float frameTime = currentTime - lastTime;
             lastTime = currentTime;
@@ -69,7 +67,8 @@ namespace Graphics {
             }
 
             _game.DrawGraphics();
+        } else {
+            *isRunning = false;
         }
-        CloseGraphics();
     }
 }

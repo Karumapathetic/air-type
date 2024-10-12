@@ -66,7 +66,7 @@ namespace Graphics {
              * 
              * It starts the game loop.
              */
-            void LaunchGame();
+            void Caillou(bool *isRunning);
         protected:
         private:
             /**
