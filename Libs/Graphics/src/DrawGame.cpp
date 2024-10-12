@@ -18,6 +18,5 @@ namespace Graphics {
             }
         }
         DrawStars();
-        DrawText("Game", 400, 200, 20, GRAY);
     }
 } // namespace Graphics

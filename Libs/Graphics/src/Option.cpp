@@ -17,7 +17,13 @@ namespace Graphics {
                                      {KEY_LEFT, [this] { KeyLeft(); }},
                                      {KEY_RIGHT, [this] { KeyRight(); }},
                                      {KEY_SPACE, [this] { KeyShoot(); }},
-                                     {KEY_ESCAPE, [this] { KeyEscape(); }}}) { }
+                                     {KEY_ESCAPE, [this] { KeyEscape(); }}}),
+                        _keybinds({{"Up", {KEY_UP, "Move up"}},
+                                   {"Down", {KEY_DOWN, "Move down"}},
+                                   {"Left", {KEY_LEFT, "Move left"}},
+                                   {"Right", {KEY_RIGHT, "Move right"}},
+                                   {"Shoot", {KEY_SPACE, "Shoot"}},
+                                   {"Pause", {KEY_ESCAPE, "Pause/Unpause"}}}) { }
 
     void Option::DrawVideoSettings() {
         std::vector<std::string> options = {"Resolution", "FPS max", "Display FPS"};
@@ -72,7 +78,7 @@ namespace Graphics {
         int i = 0;
 
         DrawText("Click on a key name (rectangle) to change its keybind", GetScreenWidth() / 2 - MeasureText("Click on a key name (rectangle) to change its keybind", 20) / 2, 160, 20, WHITE);
-        for (const auto& keybind : _game.getCoordinator().getComponent<ECS::Keybind>(_game.getCoordinator().getEntity("settings")).keybinds) {
+        for (const auto& keybind : _keybinds) {
             int key = keybind.second.first;
             std::string action = "Action : " + keybind.first;
             std::string keyName = "Key : " + std::to_string(key);
@@ -96,7 +102,7 @@ namespace Graphics {
         if (_selected == "Video") {
             DrawVideoSettings();
         } else if (_selected == "Audio") {
-            DrawText("Coming soon...", 50, 100, 20, WHITE);
+            DrawText("Coming soon...", 50, 200, 20, WHITE);
         } else if (_selected == "Controls") {
             DrawControlsSettings();
         }
