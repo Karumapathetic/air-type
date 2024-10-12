@@ -26,7 +26,7 @@ void Client::run()
 {
     std::string input;
     while (_isClientRunning) {
-        _core.Caillou(&_isClientRunning);
+        //_core.Caillou(&_isClientRunning);
         std::getline(std::cin, input);
         if (input == "exit")
             _isClientRunning = false;
