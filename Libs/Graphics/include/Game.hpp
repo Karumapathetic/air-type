@@ -83,7 +83,7 @@ namespace Graphics {
             /// @brief Destructor of the game
             ~Game() {}
 
-            void DrawSprites();
+            // void DrawSprites();
 
             /// @brief Set the enum game state
             /// @param gameState The game state to set
@@ -93,13 +93,17 @@ namespace Graphics {
             /// @return The game state that the game is in
             GameState getGameState() { return _gameState; }
 
+            /// @brief Get the previous state
+            /// @return The previous state of the game
+            GameState getPreviousState() { return _previousState; }
+
             /// @brief Set the stars
             /// @param stars The stars to set
             void setStars(std::vector<Star> stars) { _stars = stars; }
 
-            /// @brief Get the coordinator
-            /// @return The coordinator of the game
-            ECS::Coordinator &getCoordinator() { return _coordinator; }
+            std::string getClientAction() { return _clientAction; }
+
+            void setClientAction(std::string clientAction) { _clientAction = clientAction; }
 
             /** @brief Draw the stars of the background
              * 
@@ -183,17 +187,15 @@ namespace Graphics {
         protected:
         private:
             /**
+             * @brief The previous state of the game
+             */
+            GameState _previousState;
+
+            /**
              * @brief The state of the game
              */
             GameState _gameState;
 
-            /**
-             * @brief The coordinator of the game
-             * 
-             * It will handle all the entities of the game.
-             * 
-             */
-            ECS::Coordinator _coordinator;
 
             std::vector<EntityData> entities;
 
@@ -206,5 +208,10 @@ namespace Graphics {
              * @brief The option of the game
              */
             Option *_option;
+
+            /**
+             * @brief The key that the client pressed (action)
+             */
+            std::string _clientAction;
     };
 }

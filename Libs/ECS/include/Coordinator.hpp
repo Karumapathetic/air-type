@@ -27,6 +27,9 @@ namespace ECS {
      */
     class Coordinator {
         public:
+            /**
+             * @brief Constructor of the coordinator.
+             */
             Coordinator();
             /**
              * @brief Registers a component type.
@@ -116,12 +119,25 @@ namespace ECS {
                 return systemManager->registerSystem<T>();
             }
 
+            /**
+             * @brief Sets the system signature.
+             * 
+             * @tparam T The type of the system.
+             * @param signature The signature of the system.
+             */
             template<typename T>
             std::shared_ptr<T> getCoordSystem()
             {
                 return systemManager->getSystem<T>();
             }
 
+            /**
+             * @brief Retrieves the signature of a system.
+             * 
+             * @tparam T The type of the system.
+             * 
+             * @return The signature of the system.
+             */
             template<typename T>
             Signature getSystemSignature()
             {

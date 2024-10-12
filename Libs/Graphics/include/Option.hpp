@@ -87,6 +87,24 @@ namespace Graphics {
             void setBindedKeys(std::unordered_map<int, std::function<void()>> bindedKeys) { _BindedKeys = bindedKeys; }
 
             /**
+             * @brief Get the keybinds
+             * 
+             * This function returns an unordered map of keybinds.
+             * 
+             * @return The keybinds.
+             */
+            std::unordered_map<std::string, std::pair<KeyboardKey, std::string>> getKeybinds() const { return _keybinds; }
+
+            /**
+             * @brief Set the keybinds
+             * 
+             * This function sets the keybinds.
+             * 
+             * @param keybinds The keybinds to set.
+             */
+            void setKeybinds(std::unordered_map<std::string, std::pair<KeyboardKey, std::string>> keybinds) { _keybinds = keybinds; }
+
+            /**
              * @brief Set the displayfps boolean
              * 
              * This function sets the displayfps boolean.
@@ -127,6 +145,8 @@ namespace Graphics {
              * @brief The binded keys
              */
             std::unordered_map<int, std::function<void()>> _BindedKeys;
+
+            std::unordered_map<std::string, std::pair<KeyboardKey, std::string>> _keybinds;
 
             /**
              * @brief The changing string that is used to know which key is being changed

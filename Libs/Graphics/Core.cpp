@@ -7,6 +7,7 @@
 
 #include "Core.hpp"
 #include "Game.hpp"
+#include "Collision.hpp"
 
 #include "raylib.h"
 
@@ -38,7 +39,7 @@ namespace Graphics {
     void Core::InitGraphics() {
         int screenWidth = GetMonitorWidth(0);
         int screenHeight = GetMonitorHeight(0);
-        InitWindow(screenWidth, screenHeight, "R-Type");
+        InitWindow(screenWidth, screenHeight, "Air-Type");
         SetTargetFPS(60);
         InitAudioDevice();
         SetExitKey(KEY_BACKSPACE);
