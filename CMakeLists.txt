@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.27)
 project(R-Type)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
-
 # CPM.cmake download location
 # set(CPM_DOWNLOAD_LOCATION "cmake/CPM.cmake")
 
@@ -23,14 +20,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 #     endif()
 # endif()
 
-if (WIN32)
-    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-endif()
-
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR})
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(BUILD_SHARED_LIBRARIES ON)
+set(BUILD_STATIC_LIBRARIES ON)
 
 add_subdirectory(Server)
 add_subdirectory(Client)

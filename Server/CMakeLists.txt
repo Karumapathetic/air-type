@@ -4,6 +4,7 @@ project("R-Type server")
 
 add_executable(r-type_server
     Main.cpp
+    src/Server.cpp
 )
 
 target_link_directories(
