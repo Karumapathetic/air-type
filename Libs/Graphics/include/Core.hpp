@@ -34,6 +34,8 @@ namespace Graphics {
              */
             ~Core() {}
 
+            Game &getGame() { return _game; }
+
             /**
              * @brief Initialize the graphics.
              * 
@@ -70,8 +72,6 @@ namespace Graphics {
             /**
              * @brief The game object.
              */
-            Graphics::Game _game;
-
-            
+            Game _game;
     };
 }

@@ -10,6 +10,7 @@
 namespace Graphics {
     void Game::HandleKeyboardInput() {
         int key = GetKeyPressed();
+        _clientAction = "";
         if (key != 0) {
             auto keyHandlers = _option->getBindedKeys();
             if (_option->getChanging() == "" && keyHandlers.find(key) != keyHandlers.end()) {

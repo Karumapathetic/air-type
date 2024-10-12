@@ -75,6 +75,10 @@ namespace Graphics {
             /// @param stars The stars to set
             void setStars(std::vector<Star> stars) { _stars = stars; }
 
+            std::string getClientAction() { return _clientAction; }
+
+            void setClientAction(std::string clientAction) { _clientAction = clientAction; }
+
             /** @brief Draw the stars of the background
              * 
              * This function is responsible for rendering stars in the game's graphical interface.
@@ -125,5 +129,10 @@ namespace Graphics {
              * @brief The option of the game
              */
             Option *_option;
+
+            /**
+             * @brief The key that the client pressed (action)
+             */
+            std::string _clientAction;
     };
 }
