@@ -14,7 +14,7 @@
 
 class Client {
     public:
-        Client();
+        Client(std::string host);
         ~Client();
 
         void init();

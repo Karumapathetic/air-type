@@ -9,6 +9,7 @@
 
 #include "UDPServer.hpp"
 
+
 namespace Network {
     UDPServer::UDPServer(std::string address, int port) : _socket(_io_context, asio::ip::udp::endpoint(asio::ip::udp::v4(), port)), _resolver(_io_context) {
         _address = address;
@@ -22,22 +23,30 @@ namespace Network {
         while (*stop) {
             std::string recv_buf(1024, '\0');
             asio::ip::udp::endpoint sender_endpoint;
-            size_t len = _socket.receive_from(asio::buffer(recv_buf.data(), 1024), sender_endpoint);
+            _socket.receive_from(asio::buffer(recv_buf.data(), 1024), sender_endpoint);
+            std::cout << "Received: \"" << recv_buf << "\" from : \"" << sender_endpoint.address() << ":" << sender_endpoint.port() << "\"" << std::endl;
             bool isRegistered = false;
+            if (recv_buf.empty())
+                continue;
             for (auto client : _clients) {
                 if (client.s_endpoint.address() == sender_endpoint.address()
                     && client.s_endpoint.port() == sender_endpoint.port())
                         isRegistered = true;
             }
             if (!isRegistered) {
-                Client_t newClient;
-                std::string recv_data = recv_buf;
-                newClient.s_address = recv_data.substr(0, recv_data.find(':', 0));
-                newClient.s_port = recv_data.substr(newClient.s_address.length() + 1, recv_data.length() - newClient.s_address.length() - 1);
-                newClient.s_endpoint = sender_endpoint;
-                _clients.push_back(newClient);
+                std::vector<std::string> parsedBuf = split(recv_buf, " ");
+                if (parsedBuf[0] == "stop") {
+                    std::cout << "STOP" << std::endl;
+                    break;
+                }
+                if (parsedBuf[0] == "connect") {
+                    Client_t newClient;
+                    newClient.s_address = parsedBuf[1];
+                    newClient.s_port = parsedBuf[2];
+                    newClient.s_endpoint = sender_endpoint;
+                    _clients.push_back(newClient);
+                }
             }
-            std::cout << "Received: \"" << recv_buf << "\" from : \"" << sender_endpoint.address() << ":" << sender_endpoint.port() << "\"" << std::endl;
         }
     }
 
@@ -55,5 +64,29 @@ namespace Network {
             socket.open(asio::ip::udp::v4());
             socket.send_to(asio::buffer(data.data(), data.length()), *endpoint.begin());
         }
+    }
+
+    void UDPServer::stop()
+    {
+        this->send_data("stop", _address, std::to_string(_port));
+        _socket.close();
+        _io_context.stop();
+    }
+
+    std::vector<std::string> UDPServer::split(std::string s, std::string delimiter)
+    {
+        size_t pos_start = 0;
+        size_t pos_end = 0;
+        size_t delim_len = delimiter.length();
+        std::string token;
+        std::vector<std::string> res;
+
+        while ((pos_end = s.find(delimiter, pos_start)) != std::string::npos) {
+            token = s.substr(pos_start, pos_end - pos_start);
+            pos_start = pos_end + delim_len;
+            res.push_back(token);
+        }
+        res.push_back(s.substr(pos_start));
+        return res;
     }
 }
