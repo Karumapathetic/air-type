@@ -7,6 +7,7 @@
 
 #include "Core.hpp"
 #include "Game.hpp"
+#include "Collision.hpp"
 
 #include "raylib.h"
 

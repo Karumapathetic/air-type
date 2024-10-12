@@ -9,28 +9,28 @@
 
 namespace Graphics {
     void Option::KeyShoot() {
-        // Temporary
-        if (_game.getGameState() == GameState::MENU) {
-            _game.setGameState(GameState::GAME);
-        } else if (_game.getGameState() == GameState::GAME) {
-            _game.setGameState(GameState::MENU);
-        }
+        std::cout << "Shoot" << std::endl;
+        _game.setClientAction("shoot");
     }
 
     void Option::KeyUp() {
         std::cout << "Up" << std::endl;
+        _game.setClientAction("up");
     }
 
     void Option::KeyDown() {
         std::cout << "Down" << std::endl;
+        _game.setClientAction("down");
     }
 
     void Option::KeyLeft() {
         std::cout << "Left" << std::endl;
+        _game.setClientAction("left");
     }
 
     void Option::KeyRight() {
         std::cout << "Right" << std::endl;
+        _game.setClientAction("right");
     }
 
     void Option::KeyEscape() {
@@ -42,10 +42,11 @@ namespace Graphics {
                 _game.setGameState(GameState::GAME);
                 break;
             case GameState::SETTINGS:
-                _game.setGameState(GameState::PAUSE);
+                _game.setGameState(_game.getPreviousState());
                 break;
             default:
                 break;
         }
+        _game.setClientAction("escape");
     }
 } // namespace Graphics

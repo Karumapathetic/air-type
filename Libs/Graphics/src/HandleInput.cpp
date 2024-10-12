@@ -10,6 +10,7 @@
 namespace Graphics {
     void Game::HandleKeyboardInput() {
         int key = GetKeyPressed();
+        _clientAction = "";
         if (key != 0) {
             auto keyHandlers = _option->getBindedKeys();
             if (_option->getChanging() == "" && keyHandlers.find(key) != keyHandlers.end()) {
@@ -17,9 +18,10 @@ namespace Graphics {
             }
             if (_option->getChanging() != "") {
                 std::string oldAction = _option->getChanging();
-                auto& keybinds = getCoordinator().getComponent<ECS::Keybind>(getCoordinator().getEntity("settings")).keybinds;
+                auto keybinds = _option->getKeybinds();
                 int oldKey = keybinds[oldAction].first;
                 keybinds[oldAction] = std::make_pair((KeyboardKey)key, keybinds[oldAction].second);
+                _option->setKeybinds(keybinds);
                 std::function<void()> handler = keyHandlers[oldKey];
                 keyHandlers.erase(oldKey);
                 keyHandlers[key] = handler;
