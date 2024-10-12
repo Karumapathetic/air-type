@@ -15,9 +15,6 @@ namespace Graphics {
     Game::Game() : _gameState(GameState::MENU), entities(MAX_ENTITIES)
     {
         _option = new Option(*this);
-        std::string params = "position:100,100;scale:86,48;texture:Libs/Graphics/assets/texture/PlayerShip.gif;crop:0,0,32,16;priority:0";
-        CreateEntity(0, params);
-        PrintEntities();
     }
 
     // void Game::DrawSprites()
@@ -35,50 +32,70 @@ namespace Graphics {
     //     }
     // }
 
-    void Game::CreateEntity(Entity id, const std::string& params)
-    {
-        if (id < 0 || id >= MAX_ENTITIES) return;
-        Vector2 position = {0, 0}, scale = {1, 1};
-        Rectangle crop = {0, 0, 0, 0};
-        Texture2D texture = {};
-        float priority = 0;
+void Game::CreateEntity(int id, const std::string& params) {
+    if (id < 0 || id >= MAX_ENTITIES) return;  // Vérifier la validité de l'ID de l'entité
 
-        size_t posIndex = params.find("position:");
-        if (posIndex != std::string::npos) {
-            size_t endPos = params.find(';', posIndex);
-            std::string newPosition = params.substr(posIndex + 4, endPos - (posIndex + 4));
-            sscanf(newPosition.c_str(), "%f,%f", &position.x, &position.y);
-        }
-        size_t scaleIndex = params.find("scale:");
-        if (scaleIndex != std::string::npos) {
-            size_t endPos = params.find(';', scaleIndex);
-            std::string newScale = params.substr(scaleIndex + 6, endPos - (scaleIndex + 6));
-            sscanf(newScale.c_str(), "%f,%f", &scale.x, &scale.y);
-        }
-        size_t cropIndex = params.find("crop:");
-        if (cropIndex != std::string::npos) {
-            size_t endPos = params.find(';', cropIndex);
-            std::string newCrop = params.substr(cropIndex + 5, endPos - (cropIndex + 5));
-            sscanf(newCrop.c_str(), "%f,%f,%f,%f", &crop.x, &crop.y, &crop.width, &crop.height);
-        }
-        size_t textureIndex = params.find("texture:");
-        if (textureIndex != std::string::npos) {
-            size_t endPos = params.find(';', textureIndex);
-            std::string texturePath = params.substr(textureIndex + 8, endPos - (textureIndex + 8));
-            texture = LoadTexture(texturePath.c_str());
-        }
-        size_t priorityIndex = params.find("priority:");
-        if (priorityIndex != std::string::npos) {
-            size_t endPos = params.find(';', posIndex);
-            std::string newPosition = params.substr(posIndex + 4, endPos - (posIndex + 4));
-            sscanf(newPosition.c_str(), "%f", &priority);
-        }
-        entities[id].position = position;
-        entities[id].scale = scale;
-        entities[id].texture = texture;
-        entities[id].crop = crop;
-        entities[id].priority = priority;
+    // Initialisation des variables
+    Vector2 position = {0, 0}, scale = {1, 1};
+    Rectangle crop = {0, 0, 0, 0};
+    std::string texturePath;
+    float priority = 0.0f;
+
+    // Extraction des paramètres depuis la chaîne `params`
+    size_t posIndex = params.find("position:");
+    if (posIndex != std::string::npos) {
+        size_t endPos = params.find(';', posIndex);
+        std::string newPosition = params.substr(posIndex + 9, endPos - (posIndex + 9));
+        sscanf(newPosition.c_str(), "%f,%f", &position.x, &position.y);
     }
+
+    size_t scaleIndex = params.find("scale:");
+    if (scaleIndex != std::string::npos) {
+        size_t endPos = params.find(';', scaleIndex);
+        std::string newScale = params.substr(scaleIndex + 6, endPos - (scaleIndex + 6));
+        sscanf(newScale.c_str(), "%f,%f", &scale.x, &scale.y);
+    }
+
+    size_t cropIndex = params.find("crop:");
+    if (cropIndex != std::string::npos) {
+        size_t endPos = params.find(';', cropIndex);
+        std::string newCrop = params.substr(cropIndex + 5, endPos - (cropIndex + 5));
+        sscanf(newCrop.c_str(), "%f,%f,%f,%f", &crop.x, &crop.y, &crop.width, &crop.height);
+    }
+
+    size_t textureIndex = params.find("texture:");
+    if (textureIndex != std::string::npos) {
+        size_t endPos = params.find(';', textureIndex);
+        texturePath = params.substr(textureIndex + 8, endPos - (textureIndex + 8));
+
+        // Chargement de la texture
+        std::cout << "Chargement de la texture depuis: " << texturePath << std::endl;
+        entities[id].texture = LoadTexture(texturePath.c_str());
+        std::cout << "Texture chargée avec succès pour l'entité ID: " << id << std::endl;
+    }
+
+    size_t priorityIndex = params.find("priority:");
+    if (priorityIndex != std::string::npos) {
+        size_t endPos = params.find(';', priorityIndex);
+        std::string newPriority = params.substr(priorityIndex + 9, endPos - (priorityIndex + 9));
+        sscanf(newPriority.c_str(), "%f", &priority);
+    }
+
+    // Mise à jour des données de l'entité
+    entities[id].position = position;
+    entities[id].scale = scale;
+    entities[id].crop = crop;
+    entities[id].priority = priority;
+
+    // Affichage des données de l'entité
+    std::cout << "Entité ID: " << id << " créée avec succès:" << std::endl;
+    std::cout << "Position: (" << entities[id].position.x << ", " << entities[id].position.y << ")" << std::endl;
+    std::cout << "Échelle: (" << entities[id].scale.x << ", " << entities[id].scale.y << ")" << std::endl;
+    std::cout << "Crop: (" << entities[id].crop.x << ", " << entities[id].crop.y << ", " 
+              << entities[id].crop.width << ", " << entities[id].crop.height << ")" << std::endl;
+    std::cout << "Priorité: " << entities[id].priority << std::endl;
+    std::cout << "Texture: " << (entities[id].texture.id ? "chargée" : "non chargée") << std::endl;
+}
 
     void Game::UpdateEntity(Entity id, const std::string& params)
     {
@@ -115,6 +132,10 @@ namespace Graphics {
     {
         BeginDrawing();
         ClearBackground(BLACK);
+        if (entities[0].position.x != -1) {
+            std::string params = "position:100,100;scale:86,48;texture:Libs/Graphics/assets/texture/PlayerShip.gif;crop:0,0,32,16;priority:0";
+            CreateEntity(0, params);
+        }
         HandleKeyboardInput();
         DrawAddOns();
         switch (getGameState()) {

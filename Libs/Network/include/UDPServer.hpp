@@ -27,8 +27,11 @@ namespace Network {
             void send_data(const std::string& data, std::string host, std::string port);
             void send_all_data(const std::string& data);
             void receive_data(bool *stop);
+            void stop();
 
         private:
+            std::vector<std::string> split(std::string s, std::string delimiter);
+
             asio::io_context _io_context;
             asio::ip::udp::socket _socket;
             asio::ip::udp::endpoint _endpoint;

@@ -44,6 +44,7 @@ namespace Graphics {
         InitAudioDevice();
         SetExitKey(KEY_BACKSPACE);
         InitStars(500);
+        _game.setGameState(Graphics::GameState::MENU);
     }
 
     void Core::CloseGraphics() {
@@ -51,14 +52,16 @@ namespace Graphics {
         CloseAudioDevice();
     }
 
-    void Core::LaunchGame() {
+    void Core::Caillou(bool *isRunning) {
         InitGraphics();
-
-        const float fixedTimeStep = 1.0f / 60.0f;
+        std::cout << "Initializing..." << std::endl;
+        const float fixedTimeStep = 1.0f / GetFPS();
         float accumulator = 0.0f;
         float lastTime = GetTime();
 
+        std::cout << "Opening window" << std::endl;
         while (!WindowShouldClose() && _game.getGameState() != GameState::QUIT) {
+            std::cout << "Beginning of loop" << std::endl;
             float currentTime = GetTime();
             float frameTime = currentTime - lastTime;
             lastTime = currentTime;
@@ -67,9 +70,10 @@ namespace Graphics {
             while (accumulator >= fixedTimeStep) {
                 accumulator -= fixedTimeStep;
             }
-
+            std::cout << "DrawGraphics" << std::endl;
             _game.DrawGraphics();
+            std::cout << "End of loop" << std::endl;
         }
-        CloseGraphics();
+        *isRunning = false;
     }
 }

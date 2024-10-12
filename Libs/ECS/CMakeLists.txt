@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.27)
 project("R-Type ECS Lib")
 
 add_library(
-    ECS SHARED
+    ECS STATIC
     src/Coordinator.cpp
     src/EntityManager.cpp
     src/SystemManager.cpp
@@ -38,5 +38,4 @@ target_include_directories(
 
 target_link_libraries(
     ECS
-    raylib
 )
