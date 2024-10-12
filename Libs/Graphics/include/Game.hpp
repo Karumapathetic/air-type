@@ -132,6 +132,8 @@ namespace Graphics {
             /// @brief Draw add ons like FPS, etc.
             void DrawAddOns();
 
+            void DrawSprites();
+
             /// @brief Handle the keyboard input
             void HandleKeyboardInput();
 

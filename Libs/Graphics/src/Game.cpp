@@ -17,8 +17,11 @@ namespace Graphics {
         _option = new Option(*this);
     }
 
-    // void Game::DrawSprites()
-    // {
+    void Game::DrawSprites()
+    {
+        for (EntityData entity : entities) {
+            DrawTexturePro(entity.texture, entity.crop, {entity.position.x, entity.position.y, entity.scale.x, entity.scale.y}, {0.0f, 0.0f}, 0.0f, WHITE);
+        }
     //     auto drawSystem = _coordinator.getCoordSystem<ECS::Draw>();
     //     ECS::Signature texturesSignature = _coordinator.getComponentType<ECS::Images>();
     //     for (const ECS::Entity& entity : _coordinator.getEntities()) {
@@ -30,7 +33,7 @@ namespace Graphics {
     //             drawSystem->RenderEntitiesWithImages(entityImages.texture, entityImages.cropArea, entitySpacial.position, entitySpacial.scale);
     //         }
     //     }
-    // }
+    }
 
 void Game::CreateEntity(int id, const std::string& params) {
     if (id < 0 || id >= MAX_ENTITIES) return;  // Vérifier la validité de l'ID de l'entité
@@ -135,6 +138,7 @@ void Game::CreateEntity(int id, const std::string& params) {
         if (entities[0].position.x != -1) {
             std::string params = "position:100,100;scale:86,48;texture:Libs/Graphics/assets/texture/PlayerShip.gif;crop:0,0,32,16;priority:0";
             CreateEntity(0, params);
+            DrawSprites();
         }
         HandleKeyboardInput();
         DrawAddOns();
