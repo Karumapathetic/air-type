@@ -16,7 +16,6 @@ target_link_directories(
 target_link_libraries(
     r-type_server PUBLIC
     ECS
-    raylib
     Network
 )
 

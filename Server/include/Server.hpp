@@ -10,7 +10,7 @@
 #include <thread>
 
 #include "UDPServer.hpp"
-#include "Coordinator.hpp"
+// #include "Coordinator.hpp"
 
 class Server {
     public:
@@ -23,7 +23,7 @@ class Server {
     protected:
     private:
         Network::UDPServer _server;
-        ECS::Coordinator _coordinator;
+        // ECS::Coordinator _coordinator;
         bool _isServerRunning;
         std::thread _networkThread;
 };
