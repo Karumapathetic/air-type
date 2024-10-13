@@ -7,9 +7,6 @@
 
 #include "Core.hpp"
 #include "Game.hpp"
-#include "Collision.hpp"
-
-#include "raylib.h"
 
 namespace Graphics {
     void Core::InitStars(int numStars) {

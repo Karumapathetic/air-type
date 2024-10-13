@@ -9,6 +9,8 @@
 #include "Coordinator.hpp"
 #include "Option.hpp"
 
+#include "raylib.h"
+
 /**
  * @brief Namespace that contains all the graphics related classes
  * 
