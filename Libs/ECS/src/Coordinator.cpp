@@ -50,8 +50,6 @@ namespace ECS {
         this->setSystemSignature<ECS::Collision>(drawSignature);
 
         this->createEntity("settings");
-        this->createEntity("player");
-        this->createEntity("player");
         this->initEntities();
     }
 

@@ -38,7 +38,17 @@ namespace ECS {
                             entitySpacial.position.x + entitySpacial.scale.x > otherEntitySpacial.position.x &&
                             entitySpacial.position.y < otherEntitySpacial.position.y + otherEntitySpacial.scale.y &&
                             entitySpacial.position.y + entitySpacial.scale.y > otherEntitySpacial.position.y) {
-                            std::cout << "Collision detected" << std::endl;
+                            if (gCoordinator.getEntityName(entity) == "player" && gCoordinator.getEntityName(otherEntity) == "enemy") {
+                                gCoordinator.destroyEntity(otherEntity);
+                            } else if (gCoordinator.getEntityName(entity) == "enemy" && gCoordinator.getEntityName(otherEntity) == "player") {
+                                gCoordinator.destroyEntity(entity);
+                            } else if (gCoordinator.getEntityName(entity) == "missile" && gCoordinator.getEntityName(otherEntity) == "enemy") {
+                                gCoordinator.destroyEntity(entity);
+                                gCoordinator.destroyEntity(otherEntity);
+                            } else if (gCoordinator.getEntityName(entity) == "enemy" && gCoordinator.getEntityName(otherEntity) == "missile") {
+                                gCoordinator.destroyEntity(entity);
+                                gCoordinator.destroyEntity(otherEntity);
+                            }
                         }
                     }
                 }

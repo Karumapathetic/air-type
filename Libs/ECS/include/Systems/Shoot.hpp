@@ -8,6 +8,7 @@
 #pragma once
 
 #include "ISystem.hpp"
+#include "Coordinator.hpp"
 
 namespace ECS {
     /**
@@ -17,6 +18,16 @@ namespace ECS {
         public:
             Shoot();
             ~Shoot();
+
+            void MissileShoot(Coordinator &coordinator, Entity entity) {
+                auto &entityPos = coordinator.getComponent<Spacial>(entity);
+                Entity missile = coordinator.createEntity("missile");
+                auto &missilePos = coordinator.getComponent<Spacial>(missile);
+                missilePos.position.x = entityPos.position.x;
+                missilePos.position.y = entityPos.position.y;
+                missilePos.scale.x = 1;
+                missilePos.scale.y = 1;
+            }
         protected:
         private:
     };

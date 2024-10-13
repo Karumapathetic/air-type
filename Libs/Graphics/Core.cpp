@@ -52,7 +52,7 @@ namespace Graphics {
     void Core::Caillou(bool *isRunning) {
         InitGraphics();
         std::cout << "Initializing..." << std::endl;
-        const float fixedTimeStep = 1.0f / GetFPS();
+        const float fixedTimeStep = 1.0f / 60.0f;
         float accumulator = 0.0f;
         float lastTime = GetTime();
 
