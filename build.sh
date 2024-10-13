@@ -42,7 +42,6 @@ else
         echo "Failed to build the Project"
         exit 1
     fi
-    export LD_LIBRARY_PATH=Libs/ECS:Libs/Graphics:Libs/Network$LD_LIBRARY_PATH
     exit 0
 fi
 

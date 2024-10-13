@@ -41,34 +41,34 @@ jobs:
             echo "::notice::All binaries OK"
           fi
 
-  # build-windows:
-  #   name: Build on Windows
-  #   runs-on: windows-latest
+  build-windows:
+    name: Build on Windows
+    runs-on: windows-latest
 
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
-  #       with:
-  #         submodules: recursive
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-  #     - name: Cache build
-  #       uses: actions/cache@v3
-  #       with:
-  #         path: ./build
-  #         key: ${{ runner.os }}-${{ hashFiles('**/CMakeLists.txt') }}
-  #         restore-keys: ${{ runner.os }}-
+      - name: Cache build
+        uses: actions/cache@v3
+        with:
+          path: ./build
+          key: ${{ runner.os }}-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: ${{ runner.os }}-
 
-  #     - name: Build Project
-  #       run: ./build.ps1
+      - name: Build Project
+        run: ./build.ps1
 
-  #     - name: Check binaries
-  #       run: |
-  #         if (-Not (Test-Path "./r-type_server.exe")) {
-  #           Write-Host "Server binary does not exist"
-  #           exit 1
-  #         } elseif (-Not (Test-Path "./r-type_client.exe")) {
-  #           Write-Host "Client binary does not exist"
-  #           exit 1
-  #         } else {
-  #           Write-Host "All binaries OK"
-  #         }
+      - name: Check binaries
+        run: |
+          if (-Not (Test-Path "./r-type_server.exe")) {
+            Write-Host "Server binary does not exist"
+            exit 1
+          } elseif (-Not (Test-Path "./r-type_client.exe")) {
+            Write-Host "Client binary does not exist"
+            exit 1
+          } else {
+            Write-Host "All binaries OK"
+          }
