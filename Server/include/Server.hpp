@@ -8,6 +8,7 @@
 #pragma once
 
 #include <thread>
+#include <unordered_map>
 
 #include "UDPServer.hpp"
 // #include "Coordinator.hpp"
@@ -20,10 +21,23 @@ class Server {
         void init();
         void run();
         void stop();
+
+        void sendECSData(void);
+        void handleData();
+        std::vector<std::string> split(std::string s, std::string delimiter);
+
     protected:
     private:
         Network::UDPServer _server;
         // ECS::Coordinator _coordinator;
         bool _isServerRunning;
         std::thread _networkThread;
+        std::vector<Network::Client_t> _clients;
+
+        std::unordered_map<std::string, std::function<void(std::vector<std::string>)>> _commands;
+
+        void connect(std::vector<std::string> command);
+        void disconnect(std::vector<std::string> command);
+        void clientCrash(std::vector<std::string> command);
+        void getUserInput(std::vector<std::string> command);
 };

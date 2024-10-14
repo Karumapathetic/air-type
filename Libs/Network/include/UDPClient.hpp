@@ -9,7 +9,8 @@
 
 #include <iostream>
 #include <asio.hpp>
-#include <queue>
+
+#include "SafeQueue.hpp"
 
 namespace Network {
     class UDPClient {
@@ -22,8 +23,13 @@ namespace Network {
             void receive_data(bool *stop);
             void stop();
 
+            int getRecvPort(void) { return _portRecv; }
+            std::string getRecvAddress(void) { return _addressRecv; }
+
+            SafeQueue<std::string>& getQueue(void);
+
         private:
-            std::vector<std::string> split(std::string s, std::string delimiter);
+            SafeQueue<std::string> _recv_queue;
 
             asio::io_context _io_context;
             asio::ip::udp::socket _socketSend;
