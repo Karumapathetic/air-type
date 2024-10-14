@@ -31,6 +31,13 @@ class SafeQueue {
             return item;
         }
 
+        int size(void)
+        {
+            std::unique_lock<std::mutex> lock(_mutex);
+
+            return _queue.size();
+        }
+
     private:
         std::queue<T> _queue;
         std::mutex _mutex;

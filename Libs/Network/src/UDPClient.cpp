@@ -19,8 +19,6 @@ namespace Network {
 
         _addressRecv = "127.0.0.1";
         _portRecv = _socketRecv.local_endpoint().port();
-
-        this->send_data("connect " + _addressRecv + " " + std::to_string(_portRecv));
     }
 
     UDPClient::~UDPClient() {
@@ -31,13 +29,8 @@ namespace Network {
             std::string recv_buf(1024, '\0');
             asio::ip::udp::endpoint sender_endpoint;
             size_t len = _socketRecv.receive_from(asio::buffer(recv_buf.data(), 1024), sender_endpoint);
-            std::vector<std::string> parsedBuf = split(recv_buf, " ");
-            if (parsedBuf[0] == "stop") {
-                std::cout << "STOP" << std::endl;
-                break;
-            } else {
-                std::cout << "Received: \"" << recv_buf << "\"" << std::endl;
-            }
+            _recv_queue.push(recv_buf);
+            std::cout << "Received: \"" << recv_buf << "\"" << std::endl;
         }
     }
 
@@ -63,20 +56,8 @@ namespace Network {
         _io_context.stop();
     }
 
-    std::vector<std::string> UDPClient::split(std::string s, std::string delimiter)
+    SafeQueue<std::string>& UDPClient::getQueue()
     {
-        size_t pos_start = 0;
-        size_t pos_end = 0;
-        size_t delim_len = delimiter.length();
-        std::string token;
-        std::vector<std::string> res;
-
-        while ((pos_end = s.find(delimiter, pos_start)) != std::string::npos) {
-            token = s.substr(pos_start, pos_end - pos_start);
-            pos_start = pos_end + delim_len;
-            res.push_back(token);
-        }
-        res.push_back(s.substr(pos_start));
-        return res;
+        return _recv_queue;
     }
 }
