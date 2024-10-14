@@ -23,7 +23,8 @@ namespace Network {
         while (*stop) {
             std::string recv_buf(1024, '\0');
             asio::ip::udp::endpoint sender_endpoint;
-            _socket.receive_from(asio::buffer(recv_buf.data(), 1024), sender_endpoint);
+            size_t len = _socket.receive_from(asio::buffer(recv_buf.data(), 1024), sender_endpoint);
+            recv_buf.resize(len);
             _recv_queue.push(recv_buf);
             std::cout << "Received: \"" << recv_buf << "\" from : \"" << sender_endpoint.address() << ":" << sender_endpoint.port() << "\"" << std::endl;
         }

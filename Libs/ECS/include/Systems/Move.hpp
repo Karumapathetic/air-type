@@ -16,35 +16,20 @@ namespace ECS {
      */
     class Move : public ISystem {
         public:
-            Move() {}
-            ~Move() {}
-
-            void MoveEntities(Coordinator &coordinator, Entity entity, const std::string &params = "nothing") {
+            void MoveEntities(Coordinator &coordinator, Entity entity, const std::string &params) {
                 auto &entityPos = coordinator.getComponent<Spacial>(entity);
+                auto entitySpeed = coordinator.getComponent<Speed>(entity);
                 std::string entityName = coordinator.getEntityName(entity);
                 if (entityName == "player") {
-                    switch (params) {
-                        case "up":
-                            entityPos.position.y--;
-                            break;
-                        case "down":
-                            entityPos.position.y++;
-                            break;
-                        case "left":
-                            entityPos.position.x--;
-                            break;
-                        case "right":
-                            entityPos.position.x++;
-                            break;
-                        default:
-                            break;
+                    if (params == "up") {
+                        entityPos.position.y -= entitySpeed.velocity;
+                    } else if (params == "down") {
+                        entityPos.position.y += entitySpeed.velocity;
+                    } else if (params == "left") {
+                        entityPos.position.x -= entitySpeed.velocity;
+                    } else if (params == "right") {
+                        entityPos.position.x += entitySpeed.velocity;
                     }
-                } else if (entityName == "enemy") {
-                    entityPos.position.x--;
-                } else if (entityName == "missile") {
-                    entityPos.position.x++;
-                } else {
-                    continue;
                 }
             }
         protected:

@@ -11,7 +11,11 @@
 #include <unordered_map>
 
 #include "UDPServer.hpp"
-// #include "Coordinator.hpp"
+#include "Coordinator.hpp"
+
+#include "Move.hpp"
+#include "Shoot.hpp"
+#include "Update.hpp"
 
 class Server {
     public:
@@ -24,12 +28,13 @@ class Server {
 
         void sendECSData(void);
         void handleData();
+        void sendToClients(const std::string& data);
         std::vector<std::string> split(std::string s, std::string delimiter);
 
     protected:
     private:
         Network::UDPServer _server;
-        // ECS::Coordinator _coordinator;
+        ECS::Coordinator _coordinator;
         bool _isServerRunning;
         std::thread _networkThread;
         std::vector<Network::Client_t> _clients;

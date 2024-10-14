@@ -63,7 +63,7 @@ namespace Graphics {
          * Initializes the position to (0, 0), scale to (1, 1), texture to an empty Texture2D,
          * crop rectangle to (0, 0, 0, 0), and priority to 0.0f.
          */
-        EntityData(): position({0, 0}), scale({1, 1}), texture({}), crop({0, 0, 0, 0}), priority(0.0f) {}
+        EntityData(): position({0, 0}), scale({1, 1}), texture({}), crop({0, 0, 0, 0}), priority(-1.0f) {}
     };
 
     using Entity = int;
@@ -107,6 +107,10 @@ namespace Graphics {
 
             void setClientAction(std::string clientAction) { _clientAction = clientAction; }
 
+            std::vector<EntityData> getEntities() { return entities; }
+
+            void setEntities(std::vector<EntityData> entities) { this->entities = entities; }
+
             /** @brief Draw the stars of the background
              * 
              * This function is responsible for rendering stars in the game's graphical interface.
@@ -138,6 +142,8 @@ namespace Graphics {
 
             /// @brief Handle the keyboard input
             void HandleKeyboardInput();
+
+            bool ExtractValues(const std::string& params, const std::string& key, std::vector<float>& values, int numValues);
 
             /**
              * @brief Creates a new entity in the game.
@@ -200,7 +206,9 @@ namespace Graphics {
              */
             GameState _gameState;
 
-
+            /**
+             * @brief The entities of the game
+             */
             std::vector<EntityData> entities;
 
             /**

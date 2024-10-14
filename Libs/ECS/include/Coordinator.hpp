@@ -251,6 +251,15 @@ namespace ECS {
             Entity getEntity(std::string name);
 
             /**
+             * @brief Retrieves the entity by ID.
+             * 
+             * @param id The ID of the entity type.
+             * 
+             * @return The entity.
+             */
+            Entity getEntityById(int id);
+
+            /**
              * @brief Sets the entities.
              * 
              * @param index The index of the entity.
@@ -273,6 +282,7 @@ namespace ECS {
              */
             void spawnEntity(Coordinator& coordinator, const std::string& name, const std::string& params);
 
+            bool hasComponent(Entity entity, ComponentType componentType);
         private:
             /**
              * @brief Variable that stores the component manager.

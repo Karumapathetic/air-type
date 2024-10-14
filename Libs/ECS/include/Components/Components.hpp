@@ -25,14 +25,11 @@ namespace ECS {
     /**
      * @brief A struct that represents the texture of an entity.
      * 
-     * This struct contains the texture of an entity. It also contains the priority of the texture.
-     * The priority is used to determine the order in which the textures are drawn.
+     * This struct contains the texture of an entity.
      * 
      */
     struct Images {
         std::string texture;
-        Rectangle cropArea;
-        int priority;
     };
 
     /**
@@ -136,5 +133,6 @@ namespace ECS {
     struct EntityTypes {
         std::string type;
         bool isPlayer;
+        int idPlayer;
     };
 }

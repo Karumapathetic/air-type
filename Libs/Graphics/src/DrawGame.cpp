@@ -18,5 +18,6 @@ namespace Graphics {
             }
         }
         DrawStars();
+        DrawSprites();
     }
 } // namespace Graphics

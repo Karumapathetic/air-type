@@ -12,9 +12,9 @@ namespace ECS {
         gCoordinator.addComponent(entity, Spacial{{100.0f, 100.0f}, {86.0f, 48.0f}});
         gCoordinator.addComponent(entity, Power{5.0f, 0.0f});
         gCoordinator.addComponent(entity, Life{10.0f, 1.0f});
-        gCoordinator.addComponent(entity, Speed{1.0f, 1.0f});
-        gCoordinator.addComponent(entity, Images{"Libs/Graphics/assets/texture/PlayerShip.gif", {0.0f, 0.0f, 32.0f, 16.0f}, 1});
-        gCoordinator.addComponent(entity, EntityTypes{"player", 1});
+        gCoordinator.addComponent(entity, Speed{3.0f, 1.0f});
+        gCoordinator.addComponent(entity, Images{"Libs/Graphics/assets/texture/PlayerShip.gif"});
+        gCoordinator.addComponent(entity, EntityTypes{"player", 1, -1});
         gCoordinator.setEntityInitialized(entity, true);
     }
 }

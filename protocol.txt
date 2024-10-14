@@ -5,7 +5,7 @@
 -> 13: Disconnexion accepted (13) (client)
 
 2X: ECS
--> 21: Sprite position (21 <spriteId: ???> <posX: ???> <posY: ???>) (Positions are centered) (client)
+-> 21: Sprite position (21 <entityName: ???> <spriteId: ???> <posX: ???> <posY: ???>) (Positions are centered) (client)
 -> 22: User input (22 <clientId: ???> <action: ???>) (server)
 
 3X: Errors

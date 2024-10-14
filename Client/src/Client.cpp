@@ -30,16 +30,20 @@ Client::~Client()
 void Client::init()
 {
     _networkThread = std::thread(&Network::UDPClient::receive_data, &_client, &_isClientRunning);
-    // _core.InitGraphics();
+    _core.InitGraphics();
 }
 
 void Client::run()
 {
     while (_isClientRunning) {
-        // Change sprite position
-        //_core.Caillou(&_isClientRunning);
         if (_client.getQueue().size() > 0)
             handleData();
+        _core.Caillou(&_isClientRunning);
+        if (_core.getGame().getClientAction() != "") {
+            std::string caca = "22 " + _id + " " + _core.getGame().getClientAction();
+            std::cout << "Sending action: " << caca << std::endl;
+            _client.send_data(caca);
+        }
     }
     this->stop();
 }
@@ -49,7 +53,7 @@ void Client::stop()
     _client.stop();
     if (_networkThread.joinable())
         _networkThread.join();
-    // _core.CloseGraphics();
+    _core.CloseGraphics();
 }
 
 void Client::handleData()
@@ -57,6 +61,7 @@ void Client::handleData()
     std::string data = _client.getQueue().pop();
     if (data.empty())
         return;
+    std::cout << "Received: " << data << std::endl;
     std::vector<std::string> parsedData = split(data, " ");
     auto commandHandler = _commands.find(parsedData[0]);
 
@@ -79,6 +84,8 @@ std::vector<std::string> Client::split(std::string s, std::string delimiter)
         res.push_back(token);
     }
     res.push_back(s.substr(pos_start));
+    for (auto &str : res)
+        str.resize(strlen(str.c_str()));
     return res;
 }
 
@@ -93,14 +100,13 @@ void Client::connexionAccepted(std::vector<std::string> command)
 
 void Client::setSpritePos(std::vector<std::string> command)
 {
-    std::cout << "Set sprite pos" << std::endl;
-    // Draw
+    std::string pos = "position:" + command[3] + "," + command[4] + ";" + "texture:" + command[1] + ";";
+    _core.getGame().UpdateEntity(std::stoi(command[2]) - 1, pos);
 }
 
 void Client::invalidCommand(std::vector<std::string> command)
 {
     std::cout << "Invalid command" << std::endl;
-    return;
 }
 
 void Client::connexionRefused(std::vector<std::string> command)

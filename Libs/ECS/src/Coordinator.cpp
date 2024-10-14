@@ -104,6 +104,19 @@ namespace ECS {
         return INVALID_ENTITY;
     }
 
+    Entity Coordinator::getEntityById(int id) {
+        for (Entity entity : _entities) {
+            std::string entityName = this->getEntityName(entity);
+            if (entityName == "player") {
+                auto entityType = this->getComponent<EntityTypes>(entity);
+                if (entityType.idPlayer == id) {
+                    return entity;
+                }
+            }
+        }
+        return INVALID_ENTITY;
+    }
+
     void Coordinator::setEntities(std::size_t index, Entity entity)
     {
         if (index < _entities.size()) {
@@ -182,5 +195,10 @@ namespace ECS {
         updateComponentValue<Power>(coordinator, newEntity, params, "damage:", &Power::damage);
         updateComponentValue<Life>(coordinator, newEntity, params, "health:", &Life::health);
         updateComponentValue<Life>(coordinator, newEntity, params, "armor:", &Life::armor);
+    }
+
+    bool Coordinator::hasComponent(Entity entity, ComponentType componentType)
+    {
+        return entityManager->getSignature(entity).test(componentType);
     }
 }

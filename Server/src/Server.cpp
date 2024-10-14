@@ -30,9 +30,15 @@ void Server::init()
 
 void Server::run()
 {
+    sendECSData();
     while (_isServerRunning) {
-        // Update ECS
-        sendECSData();
+        auto updateSystem = _coordinator.getCoordSystem<ECS::Update>();
+        updateSystem->UpdatePositions(_coordinator);
+        for (auto entity : _coordinator.getEntities()) {
+            if (_coordinator.getEntityName(entity) == "missile") {
+                this->sendToClients("21 " + _coordinator.getEntityName(entity) + " " + std::to_string(entity) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(entity).position.x) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(entity).position.y));      
+            }
+        }
         while (_server.getQueue().size() > 0)
             handleData();
     }
@@ -49,8 +55,15 @@ void Server::stop()
 void Server::sendECSData()
 {
     for (auto client : _clients) {
-        // Loop in sprite in ECS
-        // _server.send_data("Data", client.s_address, client.s_port);
+        for (auto entity : _coordinator.getEntities()) {
+            if (!_coordinator.hasComponent(entity, _coordinator.getComponentType<ECS::EntityTypes>()))
+                continue;
+            auto &entityType = _coordinator.getComponent<ECS::EntityTypes>(entity);
+            auto &spacial = _coordinator.getComponent<ECS::Spacial>(entity);
+            std::string name = _coordinator.getEntityName(entity);
+            // std::cout << "21 " + name + " " + std::to_string(entity) + " " + std::to_string(spacial.position.x) + " " + std::to_string(spacial.position.y) << std::endl;
+            _server.send_data("21 " + name + " " + std::to_string(entity) + " " + std::to_string(spacial.position.x) + " " + std::to_string(spacial.position.y), client.s_address, client.s_port);
+        }
     }
 }
 
@@ -81,6 +94,8 @@ std::vector<std::string> Server::split(std::string s, std::string delimiter)
         res.push_back(token);
     }
     res.push_back(s.substr(pos_start));
+    for (auto &str : res)
+        str.resize(strlen(str.c_str()));
     return res;
 }
 
@@ -105,8 +120,13 @@ void Server::connect(std::vector<std::string> command)
         newClient.s_address = address;
         newClient.s_port = port;
         newClient.s_id = _clients.size() + 1;
+        auto newEntity = _coordinator.createEntity("player");
+        _coordinator.initEntities();
+        auto &entitypePlayer = _coordinator.getComponent<ECS::EntityTypes>(newEntity);
+        entitypePlayer.idPlayer = newClient.s_id;
         _clients.push_back(newClient);
         _server.send_data("12 " + std::to_string(newClient.s_id), newClient.s_address, newClient.s_port);
+        this->sendToClients("21 " + _coordinator.getEntityName(newEntity) + " " + std::to_string(newClient.s_id) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(newEntity).position.x) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(newEntity).position.y));
     }
 }
 
@@ -137,7 +157,15 @@ void Server::getUserInput(std::vector<std::string> command)
     }
     std::string clientId = command[1];
     std::string action = command[2];
-    // Change in ECS
+    if (action == "shoot") {
+        auto shootSystem = _coordinator.getCoordSystem<ECS::Shoot>();
+        shootSystem->MissileShoot(_coordinator, _coordinator.getEntityById(std::stoi(clientId)));
+    } else {
+        auto moveSystem = _coordinator.getCoordSystem<ECS::Move>();
+        moveSystem->MoveEntities(_coordinator, _coordinator.getEntityById(std::stoi(clientId)), action);
+        auto entity = _coordinator.getEntityById(std::stoi(clientId));
+        this->sendToClients("21 " + _coordinator.getEntityName(entity) + " " + clientId + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(entity).position.x) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(entity).position.y));        
+    }
 }
 
 void Server::clientCrash(std::vector<std::string> command)
@@ -152,4 +180,11 @@ void Server::clientCrash(std::vector<std::string> command)
             return item.s_id == std::atoi(clientId.c_str());
         }
     ));
+}
+
+void Server::sendToClients(const std::string& data)
+{
+    for (auto client : _clients) {
+        _server.send_data(data, client.s_address, client.s_port);
+    }
 }
