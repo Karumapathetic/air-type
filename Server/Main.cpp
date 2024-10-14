@@ -5,9 +5,16 @@
 ** Server main
 */
 
-#include <iostream>
+#include "Server.hpp"
 
-int main() {
-    std::cout << "Hello server" << std::endl;
+int main (void) {
+    try {
+        Server server;
+        server.init();
+        server.run();
+    } catch (std::exception &e) {
+        std::cerr << e.what() << std::endl;
+        return 84;
+    }
     return 0;
 }

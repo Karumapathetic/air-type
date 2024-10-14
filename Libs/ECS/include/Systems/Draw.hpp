@@ -15,10 +15,7 @@
          */
         class Draw : public ISystem {
             public:
-                void RenderEntitiesWithImages(Texture2D image) {
-                    if (image.id != 0) {
-                        DrawTexture(image, 100, 100, WHITE);
-                    }
+                void RenderEntitiesWithImages(std::string image, Rectangle cropArea, Vector2 position, Vector2 scale) {
                 }
             protected:
             private:

@@ -34,6 +34,8 @@ namespace Graphics {
              */
             ~Core() {}
 
+            Game &getGame() { return _game; }
+
             /**
              * @brief Initialize the graphics.
              * 
@@ -64,12 +66,12 @@ namespace Graphics {
              * 
              * It starts the game loop.
              */
-            void LaunchGame();
+            void Caillou(bool *isRunning);
         protected:
         private:
             /**
              * @brief The game object.
              */
-            Graphics::Game _game;
+            Game _game;
     };
 }

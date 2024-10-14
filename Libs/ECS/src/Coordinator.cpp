@@ -7,9 +7,10 @@
 
 #include "Coordinator.hpp"
 #include "Draw.hpp"
+#include "Collision.hpp"
 
 namespace ECS {
-    void Coordinator::init() {
+    Coordinator::Coordinator() {
         componentManager = std::make_unique<ComponentManager>();
         entityManager = std::make_unique<EntityManager>();
         systemManager = std::make_unique<SystemManager>();
@@ -36,11 +37,26 @@ namespace ECS {
         this->registerComponent<EntityTypes>();
         this->registerComponent<Keybind>();
         this->registerComponent<Sounds>();
+
+        this->registerSystem<ECS::Draw>();
+        this->registerSystem<ECS::Collision>();
+
+        Signature drawSignature;
+        drawSignature.set(this->getComponentType<Images>());
+        this->setSystemSignature<ECS::Draw>(drawSignature);
+
+        Signature collisionSignature;
+        collisionSignature.set(this->getComponentType<Spacial>());
+        this->setSystemSignature<ECS::Collision>(drawSignature);
+
+        this->createEntity("settings");
+        this->initEntities();
     }
 
     Entity Coordinator::createEntity(const std::string& name) {
         Entity id = entityManager->createEntity(name);
         this->setEntities(id, id);
+        std::cout << "Entity : " << name << " have the ID : " << id << std::endl;
         return id;
     }
 
@@ -88,7 +104,21 @@ namespace ECS {
         return INVALID_ENTITY;
     }
 
-    void Coordinator::setEntities(std::size_t index, Entity entity) {
+    Entity Coordinator::getEntityById(int id) {
+        for (Entity entity : _entities) {
+            std::string entityName = this->getEntityName(entity);
+            if (entityName == "player") {
+                auto entityType = this->getComponent<EntityTypes>(entity);
+                if (entityType.idPlayer == id) {
+                    return entity;
+                }
+            }
+        }
+        return INVALID_ENTITY;
+    }
+
+    void Coordinator::setEntities(std::size_t index, Entity entity)
+    {
         if (index < _entities.size()) {
             _entities[index] = entity;
         } else {
@@ -96,7 +126,8 @@ namespace ECS {
         }
     }
 
-    void Coordinator::initEntities() {
+    void Coordinator::initEntities()
+    {
         auto entities = this->getEntities();
         for (const Entity& entity : entities) {
             std::string name = this->getEntityName(entity);
@@ -108,7 +139,8 @@ namespace ECS {
         }
     }
 
-    void Coordinator::createEntityFromType(const std::string &type, std::uint32_t entity) {
+    void Coordinator::createEntityFromType(const std::string &type, std::uint32_t entity)
+    {
         std::cout << "Creating entity from type: " << type << std::endl;
         auto it = entityHandlers.find(type);
         if (it != entityHandlers.end()) {
@@ -117,22 +149,56 @@ namespace ECS {
         }
     }
 
-    Coordinator Coordinator::initEngine() {
-        Coordinator gCoordinator;
+    void Coordinator::updateComponentVector(Coordinator& coordinator, Entity entity, const std::string& params, const std::string& key)
+    {
+        Vector2 value;
+        size_t posIndex = params.find(key);
+        if (posIndex != std::string::npos) {
+            size_t endPos = params.find(';', posIndex);
+            std::string newValue = params.substr(posIndex + key.length(), endPos - (posIndex + key.length()));
+            sscanf(newValue.c_str(), "%f,%f", &value.x, &value.y);
+            ECS::Spacial currentPos = coordinator.getComponent<Spacial>(entity);
+            if (key == "pos:") {
+                currentPos.position = value;
+            } else {
+                currentPos.scale = value;
+            }
+        }
+    }
 
-        // Init engine and register components and systems
-        gCoordinator.init();
-        auto drawSystem = gCoordinator.registerCoordSystem<ECS::Draw>();
+    template <typename T, typename MemberType>
+    void Coordinator::updateComponentValue(Coordinator& coordinator, Entity entity, const std::string& params, const std::string& key, MemberType T::*member)
+    {
+        float value;
+        size_t posIndex = params.find(key);
+        if (posIndex != std::string::npos) {
+            size_t endPos = params.find(';', posIndex);
+            std::string newValue = params.substr(posIndex + key.length(), endPos - (posIndex + key.length()));
+            sscanf(newValue.c_str(), "%f", &value);
 
-        Signature drawSignature;
-        drawSignature.set(gCoordinator.getComponentType<Images>());
-        gCoordinator.setSystemSignature<ECS::Draw>(drawSignature);
+            auto& component = coordinator.getComponent<T>(entity);
+            component.*member = value;
+        } else {
+            std::cout << "Key not found" << std::endl;
+        }
+    }
 
-        // Create entities
-        gCoordinator.createEntity("settings");
-        gCoordinator.createEntity("player");
-        gCoordinator.initEntities();
+    void Coordinator::spawnEntity(Coordinator& coordinator, const std::string& name, const std::string& params)
+    {
+        Vector2 position = {0, 0}, scale = {0, 0};
+        float damage = 0, health = 0, armor = 0;
 
-        return gCoordinator;
+        ECS::Entity newEntity = coordinator.createEntity(name);
+        coordinator.initEntities();
+        updateComponentVector(coordinator, newEntity, params, "pos:");
+        updateComponentVector(coordinator, newEntity, params, "scale:");
+        updateComponentValue<Power>(coordinator, newEntity, params, "damage:", &Power::damage);
+        updateComponentValue<Life>(coordinator, newEntity, params, "health:", &Life::health);
+        updateComponentValue<Life>(coordinator, newEntity, params, "armor:", &Life::armor);
+    }
+
+    bool Coordinator::hasComponent(Entity entity, ComponentType componentType)
+    {
+        return entityManager->getSignature(entity).test(componentType);
     }
 }

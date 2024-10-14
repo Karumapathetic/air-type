@@ -32,6 +32,7 @@ namespace Graphics {
                         _gameState = GameState::GAME;
                         break;
                     case 1:
+                        _previousState = GameState::PAUSE;
                         _gameState = GameState::SETTINGS;
                         _option->setSelected("Video");
                         return;

@@ -6,12 +6,18 @@
 */
 
 #include <iostream>
-#include "Core.hpp"
 
-int main() {
+#include "Client.hpp"
+
+int main(int argc, char const* const* argv) {
+    if (argc != 2) {
+        std::cout << "Usage: ./r-type_client <host>" << std::endl;
+        return 0;
+    }
     try {
-        Graphics::Core core;
-        core.LaunchGame();
+        Client client(argv[1]);
+        client.init();
+        client.run();
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
         return 84;

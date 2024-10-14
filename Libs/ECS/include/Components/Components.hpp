@@ -7,20 +7,29 @@
 
 #pragma once
 
-#include <raylib.h>
 #include <string>
 
 namespace ECS {
+
+    struct Rectangle {
+        float x;
+        float y;
+        float width;
+        float height;
+    };
+
+    struct Vector2 {
+        float x;
+        float y;
+    };
     /**
      * @brief A struct that represents the texture of an entity.
      * 
-     * This struct contains the texture of an entity. It also contains the priority of the texture.
-     * The priority is used to determine the order in which the textures are drawn.
+     * This struct contains the texture of an entity.
      * 
      */
     struct Images {
-        Texture2D texture;
-        int priority;
+        std::string texture;
     };
 
     /**
@@ -32,13 +41,13 @@ namespace ECS {
      * 
      */
     struct Keybind {
-        std::unordered_map<std::string, std::pair<KeyboardKey, std::string>> keybinds;
+        std::unordered_map<std::string, std::pair<int, std::string>> keybinds;
 
         Keybind() = default;
-        Keybind(KeyboardKey key, const std::string &action, const std::string &desc) {
+        Keybind(int key, const std::string &action, const std::string &desc) {
             keybinds[action] = std::make_pair(key, desc);
         }
-        void addKeybind(KeyboardKey key, const std::string &action, const std::string &desc) {
+        void addKeybind(int key, const std::string &action, const std::string &desc) {
             keybinds[action] = std::make_pair(key, desc);
         }
     };
@@ -76,7 +85,7 @@ namespace ECS {
      * 
      */
     struct Sounds {
-        Sound sound;
+        std::string sound;
         float volume;
         std::string desc;
     };
@@ -89,8 +98,8 @@ namespace ECS {
      * 
      */
     struct Spacial {
-        float position;
-        float scale;
+        Vector2 position;
+        Vector2 scale;
     };
 
     /**
@@ -124,5 +133,6 @@ namespace ECS {
     struct EntityTypes {
         std::string type;
         bool isPlayer;
+        int idPlayer;
     };
 }

@@ -8,8 +8,6 @@
 #include "Core.hpp"
 #include "Game.hpp"
 
-#include "raylib.h"
-
 namespace Graphics {
     void Core::InitStars(int numStars) {
         std::srand(std::time(nullptr));
@@ -38,12 +36,12 @@ namespace Graphics {
     void Core::InitGraphics() {
         int screenWidth = GetMonitorWidth(0);
         int screenHeight = GetMonitorHeight(0);
-        InitWindow(screenWidth, screenHeight, "R-Type");
+        InitWindow(screenWidth, screenHeight, "Air-Type");
         SetTargetFPS(60);
         InitAudioDevice();
         SetExitKey(KEY_BACKSPACE);
         InitStars(500);
-        _game.InitCoordinator();
+        _game.setGameState(Graphics::GameState::MENU);
     }
 
     void Core::CloseGraphics() {
@@ -51,25 +49,23 @@ namespace Graphics {
         CloseAudioDevice();
     }
 
-    void Core::LaunchGame() {
-        InitGraphics();
+    void Core::Caillou(bool *isRunning) {
+        // const float fixedTimeStep = 1.0f / 60.0f;
+        // float accumulator = 0.0f;
+        // float lastTime = GetTime();
 
-        const float fixedTimeStep = 1.0f / 60.0f;
-        float accumulator = 0.0f;
-        float lastTime = GetTime();
+        if (!WindowShouldClose() && _game.getGameState() != GameState::QUIT) {
+            // float currentTime = GetTime();
+            // float frameTime = currentTime - lastTime;
+            // lastTime = currentTime;
+            // accumulator += frameTime;
 
-        while (!WindowShouldClose() && _game.getGameState() != GameState::QUIT) {
-            float currentTime = GetTime();
-            float frameTime = currentTime - lastTime;
-            lastTime = currentTime;
-            accumulator += frameTime;
-
-            while (accumulator >= fixedTimeStep) {
-                accumulator -= fixedTimeStep;
-            }
-
+            // while (accumulator >= fixedTimeStep) {
+            //     accumulator -= fixedTimeStep;
+            // }
             _game.DrawGraphics();
+        } else {
+            *isRunning = false;
         }
-        CloseGraphics();
     }
 }

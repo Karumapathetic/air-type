@@ -28,12 +28,17 @@ namespace ECS {
     class Coordinator {
         public:
             /**
+             * @brief Constructor of the coordinator.
+             */
+            Coordinator();
+            /**
              * @brief Registers a component type.
              * 
              * @tparam T The type of the component.
              */
             template<typename T>
-            void registerComponent() {
+            void registerComponent()
+            {
                 componentManager->registerComponent<T>();
             }
 
@@ -45,7 +50,8 @@ namespace ECS {
              * @param component The component to be added.
              */
             template<typename T>
-            void addComponent(Entity entity, T component) {
+            void addComponent(Entity entity, T component)
+            {
                 componentManager->addComponent<T>(entity, component);
 
                 auto signature = entityManager->getSignature(entity);
@@ -62,7 +68,8 @@ namespace ECS {
              * @param entity The entity from which the component is removed.
              */
             template<typename T>
-            void removeComponent(Entity entity) {
+            void removeComponent(Entity entity)
+            {
                 componentManager->removeComponent<T>(entity);
 
                 auto signature = entityManager->getSignature(entity);
@@ -81,7 +88,8 @@ namespace ECS {
              * @return The component associated with the entity.
              */
             template<typename T>
-            T& getComponent(Entity entity) {
+            T& getComponent(Entity entity)
+            {
                 return componentManager->getComponent<T>(entity);
             }
 
@@ -93,7 +101,8 @@ namespace ECS {
              * @return The component type.
              */
             template<typename T>
-            ComponentType getComponentType() {
+            ComponentType getComponentType()
+            {
                 return componentManager->getComponentType<T>();
             }
 
@@ -105,12 +114,33 @@ namespace ECS {
              * @return The system.
              */
             template<typename T>
-            std::shared_ptr<T> registerCoordSystem() {
+            std::shared_ptr<T> registerSystem()
+            {
                 return systemManager->registerSystem<T>();
             }
 
+            /**
+             * @brief Sets the system signature.
+             * 
+             * @tparam T The type of the system.
+             * @param signature The signature of the system.
+             */
             template<typename T>
-            Signature getSystemSignature() {
+            std::shared_ptr<T> getCoordSystem()
+            {
+                return systemManager->getSystem<T>();
+            }
+
+            /**
+             * @brief Retrieves the signature of a system.
+             * 
+             * @tparam T The type of the system.
+             * 
+             * @return The signature of the system.
+             */
+            template<typename T>
+            Signature getSystemSignature()
+            {
                 return systemManager->getSystemSignature<T>();
             }
 
@@ -121,19 +151,10 @@ namespace ECS {
              * @param signature The signature of the system.
              */
             template<typename T>
-            void setSystemSignature(Signature signature) {
+            void setSystemSignature(Signature signature)
+            {
                 systemManager->setSignature<T>(signature);
             }
-
-            /**
-             * @brief Initializes the ECS coordinator.
-             * 
-             * This function creates and initializes the component manager, entity manager, and system manager.
-             * It also registers the component types.
-             * 
-             * @return The initialized Coordinator instance.
-             */
-            static Coordinator initEngine();
 
             /**
              * @brief Initializes the entities in the ECS.
@@ -145,13 +166,6 @@ namespace ECS {
              * @return void
              */
             void initEntities();
-            /**
-             * @brief Initializes the coordinator.
-             * 
-             * This function initializes the coordinator. It creates the component manager, entity manager,
-             * and system manager. It also registers the component types.
-             */
-            void init();
 
             /**
              * @brief Creates an entity.
@@ -237,6 +251,15 @@ namespace ECS {
             Entity getEntity(std::string name);
 
             /**
+             * @brief Retrieves the entity by ID.
+             * 
+             * @param id The ID of the entity type.
+             * 
+             * @return The entity.
+             */
+            Entity getEntityById(int id);
+
+            /**
              * @brief Sets the entities.
              * 
              * @param index The index of the entity.
@@ -244,6 +267,22 @@ namespace ECS {
              */
             void setEntities(std::size_t index, Entity entity);
 
+            /**
+             * @brief Spawns an entity in the ECS based on the provided name and parameters.
+             * 
+             * This function creates an entity with the given name and initializes it using the provided parameters.
+             * It then registers the entity handler for the given name and calls the handler to perform additional
+             * initialization tasks specific to the entity type.
+             * 
+             * @param coordinator The ECS coordinator.
+             * @param name The name of the entity to be spawned.
+             * @param params The parameters string containing additional information for initializing the entity.
+             * 
+             * @return void
+             */
+            void spawnEntity(Coordinator& coordinator, const std::string& name, const std::string& params);
+
+            bool hasComponent(Entity entity, ComponentType componentType);
         private:
             /**
              * @brief Variable that stores the component manager.
@@ -271,9 +310,52 @@ namespace ECS {
             std::vector<Entity> _entities;
 
             /**
-             * @brief Variable that stores the entity names.
+             * @brief Creates an entity based on the specified type.
+             * 
+             * This function is responsible for creating an entity of a specific type based on the provided
+             * type string. It then registers the entity handler for the given type and calls the handler
+             * to initialize the entity.
+             * 
+             * @param type The type of the entity to be created.
+             * @param entity The unique identifier of the entity.
+             * 
+             * @return void
              */
             void createEntityFromType(const std::string &type, std::uint32_t entity);
+
+            /**
+             * @brief Updates the value of a specific member variable in a component.
+             * 
+             * This function is used to update the value of a specific member variable in a component 
+             * based on the provided parameters. It uses template specialization to handle different 
+             * data types.
+             * 
+             * @param coordinator The ECS coordinator.
+             * @param entity The entity to which the component belongs.
+             * @param params The parameters string containing the new value.
+             * @param key The key of the member variable to be updated.
+             * @param member A pointer to the member variable in the component.
+             * 
+             * @return void
+             */
+            template <typename T, typename MemberType>
+            void updateComponentValue(Coordinator& coordinator, Entity entity, const std::string& params, const std::string& key, MemberType T::*member);
+
+            /**
+             * @brief Updates the value of a specific member variable in a component that is a vector.
+             * 
+             * This function is used to update the value of a specific member variable in a component 
+             * that is a vector based on the provided parameters. It parses the input string to extract 
+             * the new vector values and updates the corresponding member variable in the component.
+             * 
+             * @param coordinator The ECS coordinator.
+             * @param entity The entity to which the component belongs.
+             * @param params The parameters string containing the new vector values.
+             * @param key The key of the member variable to be updated.
+             * 
+             * @return void
+             */
+            void updateComponentVector(Coordinator& coordinator, Entity entity, const std::string& params, const std::string& key);
     };
 
     /**

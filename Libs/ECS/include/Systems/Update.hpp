@@ -8,6 +8,7 @@
 #pragma once
 
 #include "ISystem.hpp"
+#include "Coordinator.hpp"
 
 namespace ECS {
     /**
@@ -15,8 +16,19 @@ namespace ECS {
      */
     class Update : public ISystem {
         public:
-            Update();
-            ~Update();
+            void UpdatePositions(Coordinator &gCoordinator) {
+                for (auto entity: gCoordinator.getEntities()) {
+                    if (gCoordinator.getEntityName(entity) == "enemy") {
+                        auto &spacial = gCoordinator.getComponent<Spacial>(entity);
+                        auto &speed = gCoordinator.getComponent<Speed>(entity);
+                        spacial.position.x -= speed.velocity;
+                    } else if (gCoordinator.getEntityName(entity) == "missile") {
+                        auto &spacial = gCoordinator.getComponent<Spacial>(entity);
+                        auto &speed = gCoordinator.getComponent<Speed>(entity);
+                        spacial.position.x += speed.velocity;
+                    }
+                }
+            }
         protected:
         private:
     };

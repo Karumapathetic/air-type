@@ -9,22 +9,26 @@
 
 namespace Graphics {
     void Game::HandleKeyboardInput() {
-        int key = GetKeyPressed();
-        if (key != 0) {
-            auto keyHandlers = _option->getBindedKeys();
-            if (_option->getChanging() == "" && keyHandlers.find(key) != keyHandlers.end()) {
-                keyHandlers[key]();
-            }
-            if (_option->getChanging() != "") {
-                std::string oldAction = _option->getChanging();
-                auto& keybinds = getCoordinator().getComponent<ECS::Keybind>(getCoordinator().getEntity("settings")).keybinds;
-                int oldKey = keybinds[oldAction].first;
-                keybinds[oldAction] = std::make_pair((KeyboardKey)key, keybinds[oldAction].second);
-                std::function<void()> handler = keyHandlers[oldKey];
-                keyHandlers.erase(oldKey);
-                keyHandlers[key] = handler;
-                _option->setBindedKeys(keyHandlers);
-                _option->setChanging("");
+        _clientAction = "";
+        auto keyHandlers = _option->getBindedKeys();
+        for (int key = KEY_SPACE; key <= KEY_KP_EQUAL; ++key) {
+            if (IsKeyDown(key)) {
+                if (_option->getChanging() == "" && keyHandlers.find(key) != keyHandlers.end()) {
+                    keyHandlers[key]();
+                }
+                if (_option->getChanging() != "") {
+                    std::string oldAction = _option->getChanging();
+                    auto keybinds = _option->getKeybinds();
+                    int oldKey = keybinds[oldAction].first;
+                    keybinds[oldAction] = std::make_pair((KeyboardKey)key, keybinds[oldAction].second);
+                    _option->setKeybinds(keybinds);
+                    std::function<void()> handler = keyHandlers[oldKey];
+                    keyHandlers.erase(oldKey);
+                    keyHandlers[key] = handler;
+                    _option->setBindedKeys(keyHandlers);
+                    _option->setChanging("");
+                }
+                break;
             }
         }
     }
