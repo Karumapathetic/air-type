@@ -9,23 +9,23 @@
 
 namespace Graphics {
     void Option::KeyShoot() {
-        _game.setClientAction("shoot");
+        _game.addClientAction("shoot");
     }
 
     void Option::KeyUp() {
-        _game.setClientAction("up");
+        _game.addClientAction("up");
     }
 
     void Option::KeyDown() {
-        _game.setClientAction("down");
+        _game.addClientAction("down");
     }
 
     void Option::KeyLeft() {
-        _game.setClientAction("left");
+        _game.addClientAction("left");
     }
 
     void Option::KeyRight() {
-        _game.setClientAction("right");
+        _game.addClientAction("right");
     }
 
     void Option::KeyEscape() {
@@ -42,6 +42,6 @@ namespace Graphics {
             default:
                 break;
         }
-        _game.setClientAction("escape");
+        _game.addClientAction("escape");
     }
 } // namespace Graphics

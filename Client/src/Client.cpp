@@ -39,11 +39,7 @@ void Client::run()
         if (_client.getQueue().size() > 0)
             handleData();
         _core.Caillou(&_isClientRunning);
-        if (_core.getGame().getClientAction() != "") {
-            std::string caca = "22 " + _id + " " + _core.getGame().getClientAction();
-            std::cout << "Sending action: " << caca << std::endl;
-            _client.send_data(caca);
-        }
+        checkForInput();
     }
     this->stop();
 }
@@ -125,4 +121,16 @@ void Client::disconnexionAccepted(std::vector<std::string> command)
 {
     std::cout << "Disconnexion accepted" << std::endl;
     _isClientRunning = false;
+}
+
+void Client::checkForInput()
+{
+    if (!_core.getGame().getClientAction().empty()) {
+        std::string actions = "22 " + _id;
+        for (auto action : _core.getGame().getClientAction()) {
+            actions += " " + action;
+        }
+        std::cout << "Sending action: " << actions << std::endl;
+        _client.send_data(actions);
+    }
 }

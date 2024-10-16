@@ -103,9 +103,9 @@ namespace Graphics {
             /// @param stars The stars to set
             void setStars(std::vector<Star> stars) { _stars = stars; }
 
-            std::string getClientAction() { return _clientAction; }
+            std::vector<std::string> getClientAction() { return _clientAction; }
 
-            void setClientAction(std::string clientAction) { _clientAction = clientAction; }
+            void addClientAction(std::string clientAction) { _clientAction.push_back(clientAction); }
 
             std::vector<EntityData> getEntities() { return entities; }
 
@@ -222,8 +222,8 @@ namespace Graphics {
             Option *_option;
 
             /**
-             * @brief The key that the client pressed (action)
+             * @brief The keys that the client pressed (actions)
              */
-            std::string _clientAction;
+            std::vector<std::string> _clientAction;
     };
 }

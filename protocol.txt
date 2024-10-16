@@ -6,7 +6,7 @@
 
 2X: ECS
 -> 21: Sprite position (21 <entityName: ???> <spriteId: ???> <posX: ???> <posY: ???>) (Positions are centered) (client)
--> 22: User input (22 <clientId: ???> <action: ???>) (server)
+-> 22: User input (22 <clientId: ???> <action: ???> {<action: ???> ...}) (server)
 
 3X: Errors
 -> 30: Invalid command (30) (client)

@@ -239,7 +239,7 @@ namespace ECS {
              * 
              * @return The entities.
              */
-            std::vector<Entity> getEntities();
+            std::vector<Entity> getEntities() const;
 
             /**
              * @brief Retrieves the entity.
@@ -283,6 +283,8 @@ namespace ECS {
             void spawnEntity(Coordinator& coordinator, const std::string& name, const std::string& params);
 
             bool hasComponent(Entity entity, ComponentType componentType);
+
+            bool isEntityValid(Entity entity) const;
         private:
             /**
              * @brief Variable that stores the component manager.

@@ -72,8 +72,8 @@ namespace Graphics {
                 entities[id].priority = {1};
             }  else if (texturePath.find("missile") != std::string::npos) {
                 entities[id].texture = LoadTexture("Libs/Graphics/assets/texture/MissileKill.gif");
-                entities[id].scale = {1, 1};
-                entities[id].crop = {0, 50, 32, 16};
+                entities[id].scale = {40, 40};
+                entities[id].crop = {0, 0, 100, 100};
                 entities[id].priority = {1};
             } else {
                 entities[id].texture = {};

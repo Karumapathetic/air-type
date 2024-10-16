@@ -9,14 +9,14 @@
 
 namespace Graphics {
     void Game::HandleKeyboardInput() {
-        _clientAction = "";
+        _clientAction.clear();
         auto keyHandlers = _option->getBindedKeys();
         for (int key = KEY_SPACE; key <= KEY_KP_EQUAL; ++key) {
             if (IsKeyDown(key)) {
                 if (_option->getChanging() == "" && keyHandlers.find(key) != keyHandlers.end()) {
                     keyHandlers[key]();
                 }
-                if (_option->getChanging() != "") {
+                if (!_option->getChanging().empty()) {
                     std::string oldAction = _option->getChanging();
                     auto keybinds = _option->getKeybinds();
                     int oldKey = keybinds[oldAction].first;
@@ -28,7 +28,6 @@ namespace Graphics {
                     _option->setBindedKeys(keyHandlers);
                     _option->setChanging("");
                 }
-                break;
             }
         }
     }

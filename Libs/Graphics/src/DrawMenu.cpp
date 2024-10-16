@@ -20,7 +20,7 @@ namespace Graphics {
 
         // Draw moving stars
         for (auto &star : _stars) {
-            star.x -= 1.5f;
+            star.x -= 1.0f;
             if (star.x < 0) {
                 star.x = GetScreenWidth();
                 star.y = static_cast<float>(std::rand() % GetScreenHeight());

@@ -8,6 +8,8 @@
 #pragma once
 
 #include <string>
+#include <chrono>
+#include <unordered_map>
 
 namespace ECS {
 
@@ -134,5 +136,34 @@ namespace ECS {
         std::string type;
         bool isPlayer;
         int idPlayer;
+    };
+
+    /**
+     * @brief A struct that handles various types of cooldowns.
+     * 
+     * This struct contains maps of cooldown times and last activation times for each type of cooldown.
+     * 
+     */
+    struct Cooldown {
+        std::unordered_map<std::string, float> cooldowns; // <type, cooldown time>
+        std::unordered_map<std::string,std::pair<float, std::chrono::steady_clock::time_point>> activation; // pair:<number of times it needs to be activated, timer since last activation>
+
+        Cooldown() = default;
+
+        void addCooldown(const std::string &type, float cooldownTime, float activationTimes) {
+            cooldowns[type] = cooldownTime;
+            activation[type].first = activationTimes;
+            activation[type].second = std::chrono::steady_clock::now();
+        }
+
+        float getRemainingCooldown(const std::string &type) const {
+            auto it = activation.find(type);
+            if (it != activation.end()) {
+                auto now = std::chrono::steady_clock::now();
+                float elapsed = std::chrono::duration<float>(now - it->second.second).count();
+                return cooldowns.at(type) - elapsed;
+            }
+            return 0.0f;
+        }
     };
 }

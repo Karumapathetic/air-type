@@ -37,6 +37,7 @@ namespace ECS {
         this->registerComponent<EntityTypes>();
         this->registerComponent<Keybind>();
         this->registerComponent<Sounds>();
+        this->registerComponent<Cooldown>();
 
         this->registerSystem<ECS::Draw>();
         this->registerSystem<ECS::Collision>();
@@ -56,7 +57,7 @@ namespace ECS {
     Entity Coordinator::createEntity(const std::string& name) {
         Entity id = entityManager->createEntity(name);
         this->setEntities(id, id);
-        std::cout << "Entity : " << name << " have the ID : " << id << std::endl;
+        std::cout << std::endl << "Entity : " << name << " have the ID : " << id << std::endl;
         return id;
     }
 
@@ -91,8 +92,18 @@ namespace ECS {
         entityManager->setSignature(entity, signature);
     }
 
-    std::vector<Entity> Coordinator::getEntities() {
-        return _entities;
+    bool Coordinator::isEntityValid(Entity entity) const {
+        return entity != INVALID_ENTITY;
+    }
+    
+    std::vector<Entity> Coordinator::getEntities() const {
+        std::vector<Entity> validEntities;
+        for (const Entity& entity : _entities) {
+            if (isEntityValid(entity)) {
+                validEntities.push_back(entity);
+            }
+        }
+        return validEntities;
     }
 
     Entity Coordinator::getEntity(std::string name) {
@@ -144,7 +155,7 @@ namespace ECS {
         std::cout << "Creating entity from type: " << type << std::endl;
         auto it = entityHandlers.find(type);
         if (it != entityHandlers.end()) {
-            std::cout << "Found handler for entity type: " << type << std::endl;
+            std::cout << "Found handler for entity type: " << type << std::endl << std::endl;
             it->second(*this, entity);
         }
     }
