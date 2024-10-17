@@ -126,6 +126,8 @@ void Client::disconnexionAccepted(std::vector<std::string> command)
 void Client::checkForInput()
 {
     if (!_core.getGame().getClientAction().empty()) {
+        if (_core.getGame().getGameState() == Graphics::GameState::MENU || _core.getGame().getGameState() == Graphics::GameState::SETTINGS)
+            return;
         std::string actions = "22 " + _id;
         for (auto action : _core.getGame().getClientAction()) {
             actions += " " + action;

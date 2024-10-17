@@ -22,13 +22,17 @@ namespace ECS {
                 std::string entityName = coordinator.getEntityName(entity);
                 if (entityName == "player") {
                     if (params == "up") {
-                        entityPos.position.y -= entitySpeed.velocity;
+                        if (entityPos.position.y - entitySpeed.velocity > 0)
+                            entityPos.position.y -= entitySpeed.velocity;
                     } else if (params == "down") {
-                        entityPos.position.y += entitySpeed.velocity;
+                        if (entityPos.position.y + entitySpeed.velocity < MAX_Y)
+                            entityPos.position.y += entitySpeed.velocity;
                     } else if (params == "left") {
-                        entityPos.position.x -= entitySpeed.velocity;
+                        if (entityPos.position.x - entitySpeed.velocity > 0)
+                            entityPos.position.x -= entitySpeed.velocity;
                     } else if (params == "right") {
-                        entityPos.position.x += entitySpeed.velocity;
+                        if (entityPos.position.x + entitySpeed.velocity < MAX_X)
+                            entityPos.position.x += entitySpeed.velocity;
                     }
                 }
             }

@@ -32,6 +32,7 @@ namespace ECS {
      */
     struct Images {
         std::string texture;
+        // Rectangle crop;
     };
 
     /**

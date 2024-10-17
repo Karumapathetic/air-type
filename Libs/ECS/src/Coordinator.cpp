@@ -212,4 +212,17 @@ namespace ECS {
     {
         return entityManager->getSignature(entity).test(componentType);
     }
+
+    // void Coordinator::setPlayerSpawn(Entity entity)
+    // {
+    //     bool playerSpawned = false;
+    //     while (!playerSpawned) {
+    //         int randomX = MAX_X / 20;
+    //         int randomY = rand() % MAX_Y - 50;
+    //         auto entities = this->getEntities();
+    //         for (Entity entity : entities) {
+    //             ;
+    //         }
+    //     }
+    // }
 }

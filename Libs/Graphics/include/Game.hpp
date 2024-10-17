@@ -6,10 +6,16 @@
 */
 
 #pragma once
-#include "Coordinator.hpp"
+
 #include "Option.hpp"
 
 #include "raylib.h"
+
+#include <iostream>
+#include <vector>
+
+#define MAX_X 1920
+#define MAX_Y 1080
 
 /**
  * @brief Namespace that contains all the graphics related classes

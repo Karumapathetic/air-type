@@ -36,7 +36,7 @@ void Server::run()
             handleData();
         auto updateSystem = _coordinator.getCoordSystem<ECS::Update>();
         updateSystem->UpdatePositions(_coordinator);
-        // sendECSData();
+        sendECSData();
     }
     this->stop();
 }

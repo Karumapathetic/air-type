@@ -16,6 +16,9 @@
 #include "EntityManager.hpp"
 #include "SystemManager.hpp"
 
+#define MAX_X 1920
+#define MAX_Y 1080
+
 namespace ECS {
     /**
      * @brief Main class of the ECS that will handle the coordination of everything.
@@ -285,6 +288,8 @@ namespace ECS {
             bool hasComponent(Entity entity, ComponentType componentType);
 
             bool isEntityValid(Entity entity) const;
+
+            void setPlayerSpawn(Entity entity);
         private:
             /**
              * @brief Variable that stores the component manager.
