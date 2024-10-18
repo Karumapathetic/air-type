@@ -289,7 +289,7 @@ namespace ECS {
 
             bool isEntityValid(Entity entity) const;
 
-            void setPlayerSpawn(Entity entity);
+            //void setPlayerSpawn(Entity entity);
         private:
             /**
              * @brief Variable that stores the component manager.
