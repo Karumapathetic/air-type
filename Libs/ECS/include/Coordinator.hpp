@@ -16,6 +16,9 @@
 #include "EntityManager.hpp"
 #include "SystemManager.hpp"
 
+#define MAX_X 1920
+#define MAX_Y 1080
+
 namespace ECS {
     /**
      * @brief Main class of the ECS that will handle the coordination of everything.
@@ -239,7 +242,7 @@ namespace ECS {
              * 
              * @return The entities.
              */
-            std::vector<Entity> getEntities();
+            std::vector<Entity> getEntities() const;
 
             /**
              * @brief Retrieves the entity.
@@ -283,6 +286,10 @@ namespace ECS {
             void spawnEntity(Coordinator& coordinator, const std::string& name, const std::string& params);
 
             bool hasComponent(Entity entity, ComponentType componentType);
+
+            bool isEntityValid(Entity entity) const;
+
+            //void setPlayerSpawn(Entity entity);
         private:
             /**
              * @brief Variable that stores the component manager.

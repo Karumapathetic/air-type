@@ -19,12 +19,23 @@ namespace ECS {
             void UpdatePositions(Coordinator &gCoordinator) {
                 for (auto entity: gCoordinator.getEntities()) {
                     if (gCoordinator.getEntityName(entity) == "enemy") {
+                        // std::cout << "Enemy position: " << gCoordinator.getComponent<Spacial>(entity).position.x << std::endl;
+                        if (gCoordinator.getComponent<Spacial>(entity).position.x < 0) {
+                            gCoordinator.destroyEntity(entity);
+                            continue;
+                        }
                         auto &spacial = gCoordinator.getComponent<Spacial>(entity);
-                        auto &speed = gCoordinator.getComponent<Speed>(entity);
+                        auto speed = gCoordinator.getComponent<Speed>(entity);
                         spacial.position.x -= speed.velocity;
                     } else if (gCoordinator.getEntityName(entity) == "missile") {
+                        // std::cout << "Missile position: " << gCoordinator.getComponent<Spacial>(entity).position.x << std::endl;
+                        if (gCoordinator.getComponent<Spacial>(entity).position.x > MAX_X) {
+                            std::cout << "Destroying missile: " << entity << std::endl;
+                            gCoordinator.destroyEntity(entity);
+                            continue;
+                        }
                         auto &spacial = gCoordinator.getComponent<Spacial>(entity);
-                        auto &speed = gCoordinator.getComponent<Speed>(entity);
+                        auto speed = gCoordinator.getComponent<Speed>(entity);
                         spacial.position.x += speed.velocity;
                     }
                 }

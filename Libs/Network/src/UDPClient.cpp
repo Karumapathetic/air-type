@@ -7,7 +7,6 @@
 
 #include "UDPClient.hpp"
 
-
 namespace Network {
     UDPClient::UDPClient(std::string address)
     : _socketSend(_io_context, asio::ip::udp::endpoint(asio::ip::udp::v4(), 0)),
@@ -19,6 +18,7 @@ namespace Network {
 
         _addressRecv = "127.0.0.1";
         _portRecv = _socketRecv.local_endpoint().port();
+        std::cout << "Port: " << _portRecv << std::endl;
     }
 
     UDPClient::~UDPClient() {

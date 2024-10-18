@@ -50,19 +50,7 @@ namespace Graphics {
     }
 
     void Core::Caillou(bool *isRunning) {
-        // const float fixedTimeStep = 1.0f / 60.0f;
-        // float accumulator = 0.0f;
-        // float lastTime = GetTime();
-
         if (!WindowShouldClose() && _game.getGameState() != GameState::QUIT) {
-            // float currentTime = GetTime();
-            // float frameTime = currentTime - lastTime;
-            // lastTime = currentTime;
-            // accumulator += frameTime;
-
-            // while (accumulator >= fixedTimeStep) {
-            //     accumulator -= fixedTimeStep;
-            // }
             _game.DrawGraphics();
         } else {
             *isRunning = false;

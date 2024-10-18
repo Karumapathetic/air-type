@@ -26,6 +26,8 @@ class Client {
         std::vector<std::string> split(std::string s, std::string delimiter);
         std::unordered_map<std::string, std::function<void(std::vector<std::string>)>> _commands;
 
+        void checkForInput();
+
     protected:
     private:
         Graphics::Core _core;

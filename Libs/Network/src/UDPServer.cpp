@@ -14,6 +14,7 @@ namespace Network {
     UDPServer::UDPServer(std::string address, int port) : _socket(_io_context, asio::ip::udp::endpoint(asio::ip::udp::v4(), port)), _resolver(_io_context) {
         _address = address;
         _port = port;
+        std::cout << "Port: " << _port << std::endl;
     }
 
     UDPServer::~UDPServer() {
