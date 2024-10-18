@@ -16,8 +16,11 @@ namespace ECS {
      */
     class Collision : public ISystem {
         public:
-            Collision() {}
-            ~Collision() {}
+            /**
+             * @brief Detects collisions between entities.
+             * 
+             * @param gCoordinator The coordinator that contains the entities.
+             */
             void detectCollision(ECS::Coordinator &gCoordinator) {
                 auto entities = gCoordinator.getEntities();
                 for (size_t i = 0; i < entities.size(); ++i) {

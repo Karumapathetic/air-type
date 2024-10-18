@@ -119,7 +119,7 @@ void Server::connect(std::vector<std::string> command)
         auto newEntity = _coordinator.createEntity("player");
         _coordinator.initEntities();
         auto &entitypePlayer = _coordinator.getComponent<ECS::EntityTypes>(newEntity);
-        entitypePlayer.idPlayer = newClient.s_id;
+        entitypePlayer.id = newClient.s_id;
         _clients.push_back(newClient);
         _server.send_data("12 " + std::to_string(newClient.s_id), newClient.s_address, newClient.s_port);
         this->sendToClients("21 " + _coordinator.getEntityName(newEntity) + " " + std::to_string(newClient.s_id) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(newEntity).position.x) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(newEntity).position.y));

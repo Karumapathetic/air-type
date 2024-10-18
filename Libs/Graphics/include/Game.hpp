@@ -91,8 +91,6 @@ namespace Graphics {
             /// @brief Destructor of the game
             ~Game() {}
 
-            // void DrawSprites();
-
             /// @brief Set the enum game state
             /// @param gameState The game state to set
             void setGameState(GameState gameState) { _gameState = gameState; }
@@ -109,13 +107,19 @@ namespace Graphics {
             /// @param stars The stars to set
             void setStars(std::vector<Star> stars) { _stars = stars; }
 
+            /**
+             * @brief Get the Client Action object
+             * 
+             * @return std::vector<std::string> 
+             */
             std::vector<std::string> getClientAction() { return _clientAction; }
 
+            /**
+             * @brief Add a client action to the vector client action
+             * 
+             * @param clientAction The client action to add
+             */
             void addClientAction(std::string clientAction) { _clientAction.push_back(clientAction); }
-
-            std::vector<EntityData> getEntities() { return entities; }
-
-            void setEntities(std::vector<EntityData> entities) { this->entities = entities; }
 
             /** @brief Draw the stars of the background
              * 
@@ -144,11 +148,22 @@ namespace Graphics {
             /// @brief Draw add ons like FPS, etc.
             void DrawAddOns();
 
+            /// @brief Draw all the entities
             void DrawSprites();
 
             /// @brief Handle the keyboard input
             void HandleKeyboardInput();
 
+            /**
+             * @brief Extracts values from a string of parameters.
+             * 
+             * @param params The string of parameters to extract values from.
+             * @param key The key to search for in the parameters.
+             * @param values The vector to store the extracted values in.
+             * @param numValues The number of values to extract.
+             * 
+             * @return True if the values were successfully extracted, false otherwise.
+             */
             bool ExtractValues(const std::string& params, const std::string& key, std::vector<float>& values, int numValues);
 
             /**

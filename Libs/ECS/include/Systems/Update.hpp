@@ -16,6 +16,14 @@ namespace ECS {
      */
     class Update : public ISystem {
         public:
+            /**
+             * @brief Updates the positions of the entities.
+             * 
+             * Updates the positions of the entities based on their speed.
+             * Updates the positions of enemies and missiles.
+             * 
+             * @param gCoordinator The coordinator that contains the entities.
+             */
             void UpdatePositions(Coordinator &gCoordinator) {
                 for (auto entity: gCoordinator.getEntities()) {
                     if (gCoordinator.getEntityName(entity) == "enemy") {

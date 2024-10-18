@@ -285,11 +285,31 @@ namespace ECS {
              */
             void spawnEntity(Coordinator& coordinator, const std::string& name, const std::string& params);
 
+            /**
+             * @brief Checks if the entity has a specific component.
+             * 
+             * @param entity The entity to check.
+             * @param componentType The type of the component.
+             *
+             * @return True if the entity has the component, false otherwise.
+             */
             bool hasComponent(Entity entity, ComponentType componentType);
 
+            /**
+             * @brief Check if the entity is valid or Invalid.
+             * 
+             * @param entity The entity to check.
+             *
+             * @return True if the entity is valid, false otherwise.
+             */
             bool isEntityValid(Entity entity) const;
 
-            void setPlayerSpawn(Entity entity);
+            // /**
+            //  * @brief Sets the player spawn.
+            //  * 
+            //  * @param entity The entity.
+            //  */
+            // void setPlayerSpawn(Entity entity);
         private:
             /**
              * @brief Variable that stores the component manager.

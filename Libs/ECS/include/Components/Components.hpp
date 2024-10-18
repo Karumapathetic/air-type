@@ -135,8 +135,7 @@ namespace ECS {
      */
     struct EntityTypes {
         std::string type;
-        bool isPlayer;
-        int idPlayer;
+        int id;
     };
 
     /**

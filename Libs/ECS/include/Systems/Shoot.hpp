@@ -16,6 +16,12 @@ namespace ECS {
      */
     class Shoot : public ISystem {
         public:
+            /**
+             * @brief Shoots a missile from the entity.
+             * 
+             * @param coordinator The coordinator that contains the entities.
+             * @param entity The entity that is shooting the missile.
+             */
             void MissileShoot(Coordinator &coordinator, Entity entity) {
                 auto &entityCooldown = coordinator.getComponent<Cooldown>(entity);
                 if (entityCooldown.getRemainingCooldown("missile") > 0.0f)

@@ -12,7 +12,7 @@ namespace ECS {
         gCoordinator.addComponent(entity, Spacial{{1.0f, 1.0f}});
         gCoordinator.addComponent(entity, Speed{2.0f, 1.0f});
         gCoordinator.addComponent(entity, Images{ 0 });
-        gCoordinator.addComponent(entity, EntityTypes{"collectible", 1, -1});
+        gCoordinator.addComponent(entity, EntityTypes{"collectible", 1});
         gCoordinator.setEntityInitialized(entity, true);
     }
 }

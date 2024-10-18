@@ -6,7 +6,6 @@
 */
 
 #include "Coordinator.hpp"
-#include "Draw.hpp"
 #include "Collision.hpp"
 
 namespace ECS {
@@ -39,16 +38,11 @@ namespace ECS {
         this->registerComponent<Sounds>();
         this->registerComponent<Cooldown>();
 
-        this->registerSystem<ECS::Draw>();
         this->registerSystem<ECS::Collision>();
-
-        Signature drawSignature;
-        drawSignature.set(this->getComponentType<Images>());
-        this->setSystemSignature<ECS::Draw>(drawSignature);
 
         Signature collisionSignature;
         collisionSignature.set(this->getComponentType<Spacial>());
-        this->setSystemSignature<ECS::Collision>(drawSignature);
+        this->setSystemSignature<ECS::Collision>(collisionSignature);
 
         this->createEntity("settings");
         this->initEntities();
@@ -120,7 +114,7 @@ namespace ECS {
             std::string entityName = this->getEntityName(entity);
             if (entityName == "player") {
                 auto entityType = this->getComponent<EntityTypes>(entity);
-                if (entityType.idPlayer == id) {
+                if (entityType.id == id) {
                     return entity;
                 }
             }

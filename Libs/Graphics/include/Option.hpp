@@ -146,6 +146,9 @@ namespace Graphics {
              */
             std::unordered_map<int, std::function<void()>> _BindedKeys;
 
+            /**
+             * @brief The keybinds
+             */
             std::unordered_map<std::string, std::pair<int, std::string>> _keybinds;
 
             /**
