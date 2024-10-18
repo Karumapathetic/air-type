@@ -6,7 +6,6 @@
 */
 
 #include "Core.hpp"
-#include "Game.hpp"
 
 namespace Graphics {
     void Core::InitStars(int numStars) {

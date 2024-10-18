@@ -13,6 +13,7 @@ add_library(
     src/DrawStars.cpp
     src/HandleInput.cpp
     src/Keys.cpp
+    src/StoreEntity.cpp
 )
 
 target_include_directories(

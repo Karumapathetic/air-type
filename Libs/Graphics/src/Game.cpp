@@ -9,7 +9,6 @@
 #include <ctime>
 #include "raylib.h"
 #include "Game.hpp"
-#include "Draw.hpp"
 
 namespace Graphics {
     Game::Game() : _gameState(GameState::MENU), entities(MAX_ENTITIES)
@@ -19,9 +18,12 @@ namespace Graphics {
 
     void Game::DrawSprites()
     {
+        float scaleX = GetScreenWidth() / MAX_X;
+        float scaleY = GetScreenHeight() / MAX_Y;
+        float scale = std::min(scaleX, scaleY);
         for (EntityData entity : entities) {
             if (entity.priority != -1.0f) {
-                DrawTexturePro(entity.texture, entity.crop, {entity.position.x, entity.position.y, entity.scale.x, entity.scale.y}, {0.0f, 0.0f}, 0.0f, WHITE);
+                DrawTexturePro(entity.texture, entity.crop, {entity.position.x * scale, entity.position.y * scale, entity.scale.x * scale, entity.scale.y * scale}, {0.0f, 0.0f}, 0.0f, WHITE);
             }
         }
     }

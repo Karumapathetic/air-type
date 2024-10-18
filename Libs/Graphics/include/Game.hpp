@@ -14,8 +14,8 @@
 #include <iostream>
 #include <vector>
 
-#define MAX_X 1920
-#define MAX_Y 1080
+#define MAX_X 1920.0f
+#define MAX_Y 1080.0f
 
 /**
  * @brief Namespace that contains all the graphics related classes

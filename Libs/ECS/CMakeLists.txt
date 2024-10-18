@@ -20,7 +20,6 @@ add_library(
 
     src/Systems/Collision.cpp
     src/Systems/Damage.cpp
-    src/Systems/Draw.cpp
     src/Systems/Heal.cpp
     src/Systems/Killed.cpp
     src/Systems/Move.cpp
