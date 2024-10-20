@@ -11,7 +11,7 @@
 #include "Game.hpp"
 
 namespace Graphics {
-    Game::Game() : _gameState(GameState::MENU), entities(MAX_ENTITIES)
+    Game::Game() : _gameState(GameState::MENU)
     {
         _option = new Option(*this);
     }
@@ -21,10 +21,35 @@ namespace Graphics {
         float scaleX = GetScreenWidth() / MAX_X;
         float scaleY = GetScreenHeight() / MAX_Y;
         float scale = std::min(scaleX, scaleY);
-        for (EntityData entity : entities) {
-            if (entity.priority != -1.0f) {
-                DrawTexturePro(entity.texture, entity.crop, {entity.position.x * scale, entity.position.y * scale, entity.scale.x * scale, entity.scale.y * scale}, {0.0f, 0.0f}, 0.0f, WHITE);
+        for (auto entity : _entities) {
+            if (entity.second.priority != -1.0f) {
+                DrawTexturePro(entity.second.texture, entity.second.crop, {entity.second.position.x * scale, entity.second.position.y * scale, entity.second.scale.x * scale, entity.second.scale.y * scale}, {0.0f, 0.0f}, 0.0f, WHITE);
             }
+        }
+    }
+
+    void Game::AnimateEntity(Vector2 oldPos, Vector2 newPos, int id)
+    {
+        if (_entities[id].name == "player") {
+            if (oldPos.y > newPos.y) {
+                if (_entities[id].crop.x == _entities[id].crop.width * 4)
+                    return;
+                _entities[id].crop.x += _entities[id].crop.width;
+            } else if (oldPos.y < newPos.y) {
+                if (_entities[id].crop.x == 0)
+                    return;
+                _entities[id].crop.x -= _entities[id].crop.width;
+            }
+        } else if (_entities[id].name == "enemy") {
+            if (_entities[id].crop.x == _entities[id].crop.width * 7)
+                _entities[id].crop.x = 0;
+            else
+                _entities[id].crop.x += _entities[id].crop.width;
+        } else if (_entities[id].name == "missile") {
+            if (_entities[id].crop.x == _entities[id].crop.width * 3)
+                _entities[id].crop.x = 0;
+            else
+                _entities[id].crop.x += _entities[id].crop.width;
         }
     }
 

@@ -12,7 +12,9 @@
 #include "raylib.h"
 
 #include <iostream>
+#include <unordered_map>
 #include <vector>
+#include <cstdint>
 
 #define MAX_X 1920.0f
 #define MAX_Y 1080.0f
@@ -57,6 +59,7 @@ namespace Graphics {
      * crop rectangle to (0, 0, 0, 0), and priority to 0.0f.
      */
     struct EntityData {
+        std::string name;  ///< The name of the entity.
         Vector2 position;  ///< The position of the entity in the game world.
         Vector2 scale;     ///< The scale of the entity.
         Texture2D texture;  ///< The texture of the entity.
@@ -69,11 +72,22 @@ namespace Graphics {
          * Initializes the position to (0, 0), scale to (1, 1), texture to an empty Texture2D,
          * crop rectangle to (0, 0, 0, 0), and priority to 0.0f.
          */
-        EntityData(): position({0, 0}), scale({1, 1}), texture({}), crop({0, 0, 0, 0}), priority(-1.0f) {}
+        EntityData(): name(""), position({0, 0}), scale({1, 1}), texture({}), crop({0, 0, 0, 0}), priority(-1.0f) {}
     };
 
-    using Entity = int;
-    const int MAX_ENTITIES = 100;
+    /**
+     * @brief Type alias for an entity identifier.
+     * 
+     * An entity is an object in the ECS system. It is represented by a unique identifier.
+     */
+    using Entity = std::uint32_t;
+
+    /**
+     * @brief Maximum number of entities.
+     * 
+     * This constant defines the maximum number of entities that can be created in the ECS system.
+     */
+    const Entity MAX_ENTITIES = 1000;
 
     /**
      * @brief Game class that will handle the game loop
@@ -215,6 +229,18 @@ namespace Graphics {
              * @note This function does not return any meaningful value. It only prints the entities' information.
              */
             void PrintEntities();
+
+            /**
+             * @brief Animates an entity from its old position to its new position.
+             * 
+             * This function takes the old and new positions of an entity and animates it from the old position to the new position.
+             * The entity's texture is updated based on the direction of movement.
+             * 
+             * @param oldPos The old position of the entity.
+             * @param newPos The new position of the entity.
+             * @param id The unique identifier of the entity to animate.
+             */
+            void AnimateEntity(Vector2 oldPos, Vector2 newPos, int id);
         protected:
         private:
             /**
@@ -230,7 +256,7 @@ namespace Graphics {
             /**
              * @brief The entities of the game
              */
-            std::vector<EntityData> entities;
+            std::unordered_map<int, EntityData> _entities;
 
             /**
              * @brief The stars of the background

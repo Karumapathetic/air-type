@@ -27,7 +27,6 @@ namespace ECS {
                 if (entityCooldown.getRemainingCooldown("missile") > 0.0f)
                     return;
                 entityCooldown.activation["missile"].second = std::chrono::steady_clock::now();
-                std::cout << "SHOOT" << std::endl;
                 auto entityPos = coordinator.getComponent<Spacial>(entity);
                 Entity missile = coordinator.createEntity("missile");
                 coordinator.initEntities();

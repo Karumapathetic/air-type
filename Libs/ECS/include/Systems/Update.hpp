@@ -24,7 +24,7 @@ namespace ECS {
              * 
              * @param gCoordinator The coordinator that contains the entities.
              */
-            void UpdatePositions(Coordinator &gCoordinator) {
+            void UpdatePositions(Coordinator &gCoordinator, std::function<void(const std::string&)> send_data_func) {
                 for (auto entity: gCoordinator.getEntities()) {
                     if (gCoordinator.getEntityName(entity) == "enemy") {
                         // std::cout << "Enemy position: " << gCoordinator.getComponent<Spacial>(entity).position.x << std::endl;
@@ -34,7 +34,8 @@ namespace ECS {
                         }
                         auto &spacial = gCoordinator.getComponent<Spacial>(entity);
                         auto speed = gCoordinator.getComponent<Speed>(entity);
-                        spacial.position.x -= speed.velocity;
+                        // spacial.position.x -= speed.velocity;
+                        // send_data_func("21 " + gCoordinator.getEntityName(entity) + " " + std::to_string(entity) + " " + std::to_string(spacial.position.x) + " " + std::to_string(spacial.position.y));
                     } else if (gCoordinator.getEntityName(entity) == "missile") {
                         // std::cout << "Missile position: " << gCoordinator.getComponent<Spacial>(entity).position.x << std::endl;
                         if (gCoordinator.getComponent<Spacial>(entity).position.x > MAX_X) {
@@ -45,6 +46,7 @@ namespace ECS {
                         auto &spacial = gCoordinator.getComponent<Spacial>(entity);
                         auto speed = gCoordinator.getComponent<Speed>(entity);
                         spacial.position.x += speed.velocity;
+                        send_data_func("21 " + gCoordinator.getEntityName(entity) + " " + std::to_string(entity) + " " + std::to_string(spacial.position.x) + " " + std::to_string(spacial.position.y));
                     }
                 }
             }

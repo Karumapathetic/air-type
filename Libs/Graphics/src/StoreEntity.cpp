@@ -27,15 +27,15 @@ namespace Graphics {
         return false;
     }
 
-    void Game::CreateEntity(int id, const std::string& params) {
+    void Game::CreateEntity(Entity id, const std::string& params) {
         if (id < 0 || id >= MAX_ENTITIES) return;
 
         std::vector<float> values;
 
         if (ExtractValues(params, "position:", values, 2)) {
-            entities[id].position = {values[0], values[1]};
+            _entities[id].position = {values[0], values[1]};
         } else {
-            entities[id].position = {0, 0};
+            _entities[id].position = {0, 0};
         }
 
         size_t textureIndex = params.find("texture:");
@@ -43,35 +43,39 @@ namespace Graphics {
             size_t endPos = params.find(';', textureIndex);
             std::string texturePath = params.substr(textureIndex + 8, endPos - (textureIndex + 8));
             if (texturePath.find("player") != std::string::npos) {
-                entities[id].texture = LoadTexture("Libs/Graphics/assets/texture/PlayerShip.gif");
-                entities[id].scale = {86, 48};
-                entities[id].crop = {0, 0, 32, 16};
-                entities[id].priority = {1};
+                _entities[id].texture = LoadTexture("Libs/Graphics/assets/texture/PlayerShip.gif");
+                _entities[id].scale = {86, 48};
+                _entities[id].crop = {66, 0, 33, 16};
+                _entities[id].priority = {1};
+                _entities[id].name = "player";
             } else if (texturePath.find("enemy") != std::string::npos) {
-                entities[id].texture = LoadTexture("Libs/Graphics/assets/texture/EnemyShip.gif");
-                entities[id].scale = {86, 48};
-                entities[id].crop = {0, 0, 32, 16};
-                entities[id].priority = {1};
+                _entities[id].texture = LoadTexture("Libs/Graphics/assets/texture/Enemy.gif");
+                _entities[id].scale = {86, 48};
+                _entities[id].crop = {0, 0, 33, 36};
+                _entities[id].priority = {1};
+                _entities[id].name = "enemy";
             }  else if (texturePath.find("missile") != std::string::npos) {
-                entities[id].texture = LoadTexture("Libs/Graphics/assets/texture/MissileKill.gif");
-                entities[id].scale = {50, 10};
-                entities[id].crop = {0, 38, 50, 10};
-                entities[id].priority = {1};
+                _entities[id].texture = LoadTexture("Libs/Graphics/assets/texture/Missile.gif");
+                _entities[id].scale = {60, 12};
+                _entities[id].crop = {0, 0, 50, 10};
+                _entities[id].priority = {1};
+                _entities[id].name = "missile";
             } else {
-                entities[id].texture = {};
-                entities[id].scale = {1, 1};
-                entities[id].crop = {0, 0, 1, 1};
-                entities[id].priority = {0};
+                _entities[id].texture = {};
+                _entities[id].scale = {1, 1};
+                _entities[id].crop = {0, 0, 1, 1};
+                _entities[id].priority = {0};
             }
         }
 
         std::cout << "Entité ID: " << id << " créée avec succès:" << std::endl;
-        std::cout << "Position: (" << entities[id].position.x << ", " << entities[id].position.y << ")" << std::endl;
-        std::cout << "Échelle: (" << entities[id].scale.x << ", " << entities[id].scale.y << ")" << std::endl;
-        std::cout << "Crop: (" << entities[id].crop.x << ", " << entities[id].crop.y << ", " 
-                  << entities[id].crop.width << ", " << entities[id].crop.height << ")" << std::endl;
-        std::cout << "Priorité: " << entities[id].priority << std::endl;
-        std::cout << "Texture: " << (entities[id].texture.id ? "chargée" : "non chargée") << std::endl;
+        std::cout << "Name : " << _entities[id].name << std::endl;
+        std::cout << "Position: (" << _entities[id].position.x << ", " << _entities[id].position.y << ")" << std::endl;
+        std::cout << "Échelle: (" << _entities[id].scale.x << ", " << _entities[id].scale.y << ")" << std::endl;
+        std::cout << "Crop: (" << _entities[id].crop.x << ", " << _entities[id].crop.y << ", " 
+                  << _entities[id].crop.width << ", " << _entities[id].crop.height << ")" << std::endl;
+        std::cout << "Priorité: " << _entities[id].priority << std::endl;
+        std::cout << "Texture: " << (_entities[id].texture.id ? "chargée" : "non chargée") << std::endl;
     }
 
     void Game::UpdateEntity(Entity id, const std::string& params)
@@ -79,32 +83,35 @@ namespace Graphics {
         if (id < 0 || id >= MAX_ENTITIES) return;
         std::vector<float> values;
 
-        if (entities[id].priority == -1.0f) {
+        if (_entities[id].priority == -1.0f) {
+            std::cout << "Entity: " << params << std::endl;
             CreateEntity(id, params);
             return;
         }
 
         if (ExtractValues(params, "position:", values, 2)) {
-            entities[id].position = {values[0], values[1]};
+            Vector2 oldPos = _entities[id].position;
+            _entities[id].position = {values[0], values[1]};
+            AnimateEntity(oldPos, _entities[id].position, id);
         }
     }
 
     void Game::DestroyEntity(Entity id)
     {
         if (id < 0 || id >= MAX_ENTITIES) return;
-        entities[id] = EntityData();
+        _entities[id] = EntityData();
     }
 
     void Game::PrintEntities()
     {
         for (int i = 0; i < MAX_ENTITIES; ++i) {
-            if (entities[i].position.x != 0 || entities[i].position.y != 0) {
+            if (_entities[i].position.x != 0 || _entities[i].position.y != 0) {
                 std::cout << "Entity ID: " << i
-                          << " Position: (" << entities[i].position.x << ", " << entities[i].position.y << ")"
-                          << " Scale: (" << entities[i].scale.x << ", " << entities[i].scale.y << ")"
-                          << " Crop: (x: " << entities[i].crop.x << ", y: " << entities[i].crop.y 
-                          << ", width: " << entities[i].crop.width << ", height: " << entities[i].crop.height << ")"
-                          << " Priority : " << entities[i].priority << std::endl;
+                          << " Position: (" << _entities[i].position.x << ", " << _entities[i].position.y << ")"
+                          << " Scale: (" << _entities[i].scale.x << ", " << _entities[i].scale.y << ")"
+                          << " Crop: (x: " << _entities[i].crop.x << ", y: " << _entities[i].crop.y 
+                          << ", width: " << _entities[i].crop.width << ", height: " << _entities[i].crop.height << ")"
+                          << " Priority : " << _entities[i].priority << std::endl;
             }
         }
     }

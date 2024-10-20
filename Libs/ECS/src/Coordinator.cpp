@@ -45,7 +45,11 @@ namespace ECS {
         this->setSystemSignature<ECS::Collision>(collisionSignature);
 
         this->createEntity("settings");
+        Entity enemy = this->createEntity("enemy");
         this->initEntities();
+
+        auto &spacial = this->getComponent<Spacial>(enemy);
+        spacial.position = {MAX_X - 100, MAX_Y / 2};
     }
 
     Entity Coordinator::createEntity(const std::string& name) {
