@@ -6,7 +6,6 @@
 */
 
 #include "Core.hpp"
-#include "Game.hpp"
 
 namespace Graphics {
     void Core::InitStars(int numStars) {
@@ -15,7 +14,7 @@ namespace Graphics {
         for (int i = 0; i < numStars; ++i) {
             const Color colors[] = {WHITE, GRAY, DARKGRAY};
             stars.push_back({
-                static_cast<float>(std::rand() % GetScreenWidth()),
+                static_cast<float>(std::rand() % (int)MAX_X),
                 static_cast<float>(std::rand() % GetScreenHeight()),
                 std::rand() % 3 + 1,
                 colors[std::rand() % 3]
@@ -24,7 +23,7 @@ namespace Graphics {
         for (int i = 0; i < 5; ++i) {
             const Color colors[] = {RED, GREEN, BLUE, YELLOW, ORANGE};
             stars.push_back({
-                static_cast<float>(std::rand() % GetScreenWidth()),
+                static_cast<float>(std::rand() % (int)MAX_X),
                 static_cast<float>(std::rand() % GetScreenHeight()),
                 std::rand() % 3 + 4,
                 colors[std::rand() % 5]
@@ -34,9 +33,10 @@ namespace Graphics {
     }
 
     void Core::InitGraphics() {
-        int screenWidth = GetMonitorWidth(0);
-        int screenHeight = GetMonitorHeight(0);
+        int screenWidth = GetScreenWidth();
+        int screenHeight = GetScreenHeight();
         InitWindow(screenWidth, screenHeight, "Air-Type");
+        ToggleFullscreen();
         SetTargetFPS(60);
         InitAudioDevice();
         SetExitKey(KEY_BACKSPACE);

@@ -97,7 +97,7 @@ void Client::connexionAccepted(std::vector<std::string> command)
 void Client::setSpritePos(std::vector<std::string> command)
 {
     std::string pos = "position:" + command[3] + "," + command[4] + ";" + "texture:" + command[1] + ";";
-    _core.getGame().UpdateEntity(std::stoi(command[2]) - 1, pos);
+    _core.getGame().UpdateEntity(std::stoi(command[2]), pos);
 }
 
 void Client::invalidCommand(std::vector<std::string> command)

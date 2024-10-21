@@ -16,6 +16,7 @@
 #include "Move.hpp"
 #include "Shoot.hpp"
 #include "Update.hpp"
+#include "Collision.hpp"
 
 class Server {
     public:

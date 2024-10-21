@@ -6,7 +6,6 @@
 */
 
 #include "Game.hpp"
-#include "Draw.hpp"
 
 namespace Graphics {
     void Game::DrawGame() {

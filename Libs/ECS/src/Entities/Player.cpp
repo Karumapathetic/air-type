@@ -17,7 +17,7 @@ namespace ECS {
         gCoordinator.addComponent(entity, Life{10.0f, 1.0f});
         gCoordinator.addComponent(entity, Speed{3.0f, 1.0f});
         gCoordinator.addComponent(entity, Images{"Libs/Graphics/assets/texture/PlayerShip.gif"});
-        gCoordinator.addComponent(entity, EntityTypes{"player", 1, -1});
+        gCoordinator.addComponent(entity, EntityTypes{"player", 1});
         gCoordinator.setEntityInitialized(entity, true);
     }
 }

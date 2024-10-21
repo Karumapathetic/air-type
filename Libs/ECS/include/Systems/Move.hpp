@@ -16,6 +16,15 @@ namespace ECS {
      */
     class Move : public ISystem {
         public:
+            /**
+             * @brief Moves the entities based on the given parameters.
+             * 
+             * The parameters can be "up", "down", "left", or "right".
+             * 
+             * @param coordinator The coordinator that contains the entities.
+             * @param entity The entity to move.
+             * @param params The parameters to move the entity.
+             */
             void MoveEntities(Coordinator &coordinator, Entity entity, const std::string &params) {
                 auto &entityPos = coordinator.getComponent<Spacial>(entity);
                 auto entitySpeed = coordinator.getComponent<Speed>(entity);

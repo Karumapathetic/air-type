@@ -30,13 +30,13 @@ void Server::init()
 
 void Server::run()
 {
-    sendECSData();
     while (_isServerRunning) {
         while (_server.getQueue().size() > 0)
             handleData();
         auto updateSystem = _coordinator.getCoordSystem<ECS::Update>();
-        updateSystem->UpdatePositions(_coordinator);
-        sendECSData();
+        updateSystem->UpdatePositions(_coordinator, [this](const std::string& data) { sendToClients(data); });
+        auto collisionSystem = _coordinator.getCoordSystem<ECS::Collision>();
+        collisionSystem->detectCollision(_coordinator);
     }
     this->stop();
 }
@@ -52,9 +52,8 @@ void Server::sendECSData()
 {
     for (auto client : _clients) {
         for (auto entity : _coordinator.getEntities()) {
-            if (_coordinator.getEntityName(entity) == "player" || _coordinator.getEntityName(entity) == "settings")
+            if (_coordinator.getEntityName(entity) == "settings")
                 continue;
-            auto &entityType = _coordinator.getComponent<ECS::EntityTypes>(entity);
             auto &spacial = _coordinator.getComponent<ECS::Spacial>(entity);
             std::string name = _coordinator.getEntityName(entity);
             // std::cout << "Sending: 21 " + name + " " + std::to_string(entity) + " " + std::to_string(spacial.position.x) + " " + std::to_string(spacial.position.y) << std::endl;
@@ -119,10 +118,11 @@ void Server::connect(std::vector<std::string> command)
         auto newEntity = _coordinator.createEntity("player");
         _coordinator.initEntities();
         auto &entitypePlayer = _coordinator.getComponent<ECS::EntityTypes>(newEntity);
-        entitypePlayer.idPlayer = newClient.s_id;
+        entitypePlayer.id = newClient.s_id;
         _clients.push_back(newClient);
-        _server.send_data("12 " + std::to_string(newClient.s_id), newClient.s_address, newClient.s_port);
-        this->sendToClients("21 " + _coordinator.getEntityName(newEntity) + " " + std::to_string(newClient.s_id) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(newEntity).position.x) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(newEntity).position.y));
+        _server.send_data("12 " + std::to_string(newEntity), newClient.s_address, newClient.s_port);
+        sendECSData();
+        this->sendToClients("21 " + _coordinator.getEntityName(newEntity) + " " + std::to_string(newEntity) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(newEntity).position.x) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(newEntity).position.y));
     }
 }
 
@@ -151,23 +151,23 @@ void Server::getUserInput(std::vector<std::string> command)
         std::cerr << "Command is not valid" << std::endl;
         return;
     }
-    std::string clientId = command[1];
     bool positionUpdated = false;
+    ECS::Entity entityId = std::stoi(command[1]);
 
     for (int i = 2; i < command.size(); i++) {
         std::string action = command[i];
         if (action == "shoot") {
             auto shootSystem = _coordinator.getCoordSystem<ECS::Shoot>();
-            shootSystem->MissileShoot(_coordinator, _coordinator.getEntityById(std::stoi(clientId)));
+            shootSystem->MissileShoot(_coordinator, entityId);
         } else {
             auto moveSystem = _coordinator.getCoordSystem<ECS::Move>();
-            moveSystem->MoveEntities(_coordinator, _coordinator.getEntityById(std::stoi(clientId)), action);
+            auto entities = _coordinator.getEntities();
+            moveSystem->MoveEntities(_coordinator, entityId, action);
             positionUpdated = true;
         }
     }
     if (positionUpdated) {
-        auto entity = _coordinator.getEntityById(std::stoi(clientId));
-        this->sendToClients("21 " + _coordinator.getEntityName(entity) + " " + clientId + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(entity).position.x) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(entity).position.y));        
+        this->sendToClients("21 " + _coordinator.getEntityName(entityId) + " " + std::to_string(entityId) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(entityId).position.x) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(entityId).position.y));        
     }
 }
 

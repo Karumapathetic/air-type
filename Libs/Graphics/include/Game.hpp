@@ -12,10 +12,12 @@
 #include "raylib.h"
 
 #include <iostream>
+#include <unordered_map>
 #include <vector>
+#include <cstdint>
 
-#define MAX_X 1920
-#define MAX_Y 1080
+#define MAX_X 1920.0f
+#define MAX_Y 1080.0f
 
 /**
  * @brief Namespace that contains all the graphics related classes
@@ -57,6 +59,7 @@ namespace Graphics {
      * crop rectangle to (0, 0, 0, 0), and priority to 0.0f.
      */
     struct EntityData {
+        std::string name;  ///< The name of the entity.
         Vector2 position;  ///< The position of the entity in the game world.
         Vector2 scale;     ///< The scale of the entity.
         Texture2D texture;  ///< The texture of the entity.
@@ -69,11 +72,22 @@ namespace Graphics {
          * Initializes the position to (0, 0), scale to (1, 1), texture to an empty Texture2D,
          * crop rectangle to (0, 0, 0, 0), and priority to 0.0f.
          */
-        EntityData(): position({0, 0}), scale({1, 1}), texture({}), crop({0, 0, 0, 0}), priority(-1.0f) {}
+        EntityData(): name(""), position({0, 0}), scale({1, 1}), texture({}), crop({0, 0, 0, 0}), priority(-1.0f) {}
     };
 
-    using Entity = int;
-    const int MAX_ENTITIES = 100;
+    /**
+     * @brief Type alias for an entity identifier.
+     * 
+     * An entity is an object in the ECS system. It is represented by a unique identifier.
+     */
+    using Entity = std::uint32_t;
+
+    /**
+     * @brief Maximum number of entities.
+     * 
+     * This constant defines the maximum number of entities that can be created in the ECS system.
+     */
+    const Entity MAX_ENTITIES = 1000;
 
     /**
      * @brief Game class that will handle the game loop
@@ -91,8 +105,6 @@ namespace Graphics {
             /// @brief Destructor of the game
             ~Game() {}
 
-            // void DrawSprites();
-
             /// @brief Set the enum game state
             /// @param gameState The game state to set
             void setGameState(GameState gameState) { _gameState = gameState; }
@@ -109,13 +121,19 @@ namespace Graphics {
             /// @param stars The stars to set
             void setStars(std::vector<Star> stars) { _stars = stars; }
 
+            /**
+             * @brief Get the Client Action object
+             * 
+             * @return std::vector<std::string> 
+             */
             std::vector<std::string> getClientAction() { return _clientAction; }
 
+            /**
+             * @brief Add a client action to the vector client action
+             * 
+             * @param clientAction The client action to add
+             */
             void addClientAction(std::string clientAction) { _clientAction.push_back(clientAction); }
-
-            std::vector<EntityData> getEntities() { return entities; }
-
-            void setEntities(std::vector<EntityData> entities) { this->entities = entities; }
 
             /** @brief Draw the stars of the background
              * 
@@ -144,11 +162,22 @@ namespace Graphics {
             /// @brief Draw add ons like FPS, etc.
             void DrawAddOns();
 
+            /// @brief Draw all the entities
             void DrawSprites();
 
             /// @brief Handle the keyboard input
             void HandleKeyboardInput();
 
+            /**
+             * @brief Extracts values from a string of parameters.
+             * 
+             * @param params The string of parameters to extract values from.
+             * @param key The key to search for in the parameters.
+             * @param values The vector to store the extracted values in.
+             * @param numValues The number of values to extract.
+             * 
+             * @return True if the values were successfully extracted, false otherwise.
+             */
             bool ExtractValues(const std::string& params, const std::string& key, std::vector<float>& values, int numValues);
 
             /**
@@ -200,6 +229,18 @@ namespace Graphics {
              * @note This function does not return any meaningful value. It only prints the entities' information.
              */
             void PrintEntities();
+
+            /**
+             * @brief Animates an entity from its old position to its new position.
+             * 
+             * This function takes the old and new positions of an entity and animates it from the old position to the new position.
+             * The entity's texture is updated based on the direction of movement.
+             * 
+             * @param oldPos The old position of the entity.
+             * @param newPos The new position of the entity.
+             * @param id The unique identifier of the entity to animate.
+             */
+            void AnimateEntity(Vector2 oldPos, Vector2 newPos, int id);
         protected:
         private:
             /**
@@ -215,7 +256,7 @@ namespace Graphics {
             /**
              * @brief The entities of the game
              */
-            std::vector<EntityData> entities;
+            std::unordered_map<int, EntityData> _entities;
 
             /**
              * @brief The stars of the background
