@@ -7,6 +7,8 @@
 
 #include "Client.hpp"
 
+#include "BinaryBuffer.hpp"
+
 Client::Client(std::string host) : _client(host)
 {
     _isClientRunning = true;
@@ -20,6 +22,8 @@ Client::Client(std::string host) : _client(host)
     _commands["31"] = std::bind(&Client::connexionRefused, this, std::placeholders::_1);
     _commands["32"] = std::bind(&Client::serverCrashed, this, std::placeholders::_1);
 
+    BinaryBuffer buf;
+    buf.setStringBuffer("10.0 127 0 0 1 " + std::to_string(_client.getRecvPort()));
     _client.send_data("10 " + _client.getRecvAddress() + " " + std::to_string(_client.getRecvPort()));
 }
 

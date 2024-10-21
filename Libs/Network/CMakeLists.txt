@@ -5,6 +5,7 @@ add_library(
     Network STATIC
     src/UDPClient.cpp
     src/UDPServer.cpp
+    src/BinaryBuffer.cpp
 )
 
 target_include_directories(
