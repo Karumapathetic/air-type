@@ -141,10 +141,10 @@ namespace ECS {
              * 
              * @return The signature of the system.
              */
-            template<typename T>
-            Signature getSystemSignature()
+
+            Signature getSystemSignature(const std::string& typeName)
             {
-                return systemManager->getSystemSignature<T>();
+                return systemManager->getSystemSignature(typeName);
             }
 
             /**
@@ -270,6 +270,11 @@ namespace ECS {
              */
             void setEntities(std::size_t index, Entity entity);
 
+            const std::unordered_map<std::string, std::shared_ptr<ISystem>>& getSystems() const
+            {
+                return systemManager->getSystems();
+            }
+
             /**
              * @brief Spawns an entity in the ECS based on the provided name and parameters.
              * 
@@ -303,6 +308,8 @@ namespace ECS {
              * @return True if the entity is valid, false otherwise.
              */
             bool isEntityValid(Entity entity) const;
+
+            void updateSystems();
 
             // /**
             //  * @brief Sets the player spawn.

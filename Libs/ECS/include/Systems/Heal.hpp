@@ -15,8 +15,7 @@ namespace ECS {
      */
     class Heal : public ISystem {
         public:
-            Heal();
-            ~Heal();
+            void update() override;
         protected:
         private:
     };

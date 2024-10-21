@@ -16,6 +16,7 @@ namespace ECS {
      */
     class Update : public ISystem {
         public:
+            void update() {std::cout << "Update" << std::endl;}
             /**
              * @brief Updates the positions of the entities.
              * 

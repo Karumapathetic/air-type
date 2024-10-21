@@ -33,6 +33,7 @@ void Server::run()
     while (_isServerRunning) {
         while (_server.getQueue().size() > 0)
             handleData();
+        _coordinator.updateSystems();
         auto updateSystem = _coordinator.getCoordSystem<ECS::Update>();
         updateSystem->UpdatePositions(_coordinator, [this](const std::string& data) { sendToClients(data); });
         auto collisionSystem = _coordinator.getCoordSystem<ECS::Collision>();

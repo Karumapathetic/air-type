@@ -15,8 +15,7 @@ namespace ECS {
      */
     class Damage : public ISystem {
         public:
-            Damage();
-            ~Damage();
+            void update() override;
         protected:
         private:
     };

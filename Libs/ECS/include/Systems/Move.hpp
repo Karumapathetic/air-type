@@ -16,6 +16,7 @@ namespace ECS {
      */
     class Move : public ISystem {
         public:
+            void update() {std::cout << "Move" << std::endl;}
             /**
              * @brief Moves the entities based on the given parameters.
              * 

@@ -16,6 +16,7 @@ namespace ECS {
      */
     class Shoot : public ISystem {
         public:
+            void update() {std::cout << "Shoot" << std::endl;}
             /**
              * @brief Shoots a missile from the entity.
              * 

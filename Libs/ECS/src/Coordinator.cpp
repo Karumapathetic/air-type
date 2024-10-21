@@ -7,6 +7,8 @@
 
 #include "Coordinator.hpp"
 #include "Collision.hpp"
+#include "Heal.hpp"
+#include "Damage.hpp"
 
 namespace ECS {
     Coordinator::Coordinator() {
@@ -43,6 +45,16 @@ namespace ECS {
         Signature collisionSignature;
         collisionSignature.set(this->getComponentType<Spacial>());
         this->setSystemSignature<ECS::Collision>(collisionSignature);
+
+        this->registerSystem<ECS::Heal>();
+        Signature healSignature;
+        healSignature.set(this->getComponentType<Life>());
+        this->setSystemSignature<ECS::Heal>(healSignature);
+
+        this->registerSystem<ECS::Damage>();
+        Signature damageSignature;
+        damageSignature.set(this->getComponentType<Power>());
+        this->setSystemSignature<ECS::Damage>(damageSignature);
 
         this->createEntity("settings");
         Entity enemy = this->createEntity("enemy");
@@ -93,7 +105,7 @@ namespace ECS {
     bool Coordinator::isEntityValid(Entity entity) const {
         return entity != INVALID_ENTITY;
     }
-    
+
     std::vector<Entity> Coordinator::getEntities() const {
         std::vector<Entity> validEntities;
         for (const Entity& entity : _entities) {
@@ -209,6 +221,21 @@ namespace ECS {
     bool Coordinator::hasComponent(Entity entity, ComponentType componentType)
     {
         return entityManager->getSignature(entity).test(componentType);
+    }
+
+    void Coordinator::updateSystems()
+    {
+        for (auto& [typeName, system] : this->getSystems()) {
+            Signature systemSignature = this->getSystemSignature(typeName);
+
+            for (auto entity : system->entities) {
+                Signature entitySignature = this->getEntitySignature(entity);
+
+                if ((entitySignature & systemSignature) == systemSignature) {
+                    system->update();
+                }
+            }
+        }
     }
 
     // void Coordinator::setPlayerSpawn(Entity entity)
