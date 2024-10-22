@@ -30,7 +30,7 @@ Client::~Client()
 void Client::init()
 {
     _networkThread = std::thread(&Network::UDPClient::receive_data, &_client, &_isClientRunning);
-    _core.InitGraphics();
+    _core.InitGame();
 }
 
 void Client::run()
@@ -49,7 +49,7 @@ void Client::stop()
     _client.stop();
     if (_networkThread.joinable())
         _networkThread.join();
-    _core.CloseGraphics();
+    _core.getGame().getGraphics()->CloseGraphics();
 }
 
 void Client::handleData()

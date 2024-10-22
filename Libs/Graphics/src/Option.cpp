@@ -28,48 +28,55 @@ namespace Graphics {
     void Option::DrawVideoSettings() {
         std::vector<std::string> options = {"Resolution", "FPS max", "Display FPS"};
         for (int i = 0; i < options.size(); i++) {
-            DrawRectangleRoundedLines({50, (float)200 + i * 60, (float)GetScreenWidth() - 100, 50}, 0.2, 10, GRAY);
-            DrawText(options[i].c_str(), 60, 215 + i * 60, 20, WHITE);
+            _game.getGraphics()->RenderRoundedRectangleSides({50, (float)200 + i * 60, (float)_game.getGraphics()->GetWindowWidth() - 100, 50}, 0.2, 10, GRAY);
+            _game.getGraphics()->RenderText(options[i].c_str(), 60, 215 + i * 60, 20, WHITE);
         }
+
+        Rectangle rec = {((float)_game.getGraphics()->GetWindowWidth() / 6), (float)205, (float)_game.getGraphics()->GetWindowWidth() / 7, 40};
 
         std::vector<std::pair<int, int>> resolutions = {{800, 600}, {1024, 768}, {1280, 720}, {1920, 1080}};
         for (int i = 0; i < resolutions.size(); i++) {
             std::string resolutionText = std::to_string(resolutions[i].first) + "x" + std::to_string(resolutions[i].second);
-            DrawText(resolutionText.c_str(), (GetScreenWidth() / 6 + i * (GetScreenWidth() / 7 + 15)) + GetScreenWidth() / 7 / 2 - MeasureText(resolutionText.c_str(), 20) / 2, 215, 20, WHITE);
-            if (CheckCollisionPointRec(GetMousePosition(), {(float)GetScreenWidth() / 6 + i * (GetScreenWidth() / 7 + 15), (float)205, (float)GetScreenWidth() / 7, 40})) {
-                DrawRectangleRoundedLines({(float)GetScreenWidth() / 6 + i * (GetScreenWidth() / 7 + 15), (float)205, (float)GetScreenWidth() / 7, 40}, 0.2, 10, LIGHTGRAY);
-                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    SetWindowSize(resolutions[i].first, resolutions[i].second);
+            _game.getGraphics()->RenderText(resolutionText.c_str(), (_game.getGraphics()->GetWindowWidth() / 6 + i * (_game.getGraphics()->GetWindowWidth() / 7 + 15)) + _game.getGraphics()->GetWindowWidth() / 7 / 2 - _game.getGraphics()->TextSize(resolutionText.c_str(), 20) / 2, 215, 20, WHITE);
+            if (_game.getGraphics()->CheckCollisionMouse(_game.getGraphics()->GetCursorPosition(), rec)) {
+                _game.getGraphics()->RenderRoundedRectangleSides(rec, 0.2, 10, LIGHTGRAY);
+                if (_game.getGraphics()->IsMouseButtonClicked(MOUSE_LEFT_BUTTON)) {
+                    _game.getGraphics()->SetWindowResolution(resolutions[i].first, resolutions[i].second);
                 }
             } else {
-                DrawRectangleRoundedLines({(float)GetScreenWidth() / 6 + i * (GetScreenWidth() / 7 + 15), (float)205, (float)GetScreenWidth() / 7, 40}, 0.2, 10, GRAY);
+                _game.getGraphics()->RenderRoundedRectangleSides(rec, 0.2, 10, GRAY);
             }
+            rec.x += _game.getGraphics()->GetWindowWidth() / 7 + 15;
         }
 
+        rec.y += 60;
+        rec.x = (float)_game.getGraphics()->GetWindowWidth() / 6;
         std::vector<int> fpsList = {30, 60, 120, 144};
         for (int i = 0; i < fpsList.size(); i++) {
             std::string fps = std::to_string(fpsList[i]);
-            DrawText(fps.c_str(), (GetScreenWidth() / 6 + i * (GetScreenWidth() / 7 + 15)) + GetScreenWidth() / 7 / 2 - MeasureText(fps.c_str(), 20) / 2, 275, 20, WHITE);
-            if (CheckCollisionPointRec(GetMousePosition(), {(float)GetScreenWidth() / 6 + i * (GetScreenWidth() / 7 + 15), (float)265, (float)GetScreenWidth() / 7, 40})) {
-                DrawRectangleRoundedLines({(float)GetScreenWidth() / 6 + i * (GetScreenWidth() / 7 + 15), (float)265, (float)GetScreenWidth() / 7, 40}, 0.2, 10, LIGHTGRAY);
-                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    SetTargetFPS(fpsList[i]);
+            _game.getGraphics()->RenderText(fps.c_str(), (_game.getGraphics()->GetWindowWidth() / 6 + i * (_game.getGraphics()->GetWindowWidth() / 7 + 15)) + _game.getGraphics()->GetWindowWidth() / 7 / 2 - _game.getGraphics()->TextSize(fps.c_str(), 20) / 2, 275, 20, WHITE);
+            if (_game.getGraphics()->CheckCollisionMouse(_game.getGraphics()->GetCursorPosition(), rec)) {
+                _game.getGraphics()->RenderRoundedRectangleSides(rec, 0.2, 10, LIGHTGRAY);
+                if (_game.getGraphics()->IsMouseButtonClicked(MOUSE_LEFT_BUTTON)) {
+                    _game.getGraphics()->SetFPS(fpsList[i]);
                 }
             } else {
-                DrawRectangleRoundedLines({(float)GetScreenWidth() / 6 + i * (GetScreenWidth() / 7 + 15), (float)265, (float)GetScreenWidth() / 7, 40}, 0.2, 10, GRAY);
+                _game.getGraphics()->RenderRoundedRectangleSides(rec, 0.2, 10, GRAY);
             }
+            rec.x += _game.getGraphics()->GetWindowWidth() / 7 + 15;
         }
 
         if (_displayfps) {
-            DrawText("x", (GetScreenWidth() / 6 + 4 * (GetScreenWidth() / 7 + 15)) + GetScreenWidth() / 7 / 2 - MeasureText("x", 20) / 2, 335, 20, WHITE);
+            _game.getGraphics()->RenderText("x", (_game.getGraphics()->GetWindowWidth() / 6 + 4 * (_game.getGraphics()->GetWindowWidth() / 7 + 15)) + _game.getGraphics()->GetWindowWidth() / 7 / 2 - _game.getGraphics()->TextSize("x", 20) / 2, 335, 20, WHITE);
         }
-        if (CheckCollisionPointRec(GetMousePosition(), {(float)GetScreenWidth() / 6 + 4 * (GetScreenWidth() / 7 + 15), (float)325, (float)GetScreenWidth() / 7, 40})) {
-            DrawRectangleRoundedLines({(float)GetScreenWidth() / 6 + 4 * (GetScreenWidth() / 7 + 15), (float)325, (float)GetScreenWidth() / 7, 40}, 0.2, 10, LIGHTGRAY);
-            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+        rec.y += 60;
+        if (_game.getGraphics()->CheckCollisionMouse(_game.getGraphics()->GetCursorPosition(), rec)) {
+            _game.getGraphics()->RenderRoundedRectangleSides(rec, 0.2, 10, LIGHTGRAY);
+            if (_game.getGraphics()->IsMouseButtonClicked(MOUSE_LEFT_BUTTON)) {
                 _displayfps = !_displayfps;
             }
         } else {
-            DrawRectangleRoundedLines({(float)GetScreenWidth() / 6 + 4 * (GetScreenWidth() / 7 + 15), (float)325, (float)GetScreenWidth() / 7, 40}, 0.2, 10, GRAY);
+            _game.getGraphics()->RenderRoundedRectangleSides(rec, 0.2, 10, GRAY);
         }
     }
 
@@ -77,22 +84,22 @@ namespace Graphics {
         auto keyHandlers = _BindedKeys;
         int i = 0;
 
-        DrawText("Click on a key name (rectangle) to change its keybind", GetScreenWidth() / 2 - MeasureText("Click on a key name (rectangle) to change its keybind", 20) / 2, 160, 20, WHITE);
+        _game.getGraphics()->RenderText("Click on a key name (rectangle) to change its keybind", GetScreenWidth() / 2 - _game.getGraphics()->TextSize("Click on a key name (rectangle) to change its keybind", 20) / 2, 160, 20, WHITE);
         for (const auto& keybind : _keybinds) {
             int key = keybind.second.first;
             std::string action = "Action : " + keybind.first;
             std::string keyName = "Key : " + std::to_string(key);
 
-            DrawRectangleRoundedLines({50, (float)200 + i * 60, (float)GetScreenWidth() - 100, 50}, 0.2, 10, GRAY);
-            DrawText(action.c_str(), 60, 215 + i * 60, 20, WHITE);
-            DrawText(keyName.c_str(), (float)GetScreenWidth() - 240, 215 + i * 60, 20, WHITE);
-            if (CheckCollisionPointRec(GetMousePosition(), {(float)GetScreenWidth() - 250, (float)210 + i * 60, 150, 30})) {
-                DrawRectangleRoundedLines({(float)GetScreenWidth() - 250, (float)210 + i * 60, 150, 30}, 0.2, 10, LIGHTGRAY);
-                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            _game.getGraphics()->RenderRoundedRectangleSides({50, (float)200 + i * 60, (float)GetScreenWidth() - 100, 50}, 0.2, 10, GRAY);
+            _game.getGraphics()->RenderText(action.c_str(), 60, 215 + i * 60, 20, WHITE);
+            _game.getGraphics()->RenderText(keyName.c_str(), (float)GetScreenWidth() - 240, 215 + i * 60, 20, WHITE);
+            if (_game.getGraphics()->CheckCollisionMouse(_game.getGraphics()->GetCursorPosition(), {(float)GetScreenWidth() - 250, (float)210 + i * 60, 150, 30})) {
+                _game.getGraphics()->RenderRoundedRectangleSides({(float)GetScreenWidth() - 250, (float)210 + i * 60, 150, 30}, 0.2, 10, LIGHTGRAY);
+                if (_game.getGraphics()->IsMouseButtonClicked(MOUSE_LEFT_BUTTON)) {
                     _changing = keybind.first;
                 }
             } else {
-                DrawRectangleRoundedLines({(float)GetScreenWidth() - 250, (float)210 + i * 60, 150, 30}, 0.2, 10, GRAY);
+                _game.getGraphics()->RenderRoundedRectangleSides({(float)GetScreenWidth() - 250, (float)210 + i * 60, 150, 30}, 0.2, 10, GRAY);
             }
             i++;
         }
@@ -102,13 +109,13 @@ namespace Graphics {
         if (_selected == "Video") {
             DrawVideoSettings();
         } else if (_selected == "Audio") {
-            DrawText("Coming soon...", 50, 200, 20, WHITE);
+            _game.getGraphics()->RenderText("Coming soon...", 50, 200, 20, WHITE);
         } else if (_selected == "Controls") {
             DrawControlsSettings();
         }
         if (_changing != "") {
-            DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(BLACK, 0.5));
-            DrawText("Press a key to bind", GetScreenWidth() / 2 - MeasureText("Press a key to bind", 20) / 2, GetScreenHeight() / 2, 20, WHITE);
+            _game.getGraphics()->RenderRectangle(0, 0, _game.getGraphics()->GetWindowWidth(), _game.getGraphics()->GetWindowHeight(), _game.getGraphics()->FadeColor(BLACK, 0.5));
+            _game.getGraphics()->RenderText("Press a key to bind", GetScreenWidth() / 2 - _game.getGraphics()->TextSize("Press a key to bind", 20) / 2, _game.getGraphics()->GetWindowHeight() / 2, 20, WHITE);
         }
     }
 } // namespace Graphics
