@@ -12,8 +12,8 @@ namespace Graphics {
         for (auto &star : _stars) {
             star.x -= 1.0f;
             if (star.x < 0) {
-                star.x = GetScreenWidth();
-                star.y = static_cast<float>(std::rand() % GetScreenHeight());
+                star.x = _graphics->GetWindowWidth();
+                star.y = static_cast<float>(std::rand() % _graphics->GetWindowHeight());
             }
         }
         DrawStars();

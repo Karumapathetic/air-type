@@ -10,7 +10,7 @@
 namespace Graphics {
     void Game::DrawStars() {
         for (const auto &star : _stars) {
-            DrawCircle(static_cast<int>(star.x), static_cast<int>(star.y), star.size, star.color);
+            _graphics->RenderCircle(static_cast<int>(star.x), static_cast<int>(star.y), star.size, star.color);
         }
     }
 }

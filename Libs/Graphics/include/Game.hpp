@@ -8,13 +8,11 @@
 #pragma once
 
 #include "Option.hpp"
-
-#include "raylib.h"
+#include "Raylib.hpp"
+#include "IGraphic.hpp"
 
 #include <iostream>
-#include <unordered_map>
-#include <vector>
-#include <cstdint>
+#include <memory>
 
 #define MAX_X 1920.0f
 #define MAX_Y 1080.0f
@@ -39,18 +37,6 @@ namespace Graphics {
         WIN,        // The win state
     };
 
-    /// @brief Struct that define a star for the background
-    /// @param x The x position of the star
-    /// @param y The y position of the star
-    /// @param size The size of the star
-    /// @param color The color of the star
-    struct Star {
-        float x; // The x position of the star
-        float y; // The y position of the star
-        int size; // Size of the star
-        Color color; // Color of the star
-    };
-
     /**
      * @brief Struct that holds data related to an entity in the game.
      * 
@@ -62,7 +48,6 @@ namespace Graphics {
         std::string name;  ///< The name of the entity.
         Vector2 position;  ///< The position of the entity in the game world.
         Vector2 scale;     ///< The scale of the entity.
-        Texture2D texture;  ///< The texture of the entity.
         Rectangle crop;    ///< The crop rectangle of the texture.
         float priority;    ///< The priority of the entity for rendering.
 
@@ -72,22 +57,8 @@ namespace Graphics {
          * Initializes the position to (0, 0), scale to (1, 1), texture to an empty Texture2D,
          * crop rectangle to (0, 0, 0, 0), and priority to 0.0f.
          */
-        EntityData(): name(""), position({0, 0}), scale({1, 1}), texture({}), crop({0, 0, 0, 0}), priority(-1.0f) {}
+        EntityData(): name(""), position({0, 0}), scale({1, 1}), crop({0, 0, 0, 0}), priority(-1.0f) {}
     };
-
-    /**
-     * @brief Type alias for an entity identifier.
-     * 
-     * An entity is an object in the ECS system. It is represented by a unique identifier.
-     */
-    using Entity = std::uint32_t;
-
-    /**
-     * @brief Maximum number of entities.
-     * 
-     * This constant defines the maximum number of entities that can be created in the ECS system.
-     */
-    const Entity MAX_ENTITIES = 1000;
 
     /**
      * @brief Game class that will handle the game loop
@@ -135,6 +106,13 @@ namespace Graphics {
              */
             void addClientAction(std::string clientAction) { _clientAction.push_back(clientAction); }
 
+            /**
+             * @brief Get the Graphics object
+             * 
+             * @return std::shared_ptr<IGraphic> 
+             */
+            std::shared_ptr<IGraphic> getGraphics() { return _graphics; }
+
             /** @brief Draw the stars of the background
              * 
              * This function is responsible for rendering stars in the game's graphical interface.
@@ -155,6 +133,9 @@ namespace Graphics {
 
             /// @brief Display the settings menu
             void DrawSettings();
+
+            /// @brief Draw the rectangle background of the settings
+            void DrawRectangleBackground();
 
             /// @brief Draw the settings titles
             void DrawSettingsTitles();
@@ -272,5 +253,10 @@ namespace Graphics {
              * @brief The keys that the client pressed (actions)
              */
             std::vector<std::string> _clientAction;
+
+            /**
+             * @brief The graphics object
+             */
+            std::shared_ptr<IGraphic> _graphics;
     };
 }

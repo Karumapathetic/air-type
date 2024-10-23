@@ -19,6 +19,7 @@ add_library(
 target_include_directories(
     Graphics PUBLIC
     "include"
+    "include/Raylib"
 )
 
 target_link_libraries(

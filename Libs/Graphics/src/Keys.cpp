@@ -42,6 +42,5 @@ namespace Graphics {
             default:
                 break;
         }
-        _game.addClientAction("escape");
     }
 } // namespace Graphics

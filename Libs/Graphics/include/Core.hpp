@@ -42,14 +42,7 @@ namespace Graphics {
              * It initializes the graphics by setting the window size, the window title, and the background color.
              * As well as setting the target FPS and the number of stars.
              */
-            void InitGraphics();
-
-            /**
-             * @brief Close the graphics.
-             * 
-             * It closes the graphics by closing the window and stops the audio.
-             */
-            void CloseGraphics();
+            void InitGame();
 
             /**
              * @brief Initialize the stars for the star field.

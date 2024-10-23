@@ -43,25 +43,24 @@ namespace Graphics {
             size_t endPos = params.find(';', textureIndex);
             std::string texturePath = params.substr(textureIndex + 8, endPos - (textureIndex + 8));
             if (texturePath.find("player") != std::string::npos) {
-                _entities[id].texture = LoadTexture("Libs/Graphics/assets/texture/PlayerShip.gif");
+                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/PlayerShip.gif");
                 _entities[id].scale = {86, 48};
                 _entities[id].crop = {66, 0, 33, 16};
                 _entities[id].priority = {1};
                 _entities[id].name = "player";
             } else if (texturePath.find("enemy") != std::string::npos) {
-                _entities[id].texture = LoadTexture("Libs/Graphics/assets/texture/Enemy.gif");
+                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/Enemy.png");
                 _entities[id].scale = {86, 48};
                 _entities[id].crop = {0, 0, 33, 36};
                 _entities[id].priority = {1};
                 _entities[id].name = "enemy";
             }  else if (texturePath.find("missile") != std::string::npos) {
-                _entities[id].texture = LoadTexture("Libs/Graphics/assets/texture/Missile.gif");
+                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/Missile.gif");
                 _entities[id].scale = {60, 12};
                 _entities[id].crop = {0, 0, 50, 10};
                 _entities[id].priority = {1};
                 _entities[id].name = "missile";
             } else {
-                _entities[id].texture = {};
                 _entities[id].scale = {1, 1};
                 _entities[id].crop = {0, 0, 1, 1};
                 _entities[id].priority = {0};
@@ -75,7 +74,6 @@ namespace Graphics {
         std::cout << "Crop: (" << _entities[id].crop.x << ", " << _entities[id].crop.y << ", " 
                   << _entities[id].crop.width << ", " << _entities[id].crop.height << ")" << std::endl;
         std::cout << "Priorité: " << _entities[id].priority << std::endl;
-        std::cout << "Texture: " << (_entities[id].texture.id ? "chargée" : "non chargée") << std::endl;
     }
 
     void Game::UpdateEntity(Entity id, const std::string& params)

@@ -5,25 +5,24 @@
 ** Game
 */
 
-#include <iostream>
 #include <ctime>
-#include "raylib.h"
 #include "Game.hpp"
 
 namespace Graphics {
     Game::Game() : _gameState(GameState::MENU)
     {
         _option = new Option(*this);
+        _graphics = std::make_shared<RaylibGraphics>();
     }
 
     void Game::DrawSprites()
     {
-        float scaleX = GetScreenWidth() / MAX_X;
-        float scaleY = GetScreenHeight() / MAX_Y;
+        float scaleX = _graphics->GetWindowWidth() / MAX_X;
+        float scaleY = _graphics->GetWindowHeight() / MAX_Y;
         float scale = std::min(scaleX, scaleY);
         for (auto entity : _entities) {
             if (entity.second.priority != -1.0f) {
-                DrawTexturePro(entity.second.texture, entity.second.crop, {entity.second.position.x * scale, entity.second.position.y * scale, entity.second.scale.x * scale, entity.second.scale.y * scale}, {0.0f, 0.0f}, 0.0f, WHITE);
+                _graphics->RenderPreciseTexture(entity.first, entity.second.crop, {entity.second.position.x * scale, entity.second.position.y * scale, entity.second.scale.x * scale, entity.second.scale.y * scale}, {0.0f, 0.0f}, 0.0f, WHITE);
             }
         }
     }
@@ -56,14 +55,14 @@ namespace Graphics {
     void Game::DrawAddOns()
     {
         if (_option->getDisplayfps()) {
-            DrawFPS(10, 10);
+            _graphics->RenderFPS(10, 10);
         }
     }
 
     void Game::DrawGraphics()
     {
-        BeginDrawing();
-        ClearBackground(BLACK);
+        _graphics->StartRendering();
+        _graphics->ResetBackground(BLACK);
         HandleKeyboardInput();
         DrawAddOns();
         switch (getGameState()) {
@@ -86,6 +85,6 @@ namespace Graphics {
             default:
                 break;
         }
-        EndDrawing();
+        _graphics->EndRendering();
     }
 }
