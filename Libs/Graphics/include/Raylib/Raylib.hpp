@@ -11,9 +11,17 @@
 
 #include "IGraphic.hpp"
 
+#include <unordered_map>
+
 namespace Graphics {
     class RaylibGraphics : public IGraphic {
         public:
+            ~RaylibGraphics() {
+                for (auto &texture : _textures) {
+                    UnloadTexture(texture.second);
+                }
+                _textures.clear();
+            };
             void InitGraphics(const char *title) override {
                 int screenWidth = GetScreenWidth();
                 int screenHeight = GetScreenHeight();
@@ -73,8 +81,8 @@ namespace Graphics {
                 return IsMouseButtonPressed(button);
             }
 
-            void RenderPreciseTexture(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint) override {
-                DrawTexturePro({texture.id, texture.width, texture.height, texture.mipmaps, texture.format}, {source.x, source.y, source.width, source.height}, {dest.x, dest.y, dest.width, dest.height}, {origin.x, origin.y}, rotation, {tint.r, tint.g, tint.b, tint.a});
+            void RenderPreciseTexture(int Id, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint) override {
+                DrawTexturePro(_textures[Id], {source.x, source.y, source.width, source.height}, {dest.x, dest.y, dest.width, dest.height}, {origin.x, origin.y}, rotation, {tint.r, tint.g, tint.b, tint.a});
             }
 
             void RenderFPS(int posX, int posY) override {
@@ -94,7 +102,7 @@ namespace Graphics {
             }
 
             bool IsInputPressed(int key) override {
-                return IsKeyPressed(key);
+                return IsKeyDown(key);
             }
 
             void SetWindowResolution(int width, int height) override {
@@ -114,11 +122,18 @@ namespace Graphics {
                 return WindowShouldClose();
             }
 
-            Texture2D LoadTextureFromFile(const char *filename) override {
-                ::Texture2D texture = LoadTexture(filename);
-                return {texture.id, texture.width, texture.height, texture.mipmaps, texture.format};
+            void LoadTextureFromFile(int Id, const char *filename) override {
+                _textures[Id] = LoadTexture(filename);
+            }
+
+            void UnloadTextureById(int Id) override {
+                if (_textures.find(Id) != _textures.end()) {
+                    UnloadTexture(_textures[Id]);
+                    _textures.erase(Id);
+                }
             }
         protected:
         private:
+            std::unordered_map<int, ::Texture2D> _textures;
     };
 }

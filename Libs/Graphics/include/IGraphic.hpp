@@ -174,18 +174,6 @@ namespace Graphics {
      */
     const Entity MAX_ENTITIES = 1000;
 
-    // Texture, tex data stored in GPU memory (VRAM)
-    typedef struct Texture {
-        unsigned int id;        // OpenGL texture id
-        int width;              // Texture base width
-        int height;             // Texture base height
-        int mipmaps;            // Mipmap levels, 1 by default
-        int format;             // Data format (PixelFormat type)
-    } Texture;
-
-    // Texture2D, same as Texture
-    typedef Texture Texture2D;
-
     typedef struct Rectangle {
         float x;                // Rectangle top-left corner position x
         float y;                // Rectangle top-left corner position y
@@ -214,7 +202,7 @@ namespace Graphics {
             virtual Vector2 GetCursorPosition() = 0;
             virtual bool CheckCollisionMouse(Vector2 point, Rectangle rec) = 0;
             virtual bool IsMouseButtonClicked(int button) = 0;
-            virtual void RenderPreciseTexture(Texture2D texture, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint) = 0;
+            virtual void RenderPreciseTexture(int Id, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint) = 0;
             virtual void RenderFPS(int posX, int posY) = 0;
             virtual void StartRendering() = 0;
             virtual void EndRendering() = 0;
@@ -224,7 +212,8 @@ namespace Graphics {
             virtual void SetFPS(int fps) = 0;
             virtual Color FadeColor(Color color, float alpha) = 0;
             virtual bool IsWindowClosing() = 0;
-            virtual Texture2D LoadTextureFromFile (const char *filename) = 0;
+            virtual void LoadTextureFromFile(int Id, const char *filename) = 0;
+            virtual void UnloadTextureById(int Id) = 0;
         protected:
         private:
     };
