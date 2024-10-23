@@ -44,7 +44,6 @@ namespace Graphics {
             std::string texturePath = params.substr(textureIndex + 8, endPos - (textureIndex + 8));
             if (texturePath.find("player") != std::string::npos) {
                 _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/PlayerShip.gif");
-                std::cout << "oui" << std::endl;
                 _entities[id].scale = {86, 48};
                 _entities[id].crop = {66, 0, 33, 16};
                 _entities[id].priority = {1};
