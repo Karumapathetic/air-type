@@ -9,7 +9,7 @@
 
 namespace ECS {
     void missileHandler(Coordinator &gCoordinator, std::uint32_t entity) {
-        gCoordinator.addComponent(entity, Spacial{{1.0f, 1.0f}, {32.0f, 32.0f}});
+        gCoordinator.addComponent(entity, Spacial{{1.0f, 1.0f}, {50.0f, 10.0f}});
         gCoordinator.addComponent(entity, Power{3.0f, 0.0f});
         gCoordinator.addComponent(entity, Speed{5.0f, 1.0f});
         gCoordinator.addComponent(entity, Images{"Libs/Graphics/assets/texture/MissileKill.gif"});

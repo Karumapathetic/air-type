@@ -170,7 +170,7 @@ namespace ECS {
             if (key == "pos:") {
                 currentPos.position = value;
             } else {
-                currentPos.scale = value;
+                currentPos.size = value;
             }
         }
     }

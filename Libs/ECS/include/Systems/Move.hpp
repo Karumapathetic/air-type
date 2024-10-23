@@ -34,13 +34,13 @@ namespace ECS {
                         if (entityPos.position.y - entitySpeed.velocity > 0)
                             entityPos.position.y -= entitySpeed.velocity;
                     } else if (params == "down") {
-                        if (entityPos.position.y + entitySpeed.velocity < MAX_Y)
+                        if (entityPos.position.y + entitySpeed.velocity + entityPos.size.y < MAX_Y)
                             entityPos.position.y += entitySpeed.velocity;
                     } else if (params == "left") {
                         if (entityPos.position.x - entitySpeed.velocity > 0)
                             entityPos.position.x -= entitySpeed.velocity;
                     } else if (params == "right") {
-                        if (entityPos.position.x + entitySpeed.velocity < MAX_X)
+                        if (entityPos.position.x + entitySpeed.velocity + entityPos.size.x < MAX_X)
                             entityPos.position.x += entitySpeed.velocity;
                     }
                 }
