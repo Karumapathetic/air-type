@@ -22,6 +22,7 @@ namespace Graphics {
                 }
                 _textures.clear();
             };
+
             void InitGraphics(const char *title) override {
                 int screenWidth = GetScreenWidth();
                 int screenHeight = GetScreenHeight();

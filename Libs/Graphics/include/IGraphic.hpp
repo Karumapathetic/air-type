@@ -11,6 +11,7 @@
 #include <cstdint>
 
 namespace Graphics {
+    // Color type, RGBA (32bit)
     typedef struct Color {
         unsigned char r;        // Color red value
         unsigned char g;        // Color green value
@@ -18,7 +19,7 @@ namespace Graphics {
         unsigned char a;        // Color alpha value
     } Color;
 
-    // Mouse buttons
+    // Mouse buttons enum
     typedef enum {
         MOUSE_BUTTON_LEFT    = 0,       // Mouse button left
         MOUSE_BUTTON_RIGHT   = 1,       // Mouse button right
@@ -29,8 +30,7 @@ namespace Graphics {
         MOUSE_BUTTON_BACK    = 6,       // Mouse button back (advanced mouse device)
     } MouseButton;
 
-    // Keyboard keys (US keyboard layout)
-    // required keys for alternative layouts
+    // Keyboard keys (US keyboard layout) enum
     typedef enum {
         KEY_NULL            = 0,        // Key: NULL, used for no key pressed
         // Alphanumeric keys
@@ -174,6 +174,11 @@ namespace Graphics {
      */
     const Entity MAX_ENTITIES = 1000;
 
+    /**
+     * @brief Vector2 type
+     * 
+     * This struct represents a 2D vector.
+     */
     typedef struct Rectangle {
         float x;                // Rectangle top-left corner position x
         float y;                // Rectangle top-left corner position y
@@ -181,38 +186,238 @@ namespace Graphics {
         float height;           // Rectangle height
     } Rectangle;
 
+    /**
+     * @brief Vector2 type
+     * 
+     * This struct represents a 2D vector.
+     */
     typedef struct Vector2 {
         float x;                // Vector x component
         float y;                // Vector y component
     } Vector2;
 
+    /**
+     * @brief Interface for the graphics system
+     * 
+     * This interface provides functions to initialize the graphics system, render shapes, text, and textures,
+     * handle input, and manage the window.
+     */
     class IGraphic {
         public:
+            /**
+             * @brief Destroy the IGraphic object
+             */
             virtual ~IGraphic() = default;
+
+            /**
+             * @brief Initialize the graphics
+             * 
+             * This function initializes the graphics system with the given title.
+             * Also initializes the audio device, toggles fullscreen, and sets the exit key.
+             * 
+             * @param title 
+             */
             virtual void InitGraphics(const char *title) = 0;
+
+            /**
+             * @brief Close the graphics
+             * 
+             * Closes the window and the audio device.
+             * 
+             */
             virtual void CloseGraphics() = 0;
+
+            /**
+             * @brief Get the Window Width
+             * 
+             * @return The window width
+             */
             virtual int GetWindowWidth() = 0;
+
+            /**
+             * @brief Get the Window Height 
+             * 
+             * @return The window height
+             */
             virtual int GetWindowHeight() = 0;
+
+            /**
+             * @brief Render a circle
+             * 
+             * @param x The x position of the circle
+             * @param y The y position of the circle
+             * @param radius The radius of the circle
+             * @param color The color of the circle
+             */
             virtual void RenderCircle(int x, int y, int radius, Color color) = 0;
+
+            /**
+             * @brief Render a rectangle
+             * 
+             * @param posX The x position of the rectangle
+             * @param posY The y position of the rectangle
+             * @param width The width of the rectangle
+             * @param height The height of the rectangle
+             * @param color The color of the rectangle
+             */
             virtual void RenderRectangle(int posX, int posY, int width, int height, Color color) = 0;
+
+            /**
+             * @brief Render a rounded rectangle
+             * 
+             * @param rec The rectangle to render
+             * @param roundness The roundness of the rectangle
+             * @param segments The number of segments
+             * @param color The color of the rectangle
+             */
             virtual void RenderRoundedRectangle(Rectangle rec, float roundness, int segments, Color color) = 0;
+
+            /**
+             * @brief Render the sides of a rounded rectangle
+             * 
+             * @param rec The rectangle to render
+             * @param roundness The roundness of the rectangle
+             * @param segments The number of segments
+             * @param color The color of the rectangle
+             */
             virtual void RenderRoundedRectangleSides(Rectangle rec, float roundness, int segments, Color color) = 0;
+
+            /**
+             * @brief Render text
+             * 
+             * @param text The text to render
+             * @param posX The x position of the text
+             * @param posY The y position of the text
+             * @param fontSize The font size of the text
+             * @param color The color of the text
+             */
             virtual void RenderText(const char *text, int posX, int posY, int fontSize, Color color) = 0;
+
+            /**
+             * @brief Get the size of the text
+             * 
+             * @param text The text to get the size of
+             * @param fontSize The font size of the text
+             * 
+             * @return The size of the text
+             */
             virtual int TextSize(const char *text, int fontSize) = 0;
+
+            /**
+             * @brief Get the cursor position
+             * 
+             * @return The cursor position
+             */
             virtual Vector2 GetCursorPosition() = 0;
+
+            /**
+             * @brief Check if the mouse is colliding with a rectangle
+             * 
+             * @param point The point to check
+             * @param rec The rectangle to check
+             * 
+             * @return True if the mouse is colliding with the rectangle, false otherwise
+             */
             virtual bool CheckCollisionMouse(Vector2 point, Rectangle rec) = 0;
+
+            /**
+             * @brief Check if a mouse button is clicked
+             * 
+             * @param button The button to check
+             * 
+             * @return True if the button is clicked, false otherwise
+             */
             virtual bool IsMouseButtonClicked(int button) = 0;
+
+            /**
+             * @brief Render a texture
+             * 
+             * @param Id The unique identifier of the texture
+             * @param posX The x position of the texture
+             * @param posY The y position of the texture
+             * @param tint The color of the texture
+             */
             virtual void RenderPreciseTexture(int Id, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint) = 0;
+
+            /**
+             * @brief Render the frames per second
+             * 
+             * @param posX The x position of the FPS
+             * @param posY The y position of the FPS
+             */
             virtual void RenderFPS(int posX, int posY) = 0;
+
+            /**
+             * @brief Start rendering
+             */
             virtual void StartRendering() = 0;
+
+            /**
+             * @brief End rendering
+             */
             virtual void EndRendering() = 0;
+
+            /**
+             * @brief Clear the screen
+             * 
+             * @param color The color to clear the screen with
+             */
             virtual void ResetBackground(Color color) = 0;
+
+            /**
+             * @brief Check if an input is pressed
+             * 
+             * @param key The key to check
+             * 
+             * @return True if the key is pressed, false otherwise
+             */
             virtual bool IsInputPressed(int key) = 0;
+
+            /**
+             * @brief Set the window resolution
+             * 
+             * @param width The width of the window
+             * @param height The height of the window
+             */
             virtual void SetWindowResolution(int width, int height) = 0;
+
+            /**
+             * @brief Set the frames per second
+             * 
+             * @param fps The frames per second
+             */
             virtual void SetFPS(int fps) = 0;
+
+            /**
+             * @brief Fade a color
+             * 
+             * @param color The color to fade
+             * @param alpha The alpha value
+             * 
+             * @return The faded color
+             */
             virtual Color FadeColor(Color color, float alpha) = 0;
+
+            /**
+             * @brief Check if the window is closing
+             * 
+             * @return True if the window is closing, false otherwise
+             */
             virtual bool IsWindowClosing() = 0;
+
+            /**
+             * @brief Load a texture from a file
+             * 
+             * @param Id The unique identifier of the texture
+             * @param filename The filename of the texture
+             */
             virtual void LoadTextureFromFile(int Id, const char *filename) = 0;
+
+            /**
+             * @brief Unload a texture by its unique identifier
+             * 
+             * @param Id The unique identifier of the texture
+             */
             virtual void UnloadTextureById(int Id) = 0;
         protected:
         private:
