@@ -309,7 +309,74 @@ namespace ECS {
              */
             bool isEntityValid(Entity entity) const;
 
+            /**
+             * @brief Updates the systems in the ECS.
+             * 
+             * This function iterates through all the registered systems in the ECS and calls their update functions.
+             * The update function of each system is responsible for processing the entities that match its signature.
+             * 
+             * @return void
+             */
             void updateSystems();
+
+            /**
+             * @brief Retrieves the action queue containing entity-action pairs.
+             * 
+             * This function returns a deque of pairs, where each pair consists of an entity and a string representing an action.
+             * The action queue is used to store and retrieve actions that need to be performed on specific entities.
+             * 
+             * @return A deque of pairs containing entity-action pairs.
+             */
+            std::deque<std::pair<Entity, std::string>> getActionQueue();
+
+            /**
+             * @brief Adds an event to the action queue.
+             * 
+             * This function adds a new event to the action queue, consisting of an entity ID and an action string.
+             * The event is placed at the end of the queue.
+             * 
+             * @param id The unique identifier of the entity associated with the event.
+             * @param action The action string representing the event to be performed.
+             * 
+             * @return void
+             */
+            void addEvent(Entity id, const std::string& action);
+
+            /**
+             * @brief Retrieves the first event from the action queue.
+             * 
+             * This function retrieves the first event from the action queue, which is a deque of pairs.
+             * Each pair consists of an entity and a string representing an action.
+             * 
+             * @return A pair containing the entity ID and the action string of the first event.
+             *         If the action queue is empty, it returns a pair with -1 as the entity ID and an empty string as the action.
+             */
+            std::pair<Entity, std::string> getFirstEvent() const;
+
+            /**
+             * @brief Removes the first event from the action queue.
+             * 
+             * This function removes the first event from the action queue, which is a deque of pairs.
+             * Each pair consists of an entity and a string representing an action. The function 
+             * ensures that the queue is not empty before attempting to remove an event.
+             * 
+             * @return void
+             */
+            void removeFirstEvent();
+
+            /**
+             * @brief Moves the last added event to the end of the action queue.
+             * 
+             * This function is used to ensure that a specific event, which might be required to be processed last,
+             * is moved to the end of the action queue. This is useful when there are multiple events that need to be
+             * processed in a specific order.
+             * 
+             * @return void
+             * 
+             * @note This function does not remove the event from its current position in the queue. It simply moves
+             *       it to the end. If the action queue is empty, this function does nothing.
+             */
+            void putEventAtEnd();
 
             // /**
             //  * @brief Sets the player spawn.
@@ -342,6 +409,15 @@ namespace ECS {
              * @brief Variable that stores the entities.
              */
             std::vector<Entity> _entities;
+
+            /**
+             * @brief A double-ended queue (deque) that stores pairs of entities and their associated actions.
+             *        This queue is used to manage and process events or actions related to entities in the ECS.
+             * 
+             * @note The deque is implemented using a doubly-linked list, allowing efficient insertion and removal
+             *       of elements from both ends.
+             */
+            std::deque<std::pair<Entity, std::string>> _actionQueue;
 
             /**
              * @brief Creates an entity based on the specified type.

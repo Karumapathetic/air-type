@@ -5,12 +5,14 @@
 ** Heal
 */
 
-#include <iostream>
 #include "Heal.hpp"
 
 namespace ECS {
-    void Heal::update()
+    void Heal::update( Coordinator& _coordinator)
     {
-        std::cout << "Heal update" << std::endl;
+        if (_coordinator.getFirstEvent().second == "heal") {
+            std::cout << "Heal update" << std::endl;
+            _coordinator.removeFirstEvent();
+        }
     }
 }

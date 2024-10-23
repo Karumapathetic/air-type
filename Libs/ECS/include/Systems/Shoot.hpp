@@ -16,26 +16,14 @@ namespace ECS {
      */
     class Shoot : public ISystem {
         public:
-            void update() {std::cout << "Shoot" << std::endl;}
+            void update( Coordinator& _coordinator);
             /**
              * @brief Shoots a missile from the entity.
              * 
              * @param coordinator The coordinator that contains the entities.
              * @param entity The entity that is shooting the missile.
              */
-            void MissileShoot(Coordinator &coordinator, Entity entity) {
-                auto &entityCooldown = coordinator.getComponent<Cooldown>(entity);
-                if (entityCooldown.getRemainingCooldown("missile") > 0.0f)
-                    return;
-                entityCooldown.activation["missile"].second = std::chrono::steady_clock::now();
-                auto entityPos = coordinator.getComponent<Spacial>(entity);
-                Entity missile = coordinator.createEntity("missile");
-                coordinator.initEntities();
-                auto &missilePos = coordinator.getComponent<Spacial>(missile);
-                missilePos.position.x = entityPos.position.x;
-                missilePos.position.y = entityPos.position.y;
-                std::cout << "Shooting missile: " << missile << std::endl;
-            }
+            bool MissileShoot(Coordinator &coordinator, Entity entity);
         protected:
         private:
     };

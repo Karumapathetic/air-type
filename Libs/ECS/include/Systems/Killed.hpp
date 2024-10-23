@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include "ISystem.hpp"
+#include "Coordinator.hpp"
 
 namespace ECS {
     /**
@@ -16,7 +17,7 @@ namespace ECS {
      */
     class Killed : public ISystem {
         public:
-            void update() {std::cout << "Killed" << std::endl;}
+            void update( Coordinator& _coordinator) {std::cout << "Killed" << std::endl;}
         protected:
         private:
     };

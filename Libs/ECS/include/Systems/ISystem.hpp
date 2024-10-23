@@ -11,6 +11,7 @@
 #include "ECSValues.hpp"
 
 namespace ECS {
+    class Coordinator;
     /**
      * @brief Interface for the systems.
      * 
@@ -26,7 +27,7 @@ namespace ECS {
              * 
              * @return void
              */
-            virtual void update() = 0;
+            virtual void update(Coordinator& _coordinator) = 0;
             std::set<Entity> entities;
     };
 }

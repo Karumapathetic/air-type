@@ -5,12 +5,14 @@
 ** Damage.cpp
 */
 
-#include <iostream>
 #include "Damage.hpp"
 
 namespace ECS {
-    void Damage::update()
+    void Damage::update( Coordinator& _coordinator)
     {
-        std::cout << "Damage update" << std::endl;
+        if (_coordinator.getFirstEvent().second == "damage") {
+            std::cout << "Damage update" << std::endl;
+            _coordinator.removeFirstEvent();
+        }
     }
 }

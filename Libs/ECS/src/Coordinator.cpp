@@ -7,8 +7,8 @@
 
 #include "Coordinator.hpp"
 #include "Collision.hpp"
-#include "Heal.hpp"
-#include "Damage.hpp"
+#include "Shoot.hpp"
+#include "Move.hpp"
 
 namespace ECS {
     Coordinator::Coordinator() {
@@ -41,20 +41,23 @@ namespace ECS {
         this->registerComponent<Cooldown>();
 
         this->registerSystem<ECS::Collision>();
+        this->registerSystem<ECS::Shoot>();
+        this->registerSystem<ECS::Move>();
 
         Signature collisionSignature;
         collisionSignature.set(this->getComponentType<Spacial>());
         this->setSystemSignature<ECS::Collision>(collisionSignature);
 
-        this->registerSystem<ECS::Heal>();
-        Signature healSignature;
-        healSignature.set(this->getComponentType<Life>());
-        this->setSystemSignature<ECS::Heal>(healSignature);
+        Signature shootSignature;
+        shootSignature.set(this->getComponentType<Power>());
+        shootSignature.set(this->getComponentType<Cooldown>());
+        shootSignature.set(this->getComponentType<Spacial>());
+        this->setSystemSignature<ECS::Shoot>(shootSignature);
 
-        this->registerSystem<ECS::Damage>();
-        Signature damageSignature;
-        damageSignature.set(this->getComponentType<Power>());
-        this->setSystemSignature<ECS::Damage>(damageSignature);
+        Signature moveSignature;
+        moveSignature.set(this->getComponentType<Spacial>());
+        moveSignature.set(this->getComponentType<Speed>());
+        this->setSystemSignature<ECS::Move>(moveSignature);
 
         this->createEntity("settings");
         Entity enemy = this->createEntity("enemy");
@@ -227,15 +230,52 @@ namespace ECS {
     {
         for (auto& [typeName, system] : this->getSystems()) {
             Signature systemSignature = this->getSystemSignature(typeName);
-
             for (auto entity : system->entities) {
                 Signature entitySignature = this->getEntitySignature(entity);
 
                 if ((entitySignature & systemSignature) == systemSignature) {
-                    system->update();
+                    if (_actionQueue.empty()) {
+                        return;
+                    }
+                    system->update(*this);
                 }
+                std::cout << "Updated" << std::endl;
             }
+            std::cout << "Updated all entities for this system" << std::endl;
         }
+        std::cout << "Updated everything" << std::endl;
+    }
+
+    std::deque<std::pair<Entity, std::string>> Coordinator::getActionQueue()
+    {
+        return _actionQueue;
+    }
+
+    void Coordinator::addEvent(Entity id, const std::string& action)
+    {
+        const size_t maxQueueSize = 1000;
+        if (_actionQueue.size() >= maxQueueSize) {
+            _actionQueue.pop_front();
+        }
+        this->_actionQueue.push_back({id, action});
+        std::cout << "Event added: " << action << " for entity: " << id << std::endl;
+    }
+
+    std::pair<Entity, std::string> Coordinator::getFirstEvent() const
+    {
+        return _actionQueue.front();
+    }
+
+    void Coordinator::removeFirstEvent()
+    {
+        std::cout << "Event removed: " << _actionQueue.front().second << " for entity: " << _actionQueue.front().first << std::endl;
+        _actionQueue.pop_front();
+    }
+
+    void Coordinator::putEventAtEnd()
+    {
+        _actionQueue.push_back(_actionQueue.front());
+        _actionQueue.pop_front();
     }
 
     // void Coordinator::setPlayerSpawn(Entity entity)

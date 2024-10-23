@@ -7,7 +7,10 @@
 
 #pragma once
 
+#include <iostream>
+
 #include "ISystem.hpp"
+#include "Coordinator.hpp"
 
 namespace ECS {
     /**
@@ -15,7 +18,7 @@ namespace ECS {
      */
     class Heal : public ISystem {
         public:
-            void update() override;
+            void update(Coordinator& _coordinator) override;
         protected:
         private:
     };

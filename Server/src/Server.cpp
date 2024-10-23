@@ -158,12 +158,13 @@ void Server::getUserInput(std::vector<std::string> command)
     for (int i = 2; i < command.size(); i++) {
         std::string action = command[i];
         if (action == "shoot") {
-            auto shootSystem = _coordinator.getCoordSystem<ECS::Shoot>();
-            shootSystem->MissileShoot(_coordinator, entityId);
+            _coordinator.addEvent(entityId, "shoot");
+            //auto shootSystem = _coordinator.getCoordSystem<ECS::Shoot>();
+            //shootSystem->MissileShoot(_coordinator, entityId);
         } else {
-            auto moveSystem = _coordinator.getCoordSystem<ECS::Move>();
-            auto entities = _coordinator.getEntities();
-            moveSystem->MoveEntities(_coordinator, entityId, action);
+            _coordinator.addEvent(entityId, action);
+            //auto moveSystem = _coordinator.getCoordSystem<ECS::Move>();
+            //moveSystem->MoveEntities(_coordinator, entityId, action);
             positionUpdated = true;
         }
     }

@@ -16,7 +16,7 @@ namespace ECS {
      */
     class Collision : public ISystem {
         public:
-            void update() {std::cout << "Collision" << std::endl;}
+            void update( Coordinator& _coordinator) {}
             /**
              * @brief Detects collisions between entities.
              * 
