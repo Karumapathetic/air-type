@@ -24,6 +24,7 @@ namespace ECS {
         ++livingEntityCount;
         entityNames[id] = name;
         entityInitialized[id] = false;
+        entityUpdated[id] = true;
 
         return id;
     }
@@ -35,6 +36,7 @@ namespace ECS {
         signatures[entity].reset();
         entityNames.erase(entity);
         entityInitialized.erase(entity);
+        entityUpdated.erase(entity);
         availableEntities.push(entity);
         --livingEntityCount;
     }
@@ -73,5 +75,17 @@ namespace ECS {
     {
         assert(entity < MAX_ENTITIES && "Entity out of range.");
         return entityInitialized[entity];
+    }
+
+    void EntityManager::setEntityUpdated(Entity entity, const bool updated)
+    {
+        assert(entity < MAX_ENTITIES && "Entity out of range.");
+        entityUpdated[entity] = updated;
+    }
+
+    bool EntityManager::getEntityUpdated(Entity entity)
+    {
+        assert(entity < MAX_ENTITIES && "Entity out of range.");
+        return entityUpdated[entity];
     }
 }

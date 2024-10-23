@@ -135,19 +135,6 @@ namespace ECS {
             }
 
             /**
-             * @brief Retrieves the signature of a system.
-             * 
-             * @tparam T The type of the system.
-             * 
-             * @return The signature of the system.
-             */
-
-            Signature getSystemSignature(const std::string& typeName)
-            {
-                return systemManager->getSystemSignature(typeName);
-            }
-
-            /**
              * @brief Sets the signature of a system.
              * 
              * @tparam T The type of the system.
@@ -270,10 +257,52 @@ namespace ECS {
              */
             void setEntities(std::size_t index, Entity entity);
 
-            const std::unordered_map<std::string, std::shared_ptr<ISystem>>& getSystems() const
-            {
-                return systemManager->getSystems();
-            }
+                        /**
+             * @brief Retrieves the signature of a system.
+             * 
+             * @tparam T The type of the system.
+             * 
+             * @return The signature of the system.
+             */
+
+            Signature getSystemSignature(const std::string& typeName);
+
+            /**
+             * @brief Retrieves the systems registered in the ECS.
+             * 
+             * This function returns a constant reference to an unordered map that contains the 
+             * registered systems in the ECS. The map is keyed by the system type names and 
+             * the values are shared pointers to the system interfaces.
+             * 
+             * @return A constant reference to an unordered map containing the system type names 
+             *         as keys and shared pointers to the system interfaces as values.
+             */
+            const std::unordered_map<std::string, std::shared_ptr<ISystem>>& getSystems() const;
+
+            /**
+             * @brief Sets the updated status of an entity.
+             * 
+             * This function updates the 'updated' status of a specific entity in the ECS.
+             * The updated status indicates whether the entity has been updated or not.
+             * 
+             * @param entity The unique identifier of the entity.
+             * @param updated The updated status of the entity.
+             * 
+             * @return void
+             */
+            void setEntityUpdated(Entity entity, const bool updated);
+
+            /**
+             * @brief Retrieves the updated status of an entity.
+             * 
+             * This function checks the 'updated' status of a specific entity in the ECS.
+             * The updated status indicates whether the entity has been updated or not.
+             * 
+             * @param entity The entity whose updated status is to be retrieved.
+             * 
+             * @return True if the entity has been updated, false otherwise.
+             */
+            bool getEntityUpdated(Entity entity);
 
             /**
              * @brief Spawns an entity in the ECS based on the provided name and parameters.

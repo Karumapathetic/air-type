@@ -12,13 +12,13 @@ namespace ECS {
     {
         if (_coordinator.getFirstEvent().second == "shoot") {
             this->MissileShoot(_coordinator, _coordinator.getFirstEvent().first);
-            _coordinator.removeFirstEvent();
         }
     }
 
     bool Shoot::MissileShoot(Coordinator &coordinator, Entity entity) {
         auto &entityCooldown = coordinator.getComponent<Cooldown>(entity);
         if (entityCooldown.getRemainingCooldown("missile") > 0.0f) {
+            coordinator.removeFirstEvent();
             return false;
         }
         entityCooldown.activation["missile"].second = std::chrono::steady_clock::now();
@@ -29,6 +29,7 @@ namespace ECS {
         missilePos.position.x = entityPos.position.x;
         missilePos.position.y = entityPos.position.y;
         std::cout << "Shooting missile: " << missile << std::endl;
+            coordinator.removeFirstEvent();
         return true;
     }
 }
