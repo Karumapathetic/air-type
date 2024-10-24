@@ -9,7 +9,7 @@
 
 namespace ECS {
     void playerHandler(Coordinator &gCoordinator, std::uint32_t entity) {
-        gCoordinator.addComponent(entity, Spacial{{100.0f, 100.0f}, {33.0f, 16.0f}});
+        gCoordinator.addComponent(entity, Spacial{{100.0f, 100.0f}, {86.0f, 48.0f}});
         gCoordinator.addComponent(entity, Power{5.0f, 0.0f});
         gCoordinator.addComponent(entity, ECS::Cooldown());
         auto &cooldown = gCoordinator.getComponent<ECS::Cooldown>(entity);
