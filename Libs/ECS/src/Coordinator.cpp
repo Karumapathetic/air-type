@@ -283,7 +283,7 @@ namespace ECS {
             _actionQueue.pop_front();
         }
         this->_actionQueue.push_back({id, action});
-        std::cout << "Event added: " << action << " for entity: " << id << std::endl;
+        // std::cout << "Event added: " << action << " for entity: " << id << std::endl;
     }
 
     std::pair<Entity, std::string> Coordinator::getFirstEvent() const
@@ -293,7 +293,7 @@ namespace ECS {
 
     void Coordinator::removeFirstEvent()
     {
-        std::cout << "Event removed: " << _actionQueue.front().second << " for entity: " << _actionQueue.front().first << std::endl;
+        // std::cout << "Event removed: " << _actionQueue.front().second << " for entity: " << _actionQueue.front().first << std::endl;
         _actionQueue.pop_front();
     }
 
@@ -302,17 +302,4 @@ namespace ECS {
         _actionQueue.push_back(_actionQueue.front());
         _actionQueue.pop_front();
     }
-
-    // void Coordinator::setPlayerSpawn(Entity entity)
-    // {
-    //     bool playerSpawned = false;
-    //     while (!playerSpawned) {
-    //         int randomX = MAX_X / 20;
-    //         int randomY = rand() % MAX_Y - 50;
-    //         auto entities = this->getEntities();
-    //         for (Entity entity : entities) {
-    //             ;
-    //         }
-    //     }
-    // }
 }

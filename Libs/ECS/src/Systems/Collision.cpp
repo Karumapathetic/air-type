@@ -29,10 +29,10 @@ namespace ECS {
                     continue;
                 auto entitySpacial = gCoordinator.getComponent<Spacial>(entity);
                 auto otherEntitySpacial = gCoordinator.getComponent<Spacial>(otherEntity);
-                if (entitySpacial.position.x < otherEntitySpacial.position.x + otherEntitySpacial.scale.x &&
-                    entitySpacial.position.x + entitySpacial.scale.x > otherEntitySpacial.position.x &&
-                    entitySpacial.position.y < otherEntitySpacial.position.y + otherEntitySpacial.scale.y &&
-                    entitySpacial.position.y + entitySpacial.scale.y > otherEntitySpacial.position.y) {
+                if (entitySpacial.position.x < otherEntitySpacial.position.x + otherEntitySpacial.size.x &&
+                    entitySpacial.position.x + entitySpacial.size.x > otherEntitySpacial.position.x &&
+                    entitySpacial.position.y < otherEntitySpacial.position.y + otherEntitySpacial.size.y &&
+                    entitySpacial.position.y + entitySpacial.size.y > otherEntitySpacial.position.y) {
                     if (gCoordinator.getEntityName(entity) == "player" && gCoordinator.getEntityName(otherEntity) == "enemy") {
                         gCoordinator.destroyEntity(otherEntity);
                     } else if (gCoordinator.getEntityName(entity) == "enemy" && gCoordinator.getEntityName(otherEntity) == "player") {
