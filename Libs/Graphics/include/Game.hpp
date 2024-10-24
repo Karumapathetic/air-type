@@ -222,6 +222,13 @@ namespace Graphics {
              * @param id The unique identifier of the entity to animate.
              */
             void AnimateEntity(Vector2 oldPos, Vector2 newPos, int id);
+
+            /**
+             * @brief Get the Number Of Clients already inGame
+             * 
+             * @return The number of clients in the game
+             */
+            float GetNumberOfClients();
         protected:
         private:
             /**

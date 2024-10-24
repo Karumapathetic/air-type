@@ -406,13 +406,6 @@ namespace ECS {
              *       it to the end. If the action queue is empty, this function does nothing.
              */
             void putEventAtEnd();
-
-            // /**
-            //  * @brief Sets the player spawn.
-            //  * 
-            //  * @param entity The entity.
-            //  */
-            // void setPlayerSpawn(Entity entity);
         private:
             /**
              * @brief Variable that stores the component manager.

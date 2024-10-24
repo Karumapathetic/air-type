@@ -25,6 +25,8 @@ namespace ECS {
              * @param coordinator The coordinator that contains the entities.
              * @param entity The entity to move.
              * @param params The parameters to move the entity.
+             * 
+             * @return bool
              */
             bool MoveEntities(Coordinator &coordinator, Entity entity, const std::string &params);
         protected:

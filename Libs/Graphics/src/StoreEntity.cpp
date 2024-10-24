@@ -27,6 +27,15 @@ namespace Graphics {
         return false;
     }
 
+    float Game::GetNumberOfClients() {
+        float result = 0;
+        for (auto entity: _entities) {
+            if (entity.second.name == "player")
+                result += 1;
+        }
+        return result;
+    }
+
     void Game::CreateEntity(Entity id, const std::string& params) {
         if (id < 0 || id >= MAX_ENTITIES) return;
 
@@ -45,7 +54,7 @@ namespace Graphics {
             if (texturePath.find("player") != std::string::npos) {
                 _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/PlayerShip.gif");
                 _entities[id].scale = {86, 48};
-                _entities[id].crop = {66, 0, 33, 16};
+                _entities[id].crop = {66, 36 * GetNumberOfClients(), 33, 16};
                 _entities[id].priority = {1};
                 _entities[id].name = "player";
             } else if (texturePath.find("enemy") != std::string::npos) {
