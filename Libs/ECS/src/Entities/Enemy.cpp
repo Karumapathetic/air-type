@@ -9,7 +9,7 @@
 
 namespace ECS {
     void enemyHandler(Coordinator &gCoordinator, std::uint32_t entity) {
-        gCoordinator.addComponent(entity, Spacial{{1800.0f, 100.0f}, {33.0f, 36.0f}});
+        gCoordinator.addComponent(entity, Spacial{{1800.0f, 100.0f}, {86.0f, 48.0f}});
         gCoordinator.addComponent(entity, Power{1.0f, 0.0f});
         gCoordinator.addComponent(entity, Life{3.0f, 1.0f});
         gCoordinator.addComponent(entity, Speed{3.0f, 1.0f});
