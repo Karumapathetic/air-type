@@ -53,10 +53,8 @@ namespace ECS {
                 return system;
             }
 
-            template<typename T>
-            Signature getSystemSignature()
+            Signature getSystemSignature(const std::string& typeName)
             {
-                std::string typeName = typeid(T).name();
                 return signatures.at(typeName);
             }
 
@@ -95,6 +93,20 @@ namespace ECS {
              * @param entitySignature The new signature of the entity.
              */
             void entitySignatureChanged(Entity entity, Signature entitySignature);
+
+            /**
+             * @brief Returns a constant reference to the map of systems.
+             * 
+             * This function allows access to the systems managed by the SystemManager.
+             * The map is keyed by the type of the system (obtained using typeid(T).name())
+             * and the value is a shared pointer to the system.
+             * 
+             * @return A constant reference to the map of systems.
+             */
+            const std::unordered_map<std::string, std::shared_ptr<ISystem>>& getSystems() const
+            {
+                return systems;
+            }
 
         private:
             /**
