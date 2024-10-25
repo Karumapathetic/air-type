@@ -36,7 +36,6 @@ namespace Graphics {
         _game.getGraphics()->InitGraphics("Air-Type");
         _game.getGraphics()->SetFPS(60);
         InitStars(500);
-        _game.setGameState(Graphics::GameState::MENU);
     }
 
     void Core::Caillou(bool *isRunning) {

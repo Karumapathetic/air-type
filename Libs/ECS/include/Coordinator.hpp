@@ -164,7 +164,7 @@ namespace ECS {
              * 
              * @return The entity.
              */
-            Entity createEntity(const std::string& name);
+            Entity createEntity(const std::string& name); // Here
 
             /**
              * @brief Destroys an entity.
@@ -188,7 +188,7 @@ namespace ECS {
              * @param entity The entity whose name is to be set.
              * @param name The name of the entity.
              */
-            void setEntityName(Entity entity, bool initialized);
+            void setEntityName(Entity entity, const std::string& name);
 
             /**
              * @brief Retrieves the initialized status of an entity.
@@ -499,14 +499,6 @@ namespace ECS {
     void playerHandler(Coordinator &gCoordinator, std::uint32_t entity);
 
     /**
-     * @brief Function that handles the enemy entity.
-     * 
-     * @param gCoordinator The coordinator.
-     * @param entity The entity.
-     */
-    void enemyHandler(Coordinator &gCoordinator, std::uint32_t entity);
-
-    /**
      * @brief Function that handles the missile entity.
      * 
      * @param gCoordinator The coordinator.
@@ -537,4 +529,59 @@ namespace ECS {
      * @param entity The entity.
      */
     void collectibleHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the pata-pata entity.
+     * 
+     * This function handles the pata-pata entity. It creates the components for the entity
+     * and sets the entity as initialized. The components created are Spacial, Speed, Images, EntityTypes, Life and Power.
+     * 
+     * @param gCoordinator The coordinator object.
+     * @param entity The entity to be handled.
+     */
+    void patapataHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the win entity.
+     * 
+     * This function handles the win entity. It creates the components for the entity
+     * and sets the entity as initialized. The components created are Spacial, Speed, Images, EntityTypes, Life and Power.
+     * 
+     * @param gCoordinator The coordinator object.
+     * @param entity The entity to be handled.
+     */
+    void winHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the bug entity.
+     * 
+     * This function handles the bug entity. It creates the components for the entity
+     * and sets the entity as initialized. The components created are Spacial, Speed, Images, EntityTypes, Life and Power.
+     * 
+     * @param gCoordinator The coordinator object.
+     * @param entity The entity to be handled.
+     */
+    void bugHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the wick entity.
+     * 
+     * This function handles the wick entity. It creates the components for the entity
+     * and sets the entity as initialized. The components created are Spacial, Speed, Images, EntityTypes, Life and Power.
+     * 
+     * @param gCoordinator The coordinator object.
+     * @param entity The entity to be handled.
+     */
+    void wickHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the geld entity.
+     * 
+     * This function handles the geld entity. It creates the components for the entity
+     * and sets the entity as initialized. The components created are Spacial, Speed, Images, EntityTypes, Life and Power.
+     * 
+     * @param gCoordinator The coordinator object.
+     * @param entity The entity to be handled.
+     */
+    void geldHandler(Coordinator &gCoordinator, std::uint32_t entity);
 }

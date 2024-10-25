@@ -11,7 +11,7 @@ namespace ECS {
     void UpdateSystem::update( Coordinator& _coordinator){
         if (_coordinator.getFirstEvent().second == "update") {
             for (auto entity: _coordinator.getEntities()) {
-                if (_coordinator.getEntityName(entity) == "enemy") {
+                if (_coordinator.getEntityName(entity) == "pata-pata") {
                     // std::cout << "Enemy position: " << _coordinator.getComponent<Spacial>(entity).position.x << std::endl;
                     if (_coordinator.getComponent<Spacial>(entity).position.x < 0) {
                         _coordinator.destroyEntity(entity);

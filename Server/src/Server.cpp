@@ -38,15 +38,12 @@ void Server::run()
             if (_coordinator.getEntityUpdated(entity)) {
                 if (_coordinator.hasComponent(entity, _coordinator.getComponentType<ECS::Spacial>())) {
                     auto &spacial = _coordinator.getComponent<ECS::Spacial>(entity);
+                    // std::cout << _coordinator.getEntityName(entity) << " " << entity << " " << spacial.position.x << " " << spacial.position.y << std::endl;
                     sendToClients("21 " + _coordinator.getEntityName(entity) + " " + std::to_string(entity) + " " + std::to_string(spacial.position.x) + " " + std::to_string(spacial.position.y));
                 }
                 _coordinator.setEntityUpdated(entity, false);
             }
         }
-        //auto updateSystem = _coordinator.getCoordSystem<ECS::Update>();
-        //updateSystem->UpdatePositions(_coordinator, [this](const std::string& data) { sendToClients(d ata); });
-        //auto collisionSystem = _coordinator.getCoordSystem<ECS::Collision>();
-        //collisionSystem->detectCollision(_coordinator);
     }
     this->stop();
 }

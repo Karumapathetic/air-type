@@ -9,10 +9,11 @@
 #include "Game.hpp"
 
 namespace Graphics {
-    Game::Game() : _gameState(GameState::MENU)
+    Game::Game() : _gamestate(std::make_pair(GameState::MENU, GameState::MENU))
     {
         _option = new Option(*this);
         _graphics = std::make_shared<RaylibGraphics>();
+        InitializeAnimationsMap();
     }
 
     void Game::DrawSprites()
@@ -23,32 +24,9 @@ namespace Graphics {
         for (auto entity : _entities) {
             if (entity.second.priority != -1.0f) {
                 _graphics->RenderPreciseTexture(entity.first, entity.second.crop, {entity.second.position.x * scale, entity.second.position.y * scale, entity.second.scale.x * scale, entity.second.scale.y * scale}, {0.0f, 0.0f}, 0.0f, WHITE);
+                if (entity.second.name == "killed")
+                    AnimateEntity(entity.second.position, entity.second.position, entity.first);
             }
-        }
-    }
-
-    void Game::AnimateEntity(Vector2 oldPos, Vector2 newPos, int id)
-    {
-        if (_entities[id].name == "player") {
-            if (oldPos.y > newPos.y) {
-                if (_entities[id].crop.x == _entities[id].crop.width * 4)
-                    return;
-                _entities[id].crop.x += _entities[id].crop.width;
-            } else if (oldPos.y < newPos.y) {
-                if (_entities[id].crop.x == 0)
-                    return;
-                _entities[id].crop.x -= _entities[id].crop.width;
-            }
-        } else if (_entities[id].name == "enemy") {
-            if (_entities[id].crop.x == _entities[id].crop.width * 7)
-                _entities[id].crop.x = 0;
-            else
-                _entities[id].crop.x += _entities[id].crop.width;
-        } else if (_entities[id].name == "missile") {
-            if (_entities[id].crop.x == _entities[id].crop.width * 3)
-                _entities[id].crop.x = 0;
-            else
-                _entities[id].crop.x += _entities[id].crop.width;
         }
     }
 
