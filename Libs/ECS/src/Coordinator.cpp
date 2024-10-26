@@ -10,6 +10,8 @@
 #include "Shoot.hpp"
 #include "Move.hpp"
 #include "Update.hpp"
+#include "Damage.hpp"
+#include "Killed.hpp"
 
 namespace ECS {
     Coordinator::Coordinator() {
@@ -49,10 +51,12 @@ namespace ECS {
         this->registerSystem<ECS::Shoot>();
         this->registerSystem<ECS::Move>();
         this->registerSystem<ECS::UpdateSystem>();
+        this->registerSystem<ECS::Damage>();
+        this->registerSystem<ECS::Killed>();
 
-        //Signature collisionSignature;
-        //collisionSignature.set(this->getComponentType<Spacial>());
-        //this->setSystemSignature<ECS::Collision>(collisionSignature);
+        Signature collisionSignature;
+        collisionSignature.set(this->getComponentType<Spacial>());
+        this->setSystemSignature<ECS::Collision>(collisionSignature);
 
         Signature shootSignature;
         shootSignature.set(this->getComponentType<Power>());
@@ -70,9 +74,14 @@ namespace ECS {
         updateSignature.set(this->getComponentType<Speed>());
         this->setSystemSignature<ECS::UpdateSystem>(updateSignature);
 
+        Signature damageSignature;
+        damageSignature.set(this->getComponentType<Life>());
+        damageSignature.set(this->getComponentType<Power>());
+        this->setSystemSignature<ECS::Damage>(damageSignature);
+
         this->addEvent(0, "update");
         this->createEntity("settings");
-        Entity enemy = this->createEntity("win");
+        Entity enemy = this->createEntity("pata-pata");
         this->initEntities();
 
         auto &spacial = this->getComponent<Spacial>(enemy);
@@ -269,6 +278,9 @@ namespace ECS {
                     if (_actionQueue.empty()) {
                         return;
                     }
+                    if (_actionQueue.front().second != "update") {
+                        std::cout << "Event: " << _actionQueue.front().second << " for entity: " << _actionQueue.front().first << std::endl;
+                    }
                     system->update(*this);
                 }
             }
@@ -287,7 +299,7 @@ namespace ECS {
             _actionQueue.pop_front();
         }
         this->_actionQueue.push_back({id, action});
-        // std::cout << "Event added: " << action << " for entity: " << id << std::endl;
+        std::cout << "Event added: " << action << " for entity: " << id << std::endl;
     }
 
     std::pair<Entity, std::string> Coordinator::getFirstEvent() const
@@ -297,7 +309,7 @@ namespace ECS {
 
     void Coordinator::removeFirstEvent()
     {
-        // std::cout << "Event removed: " << _actionQueue.front().second << " for entity: " << _actionQueue.front().first << std::endl;
+        std::cout << "Event removed: " << _actionQueue.front().second << " for entity: " << _actionQueue.front().first << std::endl;
         _actionQueue.pop_front();
     }
 

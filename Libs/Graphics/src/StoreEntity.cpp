@@ -8,7 +8,7 @@
 #include "Game.hpp"
 
 namespace Graphics {
-    bool Game::ExtractValues(const std::string& params, const std::string& key, std::vector<float>& values, int numValues) {
+    bool Game::ExtractValues(const std::string& params, const std::string& key, std::vector<float>& values, int numValues) const {
         size_t keyIndex = params.find(key);
         if (keyIndex != std::string::npos) {
             size_t endPos = params.find(';', keyIndex);
@@ -27,7 +27,7 @@ namespace Graphics {
         return false;
     }
 
-    float Game::GetNumberOfClients() {
+    float Game::GetNumberOfClients() const {
         float result = 0;
         for (auto entity: _entities) {
             if (entity.second.name == "player")

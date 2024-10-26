@@ -16,6 +16,7 @@ namespace ECS {
     void Collision::detectCollision(ECS::Coordinator &gCoordinator) {
         auto entities = gCoordinator.getEntities();
         std::unordered_set<std::string> targetNames = {"player", "pata-pata", "missile"};
+        bool done = false;
 
         for (size_t i = 0; i < entities.size(); ++i) {
             auto entity = entities[i];
@@ -35,15 +36,12 @@ namespace ECS {
                     entitySpacial.position.y < otherEntitySpacial.position.y + otherEntitySpacial.size.y &&
                     entitySpacial.position.y + entitySpacial.size.y > otherEntitySpacial.position.y) {
                     if (gCoordinator.getEntityName(entity) == "player" && gCoordinator.getEntityName(otherEntity) == "pata-pata") {
-                        gCoordinator.destroyEntity(otherEntity);
-                    } else if (gCoordinator.getEntityName(entity) == "pata-pata" && gCoordinator.getEntityName(otherEntity) == "player") {
-                        gCoordinator.destroyEntity(entity);
-                    } else if (gCoordinator.getEntityName(entity) == "missile" && gCoordinator.getEntityName(otherEntity) == "pata-pata") {
-                        gCoordinator.destroyEntity(entity);
-                        gCoordinator.destroyEntity(otherEntity);
+                        std::cout << "Player collided with pata-pata" << std::endl;
+                        return;
                     } else if (gCoordinator.getEntityName(entity) == "pata-pata" && gCoordinator.getEntityName(otherEntity) == "missile") {
-                        gCoordinator.destroyEntity(entity);
-                        gCoordinator.destroyEntity(otherEntity);
+                        gCoordinator.addEvent(entity, "damage" + std::to_string(otherEntity));
+                        std::cout << "Missile collided with pata-pata" << std::endl;
+                        return;
                     }
                 }
             }

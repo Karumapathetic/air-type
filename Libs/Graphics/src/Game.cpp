@@ -30,7 +30,7 @@ namespace Graphics {
         }
     }
 
-    void Game::DrawAddOns()
+    void Game::DrawAddOns() const
     {
         if (_option->getDisplayfps()) {
             _graphics->RenderFPS(10, 10);

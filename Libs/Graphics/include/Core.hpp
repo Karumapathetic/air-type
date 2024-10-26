@@ -34,6 +34,11 @@ namespace Graphics {
              */
             ~Core() {}
 
+            /**
+             * @brief Get the game object.
+             * 
+             * @return The game object.
+             */
             Game &getGame() { return _game; }
 
             /**
