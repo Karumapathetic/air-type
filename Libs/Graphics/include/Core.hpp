@@ -7,9 +7,10 @@
 
 #pragma once
 
-#include "Game.hpp"
-#include <iostream>
 #include <ctime>
+#include <vector>
+
+#include "Game.hpp"
 
 namespace Graphics {
     /**

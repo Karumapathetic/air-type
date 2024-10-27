@@ -17,6 +17,9 @@ namespace Graphics {
         unsigned char g;        // Color green value
         unsigned char b;        // Color blue value
         unsigned char a;        // Color alpha value
+
+        Color(unsigned char red, unsigned char green, unsigned char blue, unsigned char alpha)
+        : r(red), g(green), b(blue), a(alpha) {}
     } Color;
 
     // Mouse buttons enum
@@ -158,6 +161,9 @@ namespace Graphics {
         float y; // The y position of the star
         int size; // Size of the star
         Color color; // Color of the star
+
+        Star(float x, float y, int size, Color color)
+            : x(x), y(y), size(size), color(color) {}
     };
 
     /**
@@ -450,28 +456,29 @@ namespace Graphics {
 #undef BLANK
 #undef MAGENTA
 
-#define LIGHTGRAY  (Color){ 200, 200, 200, 255 }   // Light Gray
-#define GRAY       (Color){ 130, 130, 130, 255 }   // Gray
-#define DARKGRAY   (Color){ 80, 80, 80, 255 }      // Dark Gray
-#define YELLOW     (Color){ 253, 249, 0, 255 }     // Yellow
-#define GOLD       (Color){ 255, 203, 0, 255 }     // Gold
-#define ORANGE     (Color){ 255, 161, 0, 255 }     // Orange
-#define PINK       (Color){ 255, 109, 194, 255 }   // Pink
-#define RED        (Color){ 230, 41, 55, 255 }     // Red
-#define MAROON     (Color){ 190, 33, 55, 255 }     // Maroon
-#define GREEN      (Color){ 0, 228, 48, 255 }      // Green
-#define LIME       (Color){ 0, 158, 47, 255 }      // Lime
-#define DARKGREEN  (Color){ 0, 117, 44, 255 }      // Dark Green
-#define SKYBLUE    (Color){ 102, 191, 255, 255 }   // Sky Blue
-#define BLUE       (Color){ 0, 121, 241, 255 }     // Blue
-#define DARKBLUE   (Color){ 0, 82, 172, 255 }      // Dark Blue
-#define PURPLE     (Color){ 200, 122, 255, 255 }   // Purple
-#define VIOLET     (Color){ 135, 60, 190, 255 }    // Violet
-#define DARKPURPLE (Color){ 112, 31, 126, 255 }    // Dark Purple
-#define BEIGE      (Color){ 211, 176, 131, 255 }   // Beige
-#define BROWN      (Color){ 127, 106, 79, 255 }    // Brown
-#define DARKBROWN  (Color){ 76, 63, 47, 255 }      // Dark Brown
-#define WHITE      (Color){ 255, 255, 255, 255 }   // White
-#define BLACK      (Color){ 0, 0, 0, 255 }         // Black
-#define BLANK      (Color){ 0, 0, 0, 0 }           // Blank (Transparent)
-#define MAGENTA    (Color){ 255, 0, 255, 255 }     // Magenta
+const Graphics::Color LIGHTGRAY  = { 200, 200, 200, 255 };   // Light Gray
+const Graphics::Color GRAY       = { 130, 130, 130, 255 };   // Gray
+const Graphics::Color DARKGRAY   = { 80, 80, 80, 255 };      // Dark Gray
+const Graphics::Color YELLOW     = { 253, 249, 0, 255 };     // Yellow
+const Graphics::Color GOLD       = { 255, 203, 0, 255 };     // Gold
+const Graphics::Color ORANGE     = { 255, 161, 0, 255 };     // Orange
+const Graphics::Color PINK       = { 255, 109, 194, 255 };   // Pink
+const Graphics::Color RED        = { 230, 41, 55, 255 };     // Red
+const Graphics::Color MAROON     = { 190, 33, 55, 255 };     // Maroon
+const Graphics::Color GREEN      = { 0, 228, 48, 255 };      // Green
+const Graphics::Color LIME       = { 0, 158, 47, 255 };      // Lime
+const Graphics::Color DARKGREEN  = { 0, 117, 44, 255 };      // Dark Green
+const Graphics::Color SKYBLUE    = { 102, 191, 255, 255 };   // Sky Blue
+const Graphics::Color BLUE       = { 0, 121, 241, 255 };     // Blue
+const Graphics::Color DARKBLUE   = { 0, 82, 172, 255 };      // Dark Blue
+const Graphics::Color PURPLE     = { 200, 122, 255, 255 };   // Purple
+const Graphics::Color VIOLET     = { 135, 60, 190, 255 };    // Violet
+const Graphics::Color DARKPURPLE = { 112, 31, 126, 255 };    // Dark Purple
+const Graphics::Color BEIGE      = { 211, 176, 131, 255 };   // Beige
+const Graphics::Color BROWN      = { 127, 106, 79, 255 };    // Brown
+const Graphics::Color DARKBROWN  = { 76, 63, 47, 255 };      // Dark Brown
+const Graphics::Color WHITE      = { 255, 255, 255, 255 };   // White
+const Graphics::Color BLACK      = { 0, 0, 0, 255 };         // Black
+const Graphics::Color BLANK      = { 0, 0, 0, 0 };           // Blank (Transparent)
+const Graphics::Color MAGENTA    = { 255, 0, 255, 255 };     // Magenta
+

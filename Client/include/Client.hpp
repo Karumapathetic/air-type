@@ -11,7 +11,7 @@
 #include <unordered_map>
 
 #include "UDPClient.hpp"
-#include "Core.hpp"
+//#include "Core.hpp"
 
 class Client {
     public:
@@ -30,7 +30,7 @@ class Client {
 
     protected:
     private:
-        Graphics::Core _core;
+        //Graphics::Core _core;
         Network::UDPClient _client;
         bool _isClientRunning;
         std::thread _networkThread;

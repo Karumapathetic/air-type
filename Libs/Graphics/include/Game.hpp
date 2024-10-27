@@ -9,13 +9,23 @@
 
 #include "Option.hpp"
 #include "Raylib.hpp"
-#include "IGraphic.hpp"
+#include "IGame.hpp"
 
 #include <iostream>
 #include <memory>
 
 #define MAX_X 1920.0f
 #define MAX_Y 1080.0f
+
+#ifdef _WIN32
+    #ifdef BUILD_DLL
+        #define GAME_API __declspec(dllexport)
+    #else
+        #define GAME_API __declspec(dllimport)
+    #endif
+#else
+    #define GAME_API
+#endif
 
 /**
  * @brief Namespace that contains all the graphics related classes

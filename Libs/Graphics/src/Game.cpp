@@ -6,6 +6,7 @@
 */
 
 #include <ctime>
+
 #include "Game.hpp"
 
 namespace Graphics {
