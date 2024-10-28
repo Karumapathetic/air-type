@@ -9,16 +9,17 @@
 
 #include <thread>
 #include <unordered_map>
+#include <cstring>
 
-#include "UDPServer.hpp"
 #include "Coordinator.hpp"
+#include "AServer.hpp"
 
 #include "Move.hpp"
 #include "Shoot.hpp"
 #include "Update.hpp"
 #include "Collision.hpp"
 
-class Server {
+class Server : virtual public Network::AServer<Network::RequestsTypes> {
     public:
         Server();
         ~Server();
@@ -34,11 +35,9 @@ class Server {
 
     protected:
     private:
-        Network::UDPServer _server;
         ECS::Coordinator _coordinator;
         bool _isServerRunning;
         std::thread _networkThread;
-        std::vector<Network::Client_t> _clients;
 
         std::unordered_map<std::string, std::function<void(std::vector<std::string>)>> _commands;
 

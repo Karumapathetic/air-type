@@ -8,12 +8,13 @@
 #pragma once
 
 #include <thread>
+#include <cstring>
 #include <unordered_map>
 
-#include "UDPClient.hpp"
 #include "Core.hpp"
+#include "AClient.hpp"
 
-class Client {
+class Client : virtual public Network::AClient<Network::RequestsTypes> {
     public:
         Client(std::string host);
         ~Client();
@@ -31,7 +32,6 @@ class Client {
     protected:
     private:
         Graphics::Core _core;
-        Network::UDPClient _client;
         bool _isClientRunning;
         std::thread _networkThread;
         std::string _id;
