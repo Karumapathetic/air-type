@@ -262,14 +262,20 @@ namespace ECS {
     {
         for (auto& [typeName, system] : this->getSystems()) {
             Signature systemSignature = this->getSystemSignature(typeName);
-            for (auto entity : system->entities) {
-                Signature entitySignature = this->getEntitySignature(entity);
+            for (auto currentEntity : system->entities) {
+                Signature entitySignature = this->getEntitySignature(currentEntity);
 
                 if ((entitySignature & systemSignature) == systemSignature) {
                     if (_actionQueue.empty()) {
                         return;
                     }
-                    system->update(*this);
+                    for (int x = 0; x < _actionQueue.size(); x++) {
+                        if (_actionQueue.front().first == currentEntity) {
+                            system->update(*this);
+                        } else {
+                            this->putEventAtEnd();
+                        }
+                    }
                 }
             }
         }
