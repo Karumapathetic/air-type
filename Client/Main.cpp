@@ -15,7 +15,11 @@ int main(int argc, char const* const* argv) {
         return 0;
     }
     try {
+#ifdef _WIN32
         Client client(argv[1], "./Debug/Graphics.dll");
+#else
+        Client client(argv[1], "./build/Libs/Graphics/libGraphics.so");
+#endif
         client.init();
         client.run();
     } catch (std::exception &e) {

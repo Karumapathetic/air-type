@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.27)
 project("R-Type Graphics Lib")
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 add_subdirectory(
     ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParties/raylib
     ${CMAKE_CURRENT_BINARY_DIR}/raylib
