@@ -15,7 +15,7 @@ int main(int argc, char const* const* argv) {
         return 0;
     }
     try {
-        Client client(argv[1]);
+        Client client(argv[1], "./Debug/Graphics.dll");
         client.init();
         client.run();
     } catch (std::exception &e) {

@@ -11,11 +11,12 @@
 #include <unordered_map>
 
 #include "UDPClient.hpp"
-//#include "Core.hpp"
+#include "ICore.hpp"
+#include "DLLoader.hpp"
 
 class Client {
     public:
-        Client(std::string host);
+        Client(std::string host, const std::string& coreLibPath);
         ~Client();
 
         void init();
@@ -30,7 +31,9 @@ class Client {
 
     protected:
     private:
-        //Graphics::Core _core;
+        DLLoader<Graphics::ICore> _coreLoader;
+        std::unique_ptr<Graphics::ICore> _core;
+
         Network::UDPClient _client;
         bool _isClientRunning;
         std::thread _networkThread;

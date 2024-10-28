@@ -5,6 +5,7 @@
 ** Core
 */
 
+#include "ICore.hpp"
 #include "Core.hpp"
 
 namespace Graphics {
@@ -46,4 +47,12 @@ namespace Graphics {
             *isRunning = false;
         }
     }
+}
+
+EXPORT_API Graphics::Core* CreateCore() {
+    return new Graphics::Core();
+}
+
+EXPORT_API void DestroyCore(Graphics::ICore* core) {
+    delete core;
 }

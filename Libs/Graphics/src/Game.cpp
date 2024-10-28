@@ -89,3 +89,11 @@ namespace Graphics {
         _graphics->EndRendering();
     }
 }
+
+EXPORT_API Graphics::Game* CreateGame() {
+    return new Graphics::Game();
+}
+
+EXPORT_API void DestroyGame(Graphics::IGame* game) {
+    delete game;
+}

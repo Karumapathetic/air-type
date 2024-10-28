@@ -17,16 +17,6 @@
 #define MAX_X 1920.0f
 #define MAX_Y 1080.0f
 
-#ifdef _WIN32
-    #ifdef BUILD_DLL
-        #define GAME_API __declspec(dllexport)
-    #else
-        #define GAME_API __declspec(dllimport)
-    #endif
-#else
-    #define GAME_API
-#endif
-
 /**
  * @brief Namespace that contains all the graphics related classes
  * 
@@ -35,40 +25,6 @@
  */
 namespace Graphics {
     class Option;
-    /// @brief Enum that define the state of the game
-    /// @enum GameState
-    enum class GameState {
-        MENU,       // The menu state
-        GAME,       // The game state
-        PAUSE,      // The pause state
-        SETTINGS,   // The settings state
-        QUIT,       // The quit state
-        GAMEOVER,   // The game over state
-        WIN,        // The win state
-    };
-
-    /**
-     * @brief Struct that holds data related to an entity in the game.
-     * 
-     * This struct is used to store the position, scale, texture, crop rectangle, and priority of an entity.
-     * The constructor initializes the position to (0, 0), scale to (1, 1), texture to an empty Texture2D,
-     * crop rectangle to (0, 0, 0, 0), and priority to 0.0f.
-     */
-    struct EntityData {
-        std::string name;  ///< The name of the entity.
-        Vector2 position;  ///< The position of the entity in the game world.
-        Vector2 scale;     ///< The scale of the entity.
-        Rectangle crop;    ///< The crop rectangle of the texture.
-        float priority;    ///< The priority of the entity for rendering.
-
-        /**
-         * @brief Constructor of EntityData.
-         * 
-         * Initializes the position to (0, 0), scale to (1, 1), texture to an empty Texture2D,
-         * crop rectangle to (0, 0, 0, 0), and priority to 0.0f.
-         */
-        EntityData(): name(""), position({0, 0}), scale({1, 1}), crop({0, 0, 0, 0}), priority(-1.0f) {}
-    };
 
     /**
      * @brief Game class that will handle the game loop
@@ -78,7 +34,7 @@ namespace Graphics {
      * and handle the keyboard input.
      * 
      */
-    class Game {
+    class Game : public IGame{
         public:
             /// @brief Constructor of the game
             Game();
