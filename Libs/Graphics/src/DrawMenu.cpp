@@ -37,15 +37,14 @@ namespace Graphics {
             if (_graphics->CheckCollisionMouse(_graphics->GetCursorPosition(), rec_option) && _graphics->IsMouseButtonClicked(MOUSE_BUTTON_LEFT)) {
                 switch (i) {
                     case 0:
-                        _gameState = GameState::GAME;
+                        setGameState(GameState::GAME);
                         break;
                     case 1:
-                        _previousState = GameState::MENU;
-                        _gameState = GameState::SETTINGS;
+                        setGameState(GameState::SETTINGS);
                         _option->setSelected("Video");
                         return;
                     case 2:
-                        _gameState = GameState::QUIT;
+                        setGameState(GameState::QUIT);
                         break;
                     default:
                         break;

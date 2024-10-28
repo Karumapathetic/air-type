@@ -57,16 +57,40 @@ namespace Graphics {
                 _entities[id].crop = {66, 36 * GetNumberOfClients(), 33, 16};
                 _entities[id].priority = {1};
                 _entities[id].name = "player";
-            } else if (texturePath.find("enemy") != std::string::npos) {
-                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/Enemy.png");
-                _entities[id].scale = {86, 48};
+            } else if (texturePath.find("pata-pata") != std::string::npos) {
+                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_pata-pata.png");
+                _entities[id].scale = {66, 72};
                 _entities[id].crop = {0, 0, 33, 36};
                 _entities[id].priority = {1};
                 _entities[id].name = "enemy";
-            }  else if (texturePath.find("missile") != std::string::npos) {
-                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/Missile.gif");
+            } else if (texturePath.find("win") != std::string::npos) {
+                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_win.gif");
+                _entities[id].scale = {44, 45};
+                _entities[id].crop = {0, 0, 33, 34};
+                _entities[id].priority = {1};
+                _entities[id].name = "enemy";
+            } else if (texturePath.find("bug") != std::string::npos) {
+                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_pata-pata.png");
+                _entities[id].scale = {86, 48};
+                _entities[id].crop = {0, 0, 33, 36}; //temporary
+                _entities[id].priority = {1};
+                _entities[id].name = "enemy";
+            } else if (texturePath.find("wick") != std::string::npos) {
+                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_wick.gif");
+                _entities[id].scale = {86, 48};
+                _entities[id].crop = {0, 0, 17, 15};
+                _entities[id].priority = {1};
+                _entities[id].name = "enemy";
+            } else if (texturePath.find("geld") != std::string::npos) {
+                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_pata-pata.png");
+                _entities[id].scale = {86, 48};
+                _entities[id].crop = {0, 0, 33, 36}; //temporary
+                _entities[id].priority = {1};
+                _entities[id].name = "enemy";
+            } else if (texturePath.find("missile") != std::string::npos) {
+                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/missile.gif");
                 _entities[id].scale = {60, 12};
-                _entities[id].crop = {0, 0, 50, 10};
+                _entities[id].crop = {0, 0, 81, 18};
                 _entities[id].priority = {1};
                 _entities[id].name = "missile";
             } else {

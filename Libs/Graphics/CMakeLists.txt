@@ -14,6 +14,7 @@ add_library(
     src/HandleInput.cpp
     src/Keys.cpp
     src/StoreEntity.cpp
+    src/AnimateEntities.cpp
 )
 
 target_include_directories(

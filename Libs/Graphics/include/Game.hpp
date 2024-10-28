@@ -12,6 +12,7 @@
 #include "IGraphic.hpp"
 
 #include <iostream>
+#include <functional>
 #include <memory>
 
 #define MAX_X 1920.0f
@@ -78,15 +79,15 @@ namespace Graphics {
 
             /// @brief Set the enum game state
             /// @param gameState The game state to set
-            void setGameState(GameState gameState) { _gameState = gameState; }
+            void setGameState(GameState gameState) { _gamestate.first = _gamestate.second; _gamestate.second = gameState; }
 
             /// @brief Get the game state
             /// @return The game state that the game is in
-            GameState getGameState() { return _gameState; }
+            GameState getGameState() { return _gamestate.second; }
 
             /// @brief Get the previous state
             /// @return The previous state of the game
-            GameState getPreviousState() { return _previousState; }
+            GameState getPreviousState() { return _gamestate.first; }
 
             /// @brief Set the stars
             /// @param stars The stars to set
@@ -212,6 +213,15 @@ namespace Graphics {
             void PrintEntities();
 
             /**
+             * @brief Initializes the animations for the entities in the game.
+             * 
+             * It sets up the animations for each entity based on its movement direction.
+             * 
+             * @return void
+             */
+            void InitializeAnimationsMap();
+
+            /**
              * @brief Animates an entity from its old position to its new position.
              * 
              * This function takes the old and new positions of an entity and animates it from the old position to the new position.
@@ -232,14 +242,12 @@ namespace Graphics {
         protected:
         private:
             /**
-             * @brief The previous state of the game
-             */
-            GameState _previousState;
-
-            /**
              * @brief The state of the game
+             * 
+             * First state is the previous game state
+             * Second state is the current game state
              */
-            GameState _gameState;
+            std::pair<GameState, GameState> _gamestate;
 
             /**
              * @brief The entities of the game
@@ -265,5 +273,10 @@ namespace Graphics {
              * @brief The graphics object
              */
             std::shared_ptr<IGraphic> _graphics;
+
+            /**
+             * @brief The animations for the entities
+             */
+            std::unordered_map<std::string, std::function<void(int, Vector2, Vector2)>> _animationMap;
     };
 }

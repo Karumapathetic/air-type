@@ -9,6 +9,7 @@
 
 #include "ISystem.hpp"
 #include "Coordinator.hpp"
+#include <unordered_set>
 
 namespace ECS {
     /**

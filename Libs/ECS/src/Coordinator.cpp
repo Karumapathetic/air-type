@@ -23,7 +23,11 @@ namespace ECS {
         // Initialisation des handlers
         entityHandlers = {
             {"player", playerHandler},
-            {"enemy", enemyHandler},
+            {"pata-pata", patapataHandler},
+            {"win", winHandler},
+            {"bug", bugHandler},
+            {"wick", wickHandler},
+            {"geld", geldHandler},
             {"missile", missileHandler},
             {"background", backgroundHandler},
             {"settings", settingsHandler},
@@ -60,7 +64,7 @@ namespace ECS {
         this->setSystemSignature<ECS::Move>(moveSignature);
 
         this->createEntity("settings");
-        Entity enemy = this->createEntity("enemy");
+        Entity enemy = this->createEntity("win");
         this->initEntities();
 
         auto &spacial = this->getComponent<Spacial>(enemy);
@@ -98,8 +102,8 @@ namespace ECS {
         return entityManager->getEntityName(entity);
     }
 
-    void Coordinator::setEntityName(Entity entity, bool initialized) {
-        entityManager->setEntityInitialized(entity, initialized);
+    void Coordinator::setEntityName(Entity entity, const std::string& name) {
+        entityManager->setEntityName(entity, name);
     }
 
     bool Coordinator::getEntityInitialized(Entity entity) {
@@ -286,7 +290,6 @@ namespace ECS {
                         return;
                     }
                     for (int x = 0; x <= _actionQueue.size(); x++) {
-                        std::cout << "x : " << x << " - " << _actionQueue.front().second << std::endl;
                         if (_actionQueue.front().first == currentEntity || _actionQueue.front().second == "update") {
                             system->update(*this);
                         } else {
