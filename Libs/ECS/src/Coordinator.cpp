@@ -34,7 +34,7 @@ namespace ECS {
             {"missile", missileHandler},
             {"background", backgroundHandler},
             {"settings", settingsHandler},
-            {"collectible", collectibleHandler}
+            {"force1", forceOneHandler}
         };
 
         this->registerComponent<Spacial>();
@@ -46,6 +46,7 @@ namespace ECS {
         this->registerComponent<Keybind>();
         this->registerComponent<Sounds>();
         this->registerComponent<Cooldown>();
+        this->registerComponent<Pathing>();
 
         this->registerSystem<ECS::Collision>();
         this->registerSystem<ECS::Shoot>();
@@ -78,6 +79,9 @@ namespace ECS {
         damageSignature.set(this->getComponentType<Life>());
         damageSignature.set(this->getComponentType<Power>());
         this->setSystemSignature<ECS::Damage>(damageSignature);
+
+        Signature killedSignature;
+        this->setSystemSignature<ECS::Killed>(killedSignature);
 
         this->addEvent(0, "update");
         this->createEntity("settings");
@@ -271,17 +275,19 @@ namespace ECS {
     {
         for (auto& [typeName, system] : this->getSystems()) {
             Signature systemSignature = this->getSystemSignature(typeName);
-            for (auto entity : system->entities) {
-                Signature entitySignature = this->getEntitySignature(entity);
-
-                if ((entitySignature & systemSignature) == systemSignature) {
+            for (auto currentEntity : system->entities) {
+                Signature entitySignature = this->getEntitySignature(currentEntity);
+                if ((systemSignature & entitySignature) == systemSignature) {
                     if (_actionQueue.empty()) {
                         return;
                     }
-                    if (_actionQueue.front().second != "update") {
-                        std::cout << "Event: " << _actionQueue.front().second << " for entity: " << _actionQueue.front().first << std::endl;
+                    for (int x = 0; x < _actionQueue.size() + 1; x++) {
+                        if (_actionQueue.front().first == currentEntity || _actionQueue.front().second == "update") {
+                            system->update(*this);
+                        } else {
+                            this->putEventAtEnd();
+                        }
                     }
-                    system->update(*this);
                 }
             }
         }

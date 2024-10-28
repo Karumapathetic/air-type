@@ -38,7 +38,6 @@ void Server::run()
             if (_coordinator.getEntityUpdated(entity)) {
                 if (_coordinator.hasComponent(entity, _coordinator.getComponentType<ECS::Spacial>())) {
                     auto &spacial = _coordinator.getComponent<ECS::Spacial>(entity);
-                    // std::cout << _coordinator.getEntityName(entity) << " " << entity << " " << spacial.position.x << " " << spacial.position.y << std::endl;
                     sendToClients("21 " + _coordinator.getEntityName(entity) + " " + std::to_string(entity) + " " + std::to_string(spacial.position.x) + " " + std::to_string(spacial.position.y));
                 }
                 _coordinator.setEntityUpdated(entity, false);
@@ -165,12 +164,8 @@ void Server::getUserInput(std::vector<std::string> command)
         std::string action = command[i];
         if (action == "shoot") {
             _coordinator.addEvent(entityId, "shoot");
-            //auto shootSystem = _coordinator.getCoordSystem<ECS::Shoot>();
-            //shootSystem->MissileShoot(_coordinator, entityId);
         } else {
             _coordinator.addEvent(entityId, action);
-            //auto moveSystem = _coordinator.getCoordSystem<ECS::Move>();
-            //moveSystem->MoveEntities(_coordinator, entityId, action);
             positionUpdated = true;
         }
     }

@@ -77,7 +77,7 @@ namespace Graphics {
                 _entities[id].name = "enemy";
             } else if (texturePath.find("wick") != std::string::npos) {
                 _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_wick.gif");
-                _entities[id].scale = {86, 48};
+                _entities[id].scale = {32, 28};
                 _entities[id].crop = {0, 0, 17, 15};
                 _entities[id].priority = {1};
                 _entities[id].name = "enemy";

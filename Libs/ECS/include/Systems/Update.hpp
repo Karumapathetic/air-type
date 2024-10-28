@@ -16,7 +16,8 @@ namespace ECS {
      */
     class UpdateSystem : public ISystem {
         public:
-            void update( Coordinator& _coordinator);
+            void update(Coordinator& _coordinator);
+            void updatePositions(Coordinator& _coordinator);
         protected:
         private:
     };
