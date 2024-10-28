@@ -338,6 +338,8 @@ namespace ECS {
              */
             bool isEntityValid(Entity entity) const;
 
+            void updateGame();
+
             /**
              * @brief Updates the systems in the ECS.
              * 

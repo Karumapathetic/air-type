@@ -24,7 +24,6 @@ add_library(
     src/Systems/Killed.cpp
     src/Systems/Move.cpp
     src/Systems/Shoot.cpp
-    src/Systems/Update.cpp
 )
 
 target_include_directories(
