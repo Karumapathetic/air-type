@@ -49,10 +49,30 @@ namespace Graphics {
     }
 }
 
+/**
+ * @brief Creates a new instance of the Core class.
+ *
+ * This function allocates memory for a new Core object and returns a pointer to it.
+ * The caller is responsible for freeing the memory by calling DestroyCore() when
+ * it is no longer needed.
+ *
+ * @return A pointer to a newly created Core object.
+ */
 EXPORT_API Graphics::Core* CreateCore() {
     return new Graphics::Core();
 }
 
+/**
+ * @brief Destroys a Core object and frees the allocated memory.
+ *
+ * This function releases the memory allocated for the given Core object.
+ * After calling this function, the caller should not use the Core object
+ * anymore, as it may cause undefined behavior.
+ *
+ * @param core A pointer to the Core object to be destroyed.
+ *
+ * @return void
+ */
 EXPORT_API void DestroyCore(Graphics::ICore* core) {
     delete core;
 }

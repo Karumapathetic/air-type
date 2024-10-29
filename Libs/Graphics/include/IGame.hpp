@@ -20,6 +20,7 @@
     #define EXPORT_API extern "C"
 #endif
 
+
 namespace Graphics {
     /// @brief Enum that define the state of the game
     /// @enum GameState
@@ -74,4 +75,3 @@ namespace Graphics {
         virtual std::vector<std::string> getClientAction() = 0;
     };
 }
-  
