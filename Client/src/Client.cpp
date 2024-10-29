@@ -7,7 +7,7 @@
 
 #include "Client.hpp"
 
-Client::Client(std::string host, const std::string& coreLibPath) : _client(host), _coreLoader(coreLibPath)
+Client::Client(std::string host) : Network::AClient<Network::RequestsTypes>()
 {
     _isClientRunning = true;
 
@@ -22,8 +22,6 @@ Client::Client(std::string host, const std::string& coreLibPath) : _client(host)
     _commands["30"] = std::bind(&Client::invalidCommand, this, std::placeholders::_1);
     _commands["31"] = std::bind(&Client::connexionRefused, this, std::placeholders::_1);
     _commands["32"] = std::bind(&Client::serverCrashed, this, std::placeholders::_1);
-
-    _client.send_data("10 " + _client.getRecvAddress() + " " + std::to_string(_client.getRecvPort()));
 }
 
 Client::~Client()
@@ -32,15 +30,12 @@ Client::~Client()
 
 void Client::init()
 {
-    _networkThread = std::thread(&Network::UDPClient::receive_data, &_client, &_isClientRunning);
     _core->InitGame();
 }
 
 void Client::run()
 {
     while (_isClientRunning) {
-        if (_client.getQueue().size() > 0)
-            handleData();
         _core->Caillou(&_isClientRunning);
         checkForInput();
     }
@@ -49,7 +44,6 @@ void Client::run()
 
 void Client::stop()
 {
-    _client.stop();
     if (_networkThread.joinable())
         _networkThread.join();
     _core->getGame().getGraphics()->CloseGraphics();
@@ -57,17 +51,17 @@ void Client::stop()
 
 void Client::handleData()
 {
-    std::string data = _client.getQueue().pop();
-    if (data.empty())
-        return;
-    std::cout << "Received: " << data << std::endl;
-    std::vector<std::string> parsedData = split(data, " ");
-    auto commandHandler = _commands.find(parsedData[0]);
+    // std::string data = _client.getQueue().pop();
+    // if (data.empty())
+    //     return;
+    // std::cout << "Received: " << data << std::endl;
+    // std::vector<std::string> parsedData = split(data, " ");
+    // auto commandHandler = _commands.find(parsedData[0]);
 
-    if (commandHandler == _commands.end())
-        std::cerr << "Command \"" << parsedData[0] << "\" not known" << std::endl;
-    else
-        commandHandler->second(parsedData);
+    // if (commandHandler == _commands.end())
+    //     std::cerr << "Command \"" << parsedData[0] << "\" not known" << std::endl;
+    // else
+    //     commandHandler->second(parsedData);
 }
 
 std::vector<std::string> Client::split(std::string s, std::string delimiter)
@@ -136,7 +130,7 @@ void Client::checkForInput()
             actions += " " + action;
         }
         std::cout << "Sending action: " << actions << std::endl;
-        _client.send_data(actions);
+        // _client.send_data(actions);
     }
 }
 

@@ -7,7 +7,7 @@
 
 #include "Server.hpp"
 
-Server::Server() : _server("127.0.0.1", 8080)
+Server::Server() : Network::AServer<Network::RequestsTypes>()
 {
     _isServerRunning = true;
 
@@ -25,7 +25,6 @@ Server::~Server()
 
 void Server::init()
 {
-    _networkThread = std::thread(&Network::UDPServer::receive_data, &_server, &_isServerRunning);
 }
 
 void Server::run()
@@ -51,37 +50,38 @@ void Server::run()
 
 void Server::stop()
 {
-    _server.stop();
     if (_networkThread.joinable())
         _networkThread.join();
 }
 
 void Server::sendECSData()
 {
-    for (auto client : _clients) {
-        for (auto entity : _coordinator.getEntities()) {
-            if (_coordinator.getEntityName(entity) == "settings")
-                continue;
-            auto &spacial = _coordinator.getComponent<ECS::Spacial>(entity);
-            std::string name = _coordinator.getEntityName(entity);
-            // std::cout << "Sending: 21 " + name + " " + std::to_string(entity) + " " + std::to_string(spacial.position.x) + " " + std::to_string(spacial.position.y) << std::endl;
-            _server.send_data("21 " + name + " " + std::to_string(entity) + " " + std::to_string(spacial.position.x) + " " + std::to_string(spacial.position.y), client.s_address, client.s_port);
-        }
-    }
+    // for (auto client : _clients) {
+    //     for (auto entity : _coordinator.getEntities()) {
+    //         if (_coordinator.getEntityName(entity) == "settings")
+    //             continue;
+    //         auto &spacial = _coordinator.getComponent<ECS::Spacial>(entity);
+    //         std::string name = _coordinator.getEntityName(entity);
+    //         std::cout << "Sending: 21 " + name + " " + std::to_string(entity) + " " + std::to_string(spacial.position.x) + " " + std::to_string(spacial.position.y) << std::endl;
+    //         _server.send_data("21 " + name + " " + std::to_string(entity) + " " + std::to_string(spacial.position.x) + " " + std::to_string(spacial.position.y), client.s_address, client.s_port);
+    //     }
+    // }
 }
 
 void Server::handleData()
 {
-    std::string data = _server.getQueue().pop();
-    if (data.empty())
-        return;
-    std::vector<std::string> parsedData = split(data, " ");
-    auto commandHandler = _commands.find(parsedData[0]);
+    std::cout << "Handling data" << std::endl;
 
-    if (commandHandler == _commands.end())
-        std::cerr << "Command \"" << parsedData[0] << "\" not known" << std::endl;
-    else
-        commandHandler->second(parsedData);
+    // std::string data = _server.getQueue().pop();
+    // if (data.empty())
+    //     return;
+    // std::vector<std::string> parsedData = split(data, " ");
+    // auto commandHandler = _commands.find(parsedData[0]);
+
+    // if (commandHandler == _commands.end())
+    //     std::cerr << "Command \"" << parsedData[0] << "\" not known" << std::endl;
+    // else
+    //     commandHandler->second(parsedData);
 }
 
 std::vector<std::string> Server::split(std::string s, std::string delimiter)
@@ -104,53 +104,49 @@ std::vector<std::string> Server::split(std::string s, std::string delimiter)
 
 void Server::connect(std::vector<std::string> command)
 {
-    if (command.size() != 3) {
-        std::cerr << "Command is not valid" << std::endl;
-    }
-    std::string address = command[1];
-    std::string port = command[2];
-    if (_clients.size() >= 2) {
-        _server.send_data("31", address, port);
-        return;
-    }
-    bool isRegistered = false;
-    for (auto client : _clients) {
-        if (client.s_address == address && client.s_port == port)
-            isRegistered = true;
-    }
-    if (!isRegistered && _clients.size() < 3) {
-        Network::Client_t newClient;
-        newClient.s_address = address;
-        newClient.s_port = port;
-        newClient.s_id = _clients.size() + 1;
-        auto newEntity = _coordinator.createEntity("player");
-        _coordinator.initEntities();
-        auto &entitypePlayer = _coordinator.getComponent<ECS::EntityTypes>(newEntity);
-        entitypePlayer.id = newClient.s_id;
-        _clients.push_back(newClient);
-        _server.send_data("12 " + std::to_string(newEntity), newClient.s_address, newClient.s_port);
-        sendECSData();
-        this->sendToClients("21 " + _coordinator.getEntityName(newEntity) + " " + std::to_string(newEntity) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(newEntity).position.x) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(newEntity).position.y));
-    }
+    // if (command.size() != 3) {
+    //     std::cerr << "Command is not valid" << std::endl;
+    // }
+    // std::string address = command[1];
+    // std::string port = command[2];
+    // bool isRegistered = false;
+    // for (auto client : _clients) {
+    //     if (client.s_address == address && client.s_port == port)
+    //         isRegistered = true;
+    // }
+    // if (!isRegistered && _clients.size() < 3) {
+    //     Network::Client_t newClient;
+    //     newClient.s_address = address;
+    //     newClient.s_port = port;
+    //     newClient.s_id = _clients.size() + 1;
+    //     auto newEntity = _coordinator.createEntity("player");
+    //     _coordinator.initEntities();
+    //     auto &entitypePlayer = _coordinator.getComponent<ECS::EntityTypes>(newEntity);
+    //     entitypePlayer.id = newClient.s_id;
+    //     _clients.push_back(newClient);
+    //     // _server.send_data("12 " + std::to_string(newEntity), newClient.s_address, newClient.s_port);
+    //     sendECSData();
+    //     this->sendToClients("21 " + _coordinator.getEntityName(newEntity) + " " + std::to_string(newEntity) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(newEntity).position.x) + " " + std::to_string(_coordinator.getComponent<ECS::Spacial>(newEntity).position.y));
+    // }
 }
 
 void Server::disconnect(std::vector<std::string> command)
 {
-    if (command.size() != 2) {
-        return;
-    }
-    std::string clientId = command[1];
-    for (auto client : _clients) {
-        if (std::atoi(clientId.c_str()) == client.s_id) {
-            _server.send_data("13 ", client.s_address, client.s_port);
-            _clients.erase(std::remove_if(
-                _clients.begin(), _clients.end(),
-                [&clientId](const Network::Client_t& item) {
-                    return item.s_id == std::atoi(clientId.c_str());
-                }
-            ));
-        }
-    }
+    // if (command.size() != 2) {
+    //     return;
+    // }
+    // std::string clientId = command[1];
+    // for (auto client : _clients) {
+    //     if (std::atoi(clientId.c_str()) == client.s_id) {
+    //         // _server.send_data("13 ", client.s_address, client.s_port);
+    //         _clients.erase(std::remove_if(
+    //             _clients.begin(), _clients.end(),
+    //             [&clientId](const Network::Client_t& item) {
+    //                 return item.s_id == std::atoi(clientId.c_str());
+    //             }
+    //         ));
+    //     }
+    // }
 }
 
 void Server::getUserInput(std::vector<std::string> command)
@@ -166,12 +162,8 @@ void Server::getUserInput(std::vector<std::string> command)
         std::string action = command[i];
         if (action == "shoot") {
             _coordinator.addEvent(entityId, "shoot");
-            //auto shootSystem = _coordinator.getCoordSystem<ECS::Shoot>();
-            //shootSystem->MissileShoot(_coordinator, entityId);
         } else {
             _coordinator.addEvent(entityId, action);
-            //auto moveSystem = _coordinator.getCoordSystem<ECS::Move>();
-            //moveSystem->MoveEntities(_coordinator, entityId, action);
             positionUpdated = true;
         }
     }
@@ -182,21 +174,21 @@ void Server::getUserInput(std::vector<std::string> command)
 
 void Server::clientCrash(std::vector<std::string> command)
 {
-    if (command.size() != 2) {
-        return;
-    }
-    std::string clientId = command[1];
-    _clients.erase(std::remove_if(
-        _clients.begin(), _clients.end(),
-        [&clientId](const Network::Client_t& item) {
-            return item.s_id == std::atoi(clientId.c_str());
-        }
-    ));
+    // if (command.size() != 2) {
+    //     return;
+    // }
+    // std::string clientId = command[1];
+    // _clients.erase(std::remove_if(
+    //     _clients.begin(), _clients.end(),
+    //     [&clientId](const Network::Client_t& item) {
+    //         return item.s_id == std::atoi(clientId.c_str());
+    //     }
+    // ));
 }
 
 void Server::sendToClients(const std::string& data)
 {
-    for (auto client : _clients) {
-        _server.send_data(data, client.s_address, client.s_port);
-    }
+    // for (auto client : _clients) {
+    //     // _server.send_data(data, client.s_address, client.s_port);
+    // }
 }

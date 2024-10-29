@@ -8,13 +8,15 @@
 #pragma once
 
 #include <thread>
+#include <cstring>
 #include <unordered_map>
 
-#include "UDPClient.hpp"
+#include "AClient.hpp"
+#include "RequestsFactory.hpp"
 #include "ICore.hpp"
 #include "DLLoader.hpp"
 
-class Client {
+class Client : virtual public Network::AClient<Network::RequestsTypes> {
     public:
         Client(std::string host, const std::string& coreLibPath);
         ~Client();
@@ -31,10 +33,9 @@ class Client {
 
     protected:
     private:
+        Network::RequestsFactory<Network::RequestsTypes> _factory;
         DLLoader<Graphics::ICore> _coreLoader;
         std::unique_ptr<Graphics::ICore> _core;
-
-        Network::UDPClient _client;
         bool _isClientRunning;
         std::thread _networkThread;
         std::string _id;
