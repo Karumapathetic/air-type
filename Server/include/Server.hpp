@@ -13,6 +13,7 @@
 
 #include "Coordinator.hpp"
 #include "AServer.hpp"
+#include "RequestsFactory.hpp"
 
 #include "Move.hpp"
 #include "Shoot.hpp"
@@ -25,23 +26,16 @@ class Server : virtual public Network::AServer<Network::RequestsTypes> {
 
         void init();
         void run();
-        void stop();
+        void update() override;
 
         void sendECSData(void);
-        void handleData();
-        void sendToClients(const std::string& data);
-        std::vector<std::string> split(std::string s, std::string delimiter);
 
     protected:
+        void onRequestReceived(std::shared_ptr<Network::UDPConnection<Network::RequestsTypes>> client, Network::Request<Network::RequestsTypes> &request) override;
+
+        void inputReceive(Network::Input input);
     private:
         ECS::Coordinator _coordinator;
+        Network::RequestsFactory<Network::RequestsTypes> _factory;
         bool _isServerRunning;
-        std::thread _networkThread;
-
-        std::unordered_map<std::string, std::function<void(std::vector<std::string>)>> _commands;
-
-        void connect(std::vector<std::string> command);
-        void disconnect(std::vector<std::string> command);
-        void clientCrash(std::vector<std::string> command);
-        void getUserInput(std::vector<std::string> command);
 };

@@ -41,6 +41,8 @@ namespace Network
                 return true;
             }
 
+            void update() {}
+
             void stop()
             {
                 _context.stop();
@@ -57,10 +59,10 @@ namespace Network
                         return waitForRequest();
                     if (!ec) {
                         for (std::shared_ptr<UDPConnection<T>> &connection : _connectionsQueue) {
-                            if (connection->getEndpoint() == _clientEndpoint)
+                            if (connection->getEndpoint() == _clientEndpoint) {
                                 return;
+                            }
                         }
-
                         asio::ip::udp::socket newSocket(_context, asio::ip::udp::endpoint(asio::ip::udp::v4(), 0));
                         std::shared_ptr<UDPConnection<T>> newConnection = std::make_shared<UDPConnection<T>>(UDPConnection<T>::actualOwner::SERVER, _context, std::move(newSocket), _clientEndpoint, _incomingRequests);
                         if (onClientConnection(newConnection)) {
@@ -79,7 +81,9 @@ namespace Network
             void sendRequestToClient(const Request<T> &request, std::shared_ptr<UDPConnection<T>> client)
             {
                 if (client && client->isConnected()) {
+                    std::cout << "Sending to client" << std::endl;
                     client->sendRequest(request);
+                    std::cout << "Finished sending to client" << std::endl;
                 } else {
                     onClientDisconnection(client);
                     client.reset();

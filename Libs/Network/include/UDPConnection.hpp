@@ -79,7 +79,7 @@ namespace Network
                 if (ownerType == actualOwner::CLIENT) {
                     readHeader();
                     Network::Request<RequestsTypes> request;
-                    request.header.id = RequestsTypes::ServerAcceptance;
+                    request.header.id = RequestsTypes::ClientConnection;
                     sendRequest(request);
                 }
             }
@@ -182,7 +182,7 @@ namespace Network
 
             void readBody()
             {
-                _socket.async_receive_from(asio::buffer(_tmpRequest.body.data(), _tmpRequest.body.size()),
+                _socket.async_receive_from(asio::buffer(_tmpRequest.body.data(), _tmpRequest.header.size),
                 _endpoint, [this](std::error_code ec, std::size_t bytesReceived) {
                     if (!ec) {
                         addRequestToIncomingQueue();

@@ -26,10 +26,8 @@ class Client : virtual public Network::AClient<Network::RequestsTypes> {
         void stop();
 
         void handleData();
-        std::vector<std::string> split(std::string s, std::string delimiter);
-        std::unordered_map<std::string, std::function<void(std::vector<std::string>)>> _commands;
-
         void checkForInput();
+        void addPosEventInCore(Network::Request<Network::RequestsTypes> request);
 
     protected:
     private:
@@ -37,13 +35,5 @@ class Client : virtual public Network::AClient<Network::RequestsTypes> {
         DLLoader<Graphics::ICore> _coreLoader;
         std::unique_ptr<Graphics::ICore> _core;
         bool _isClientRunning;
-        std::thread _networkThread;
-        std::string _id;
-
-        void connexionAccepted(std::vector<std::string> command);
-        void disconnexionAccepted(std::vector<std::string> command);
-        void setSpritePos(std::vector<std::string> command);
-        void invalidCommand(std::vector<std::string> command);
-        void connexionRefused(std::vector<std::string> command);
-        void serverCrashed(std::vector<std::string> command);
+        int _id = 0;
 };
