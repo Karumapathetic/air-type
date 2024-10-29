@@ -10,10 +10,10 @@
 namespace Graphics {
     void Game::DrawMenu() {
         Rectangle rec_option = {
-            (float)GetScreenWidth() / 2 - 100,
-            (float)GetScreenHeight() / 3,
-            (float)GetScreenWidth() / 10,
-            (float)GetScreenHeight() / 20
+            (float)_graphics->GetWindowWidth() / 2 - 100,
+            (float)_graphics->GetWindowHeight() / 3,
+            (float)_graphics->GetWindowWidth() / 10,
+            (float)_graphics->GetWindowHeight() / 20
         };
         std::vector<std::string> options = {"Play", "Settings", "Quit"};
         bool hovering = false;
@@ -22,40 +22,39 @@ namespace Graphics {
         for (auto &star : _stars) {
             star.x -= 1.0f;
             if (star.x < 0) {
-                star.x = GetScreenWidth();
-                star.y = static_cast<float>(std::rand() % GetScreenHeight());
+                star.x = _graphics->GetWindowWidth();
+                star.y = static_cast<float>(std::rand() % _graphics->GetWindowHeight());
             }
         }
         DrawStars();
         for (int i = 0; i < options.size(); i++) {
             if (_option->getSelected() == options[i])
-                DrawRectangleRounded(rec_option, 0.3, 0, DARKGRAY);
+                _graphics->RenderRoundedRectangle(rec_option, 0.3, 0, DARKGRAY);
             else
-                DrawRectangleRounded(rec_option, 0.3, 0, BLACK);
-            DrawRectangleRoundedLines(rec_option, 0.3, 2, GRAY);
-            DrawText(options[i].c_str(), GetScreenWidth() / 2 - MeasureText(options[i].c_str(), 25) / 2, rec_option.y + 15, 25, WHITE);
-            if (CheckCollisionPointRec(GetMousePosition(), rec_option) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                _graphics->RenderRoundedRectangle(rec_option, 0.3, 0, BLACK);
+            _graphics->RenderRoundedRectangleSides(rec_option, 0.3, 2, GRAY);
+            _graphics->RenderText(options[i].c_str(), _graphics->GetWindowWidth() / 2 - _graphics->TextSize(options[i].c_str(), 25) / 2, rec_option.y + 15, 25, WHITE);
+            if (_graphics->CheckCollisionMouse(_graphics->GetCursorPosition(), rec_option) && _graphics->IsMouseButtonClicked(MOUSE_BUTTON_LEFT)) {
                 switch (i) {
                     case 0:
-                        _gameState = GameState::GAME;
+                        setGameState(GameState::GAME);
                         break;
                     case 1:
-                        _previousState = GameState::MENU;
-                        _gameState = GameState::SETTINGS;
+                        setGameState(GameState::SETTINGS);
                         _option->setSelected("Video");
                         return;
                     case 2:
-                        _gameState = GameState::QUIT;
+                        setGameState(GameState::QUIT);
                         break;
                     default:
                         break;
                 }
             }
-            if (CheckCollisionPointRec(GetMousePosition(), rec_option)) {
+            if (_graphics->CheckCollisionMouse(_graphics->GetCursorPosition(), rec_option)) {
                 _option->setSelected(options[i]);
                 hovering = true;
             }
-            rec_option.y += GetScreenHeight() / 20 + 25;
+            rec_option.y += _graphics->GetWindowHeight() / 20 + 25;
         }
     }
 } // namespace Graphics

@@ -16,8 +16,7 @@
 
 #include "Move.hpp"
 #include "Shoot.hpp"
-#include "Update.hpp"
-#include "Collision.hpp"
+//#include "Collision.hpp"
 
 class Server : virtual public Network::AServer<Network::RequestsTypes> {
     public:

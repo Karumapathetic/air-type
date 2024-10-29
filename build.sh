@@ -37,7 +37,7 @@ else
     git submodule update --init
     mkdir -p build
     cmake -S . -B build
-    cmake --build build
+    cmake --build build -j $(nproc)
     if [ $? -ne 0 ]; then
         echo "Failed to build the Project"
         exit 1

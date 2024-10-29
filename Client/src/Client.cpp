@@ -11,6 +11,9 @@ Client::Client(std::string host) : Network::AClient<Network::RequestsTypes>()
 {
     _isClientRunning = true;
 
+    auto createCoreFunc = _coreLoader.getFunction<Graphics::ICore*(*)()>("CreateCore");
+    _core.reset(createCoreFunc());
+
     _commands["12"] = std::bind(&Client::connexionAccepted, this, std::placeholders::_1);
     _commands["13"] = std::bind(&Client::disconnexionAccepted, this, std::placeholders::_1);
 
@@ -27,13 +30,13 @@ Client::~Client()
 
 void Client::init()
 {
-    _core.InitGraphics();
+    _core->InitGame();
 }
 
 void Client::run()
 {
     while (_isClientRunning) {
-        _core.Caillou(&_isClientRunning);
+        _core->Caillou(&_isClientRunning);
         checkForInput();
     }
     this->stop();
@@ -43,7 +46,7 @@ void Client::stop()
 {
     if (_networkThread.joinable())
         _networkThread.join();
-    _core.CloseGraphics();
+    _core->getGame().getGraphics()->CloseGraphics();
 }
 
 void Client::handleData()
@@ -91,7 +94,7 @@ void Client::connexionAccepted(std::vector<std::string> command)
 void Client::setSpritePos(std::vector<std::string> command)
 {
     std::string pos = "position:" + command[3] + "," + command[4] + ";" + "texture:" + command[1] + ";";
-    _core.getGame().UpdateEntity(std::stoi(command[2]), pos);
+    _core->getGame().UpdateEntity(std::stoi(command[2]), pos);
 }
 
 void Client::invalidCommand(std::vector<std::string> command)
@@ -119,14 +122,15 @@ void Client::disconnexionAccepted(std::vector<std::string> command)
 
 void Client::checkForInput()
 {
-    if (!_core.getGame().getClientAction().empty()) {
-        if (_core.getGame().getGameState() == Graphics::GameState::MENU || _core.getGame().getGameState() == Graphics::GameState::SETTINGS)
+    if (!_core->getGame().getClientAction().empty()) {
+        if (_core->getGame().getGameState() == Graphics::GameState::MENU || _core->getGame().getGameState() == Graphics::GameState::SETTINGS)
             return;
         std::string actions = "22 " + _id;
-        for (auto action : _core.getGame().getClientAction()) {
+        for (auto action : _core->getGame().getClientAction()) {
             actions += " " + action;
         }
         std::cout << "Sending action: " << actions << std::endl;
         // _client.send_data(actions);
     }
 }
+

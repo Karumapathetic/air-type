@@ -12,7 +12,7 @@ namespace Graphics {
         _clientAction.clear();
         auto keyHandlers = _option->getBindedKeys();
         for (int key = KEY_SPACE; key <= KEY_KP_EQUAL; ++key) {
-            if (IsKeyDown(key)) {
+            if (_graphics->IsInputPressed(key)) {
                 if (_option->getChanging() == "" && keyHandlers.find(key) != keyHandlers.end()) {
                     keyHandlers[key]();
                 }

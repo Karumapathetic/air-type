@@ -12,14 +12,12 @@
 #include <unordered_map>
 
 namespace ECS {
-
-    struct Rectangle {
-        float x;
-        float y;
-        float width;
-        float height;
-    };
-
+    /**
+     * @brief A struct that represents a 2D vector.
+     * 
+     * This struct contains the x and y coordinates of a 2D vector.
+     * 
+     */
     struct Vector2 {
         float x;
         float y;
@@ -32,7 +30,6 @@ namespace ECS {
      */
     struct Images {
         std::string texture;
-        // Rectangle crop;
     };
 
     /**
@@ -102,7 +99,7 @@ namespace ECS {
      */
     struct Spacial {
         Vector2 position;
-        Vector2 scale;
+        Vector2 size;
     };
 
     /**

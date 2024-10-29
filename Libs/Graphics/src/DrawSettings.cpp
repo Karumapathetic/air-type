@@ -8,37 +8,37 @@
 #include "Game.hpp"
 
 namespace Graphics {
-    void DrawRectangleBackground() {
+    void Game::DrawRectangleBackground() {
         Rectangle rec = {
             25,
             25,
-            (float)GetScreenWidth() - 50,
-            (float)GetScreenHeight() - 50
+            (float)_graphics->GetWindowWidth() - 50,
+            (float)_graphics->GetWindowHeight() - 50
         };
-        DrawRectangleRounded(rec, 0.2, 10, BLACK);
-        DrawRectangleRoundedLines(rec, 0.2, 2, GRAY);
+        _graphics->RenderRoundedRectangle(rec, 0.2, 10, BLACK);
+        _graphics->RenderRoundedRectangleSides(rec, 0.2, 2, GRAY);
     }
 
     void Game::DrawSettingsTitles() {
-        int recOptionLen = GetScreenWidth() / 10;
+        int recOptionLen = _graphics->GetWindowWidth() / 10;
         Rectangle rec_option = {
-            (float)GetScreenWidth() / 2 - recOptionLen * 2,
-            (float)GetScreenHeight() / 10 - 30,
-            (float)GetScreenWidth() / 10,
-            (float)GetScreenHeight() / 20
+            (float)_graphics->GetWindowWidth() / 2 - recOptionLen * 2,
+            (float)_graphics->GetWindowHeight() / 10 - 30,
+            (float)_graphics->GetWindowWidth() / 10,
+            (float)_graphics->GetWindowHeight() / 20
         };
-        DrawText("Settings", GetScreenWidth() / 2 - MeasureText("Settings", 25) / 2, 40, 25, WHITE);
+        _graphics->RenderText("Settings", _graphics->GetWindowWidth() / 2 - _graphics->TextSize("Settings", 25) / 2, 40, 25, WHITE);
         std::vector<std::string> options = {"Video", "Audio", "Controls"};
         for (int i = 0; i < options.size(); i++) {
-            if (CheckCollisionPointRec(GetMousePosition(), rec_option)) {
-                DrawRectangleRounded(rec_option, 0.2, 10, DARKGRAY);
-                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            if (_graphics->CheckCollisionMouse(_graphics->GetCursorPosition(), rec_option)) {
+                _graphics->RenderRoundedRectangle(rec_option, 0.2, 10, DARKGRAY);
+                if (_graphics->IsMouseButtonClicked(MOUSE_LEFT_BUTTON)) {
                     _option->setSelected(options[i]);
                 }
             } else {
-                DrawRectangleRoundedLines(rec_option, 0.2, 1, GRAY);
+                _graphics->RenderRoundedRectangleSides(rec_option, 0.2, 1, GRAY);
             }
-            DrawText(options[i].c_str(), rec_option.x + rec_option.width / 2 - MeasureText(options[i].c_str(), 20) / 2, rec_option.y + 5, 20, WHITE);
+            _graphics->RenderText(options[i].c_str(), rec_option.x + rec_option.width / 2 - _graphics->TextSize(options[i].c_str(), 20) / 2, rec_option.y + 5, 20, WHITE);
             rec_option.x += recOptionLen;
         }
     }

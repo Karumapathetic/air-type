@@ -11,13 +11,14 @@
 #include <cstring>
 #include <unordered_map>
 
-#include "Core.hpp"
 #include "AClient.hpp"
 #include "RequestsFactory.hpp"
+#include "ICore.hpp"
+#include "DLLoader.hpp"
 
 class Client : virtual public Network::AClient<Network::RequestsTypes> {
     public:
-        Client(std::string host);
+        Client(std::string host, const std::string& coreLibPath);
         ~Client();
 
         void init();
@@ -33,7 +34,8 @@ class Client : virtual public Network::AClient<Network::RequestsTypes> {
     protected:
     private:
         Network::RequestsFactory<Network::RequestsTypes> _factory;
-        Graphics::Core _core;
+        DLLoader<Graphics::ICore> _coreLoader;
+        std::unique_ptr<Graphics::ICore> _core;
         bool _isClientRunning;
         std::thread _networkThread;
         std::string _id;

@@ -8,13 +8,12 @@
 #pragma once
 
 #include "Option.hpp"
-
-#include "raylib.h"
+#include "Raylib.hpp"
+#include "IGame.hpp"
 
 #include <iostream>
-#include <unordered_map>
-#include <vector>
-#include <cstdint>
+#include <functional>
+#include <memory>
 
 #define MAX_X 1920.0f
 #define MAX_Y 1080.0f
@@ -27,67 +26,6 @@
  */
 namespace Graphics {
     class Option;
-    /// @brief Enum that define the state of the game
-    /// @enum GameState
-    enum class GameState {
-        MENU,       // The menu state
-        GAME,       // The game state
-        PAUSE,      // The pause state
-        SETTINGS,   // The settings state
-        QUIT,       // The quit state
-        GAMEOVER,   // The game over state
-        WIN,        // The win state
-    };
-
-    /// @brief Struct that define a star for the background
-    /// @param x The x position of the star
-    /// @param y The y position of the star
-    /// @param size The size of the star
-    /// @param color The color of the star
-    struct Star {
-        float x; // The x position of the star
-        float y; // The y position of the star
-        int size; // Size of the star
-        Color color; // Color of the star
-    };
-
-    /**
-     * @brief Struct that holds data related to an entity in the game.
-     * 
-     * This struct is used to store the position, scale, texture, crop rectangle, and priority of an entity.
-     * The constructor initializes the position to (0, 0), scale to (1, 1), texture to an empty Texture2D,
-     * crop rectangle to (0, 0, 0, 0), and priority to 0.0f.
-     */
-    struct EntityData {
-        std::string name;  ///< The name of the entity.
-        Vector2 position;  ///< The position of the entity in the game world.
-        Vector2 scale;     ///< The scale of the entity.
-        Texture2D texture;  ///< The texture of the entity.
-        Rectangle crop;    ///< The crop rectangle of the texture.
-        float priority;    ///< The priority of the entity for rendering.
-
-        /**
-         * @brief Constructor of EntityData.
-         * 
-         * Initializes the position to (0, 0), scale to (1, 1), texture to an empty Texture2D,
-         * crop rectangle to (0, 0, 0, 0), and priority to 0.0f.
-         */
-        EntityData(): name(""), position({0, 0}), scale({1, 1}), texture({}), crop({0, 0, 0, 0}), priority(-1.0f) {}
-    };
-
-    /**
-     * @brief Type alias for an entity identifier.
-     * 
-     * An entity is an object in the ECS system. It is represented by a unique identifier.
-     */
-    using Entity = std::uint32_t;
-
-    /**
-     * @brief Maximum number of entities.
-     * 
-     * This constant defines the maximum number of entities that can be created in the ECS system.
-     */
-    const Entity MAX_ENTITIES = 1000;
 
     /**
      * @brief Game class that will handle the game loop
@@ -97,7 +35,7 @@ namespace Graphics {
      * and handle the keyboard input.
      * 
      */
-    class Game {
+    class Game : public IGame{
         public:
             /// @brief Constructor of the game
             Game();
@@ -107,15 +45,15 @@ namespace Graphics {
 
             /// @brief Set the enum game state
             /// @param gameState The game state to set
-            void setGameState(GameState gameState) { _gameState = gameState; }
+            void setGameState(GameState gameState) { _gamestate.first = _gamestate.second; _gamestate.second = gameState; }
 
             /// @brief Get the game state
             /// @return The game state that the game is in
-            GameState getGameState() { return _gameState; }
+            GameState getGameState() { return _gamestate.second; }
 
             /// @brief Get the previous state
             /// @return The previous state of the game
-            GameState getPreviousState() { return _previousState; }
+            GameState getPreviousState() { return _gamestate.first; }
 
             /// @brief Set the stars
             /// @param stars The stars to set
@@ -134,6 +72,13 @@ namespace Graphics {
              * @param clientAction The client action to add
              */
             void addClientAction(std::string clientAction) { _clientAction.push_back(clientAction); }
+
+            /**
+             * @brief Get the Graphics object
+             * 
+             * @return std::shared_ptr<IGraphic> 
+             */
+            std::shared_ptr<IGraphic> getGraphics() { return _graphics; }
 
             /** @brief Draw the stars of the background
              * 
@@ -155,6 +100,9 @@ namespace Graphics {
 
             /// @brief Display the settings menu
             void DrawSettings();
+
+            /// @brief Draw the rectangle background of the settings
+            void DrawRectangleBackground();
 
             /// @brief Draw the settings titles
             void DrawSettingsTitles();
@@ -231,6 +179,15 @@ namespace Graphics {
             void PrintEntities();
 
             /**
+             * @brief Initializes the animations for the entities in the game.
+             * 
+             * It sets up the animations for each entity based on its movement direction.
+             * 
+             * @return void
+             */
+            void InitializeAnimationsMap();
+
+            /**
              * @brief Animates an entity from its old position to its new position.
              * 
              * This function takes the old and new positions of an entity and animates it from the old position to the new position.
@@ -241,17 +198,22 @@ namespace Graphics {
              * @param id The unique identifier of the entity to animate.
              */
             void AnimateEntity(Vector2 oldPos, Vector2 newPos, int id);
+
+            /**
+             * @brief Get the Number Of Clients already inGame
+             * 
+             * @return The number of clients in the game
+             */
+            float GetNumberOfClients();
         protected:
         private:
             /**
-             * @brief The previous state of the game
-             */
-            GameState _previousState;
-
-            /**
              * @brief The state of the game
+             * 
+             * First state is the previous game state
+             * Second state is the current game state
              */
-            GameState _gameState;
+            std::pair<GameState, GameState> _gamestate;
 
             /**
              * @brief The entities of the game
@@ -272,5 +234,15 @@ namespace Graphics {
              * @brief The keys that the client pressed (actions)
              */
             std::vector<std::string> _clientAction;
+
+            /**
+             * @brief The graphics object
+             */
+            std::shared_ptr<IGraphic> _graphics;
+
+            /**
+             * @brief The animations for the entities
+             */
+            std::unordered_map<std::string, std::function<void(int, Vector2, Vector2)>> _animationMap;
     };
 }
