@@ -13,6 +13,7 @@
 
 #include "Core.hpp"
 #include "AClient.hpp"
+#include "RequestsFactory.hpp"
 
 class Client : virtual public Network::AClient<Network::RequestsTypes> {
     public:
@@ -31,6 +32,7 @@ class Client : virtual public Network::AClient<Network::RequestsTypes> {
 
     protected:
     private:
+        Network::RequestsFactory<Network::RequestsTypes> _factory;
         Graphics::Core _core;
         bool _isClientRunning;
         std::thread _networkThread;
