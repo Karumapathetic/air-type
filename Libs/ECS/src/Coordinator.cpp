@@ -313,7 +313,7 @@ namespace ECS {
             _actionQueue.pop_front();
         }
         this->_actionQueue.push_back({id, action});
-        // std::cout << "Event added: " << action << " for entity: " << id << std::endl;
+        std::cout << "Event added: " << action << " for entity: " << id << std::endl;
     }
 
     std::pair<Entity, std::string> Coordinator::getFirstEvent() const

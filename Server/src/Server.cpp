@@ -34,8 +34,10 @@ void Server::update()
         _coordinator.updateGame();
         for (auto entity: _coordinator.getEntities()) {
             if (_coordinator.getEntityUpdated(entity)) {
+                std::cout << "Entity updated are treated" << std::endl;
                 if (_coordinator.hasComponent(entity, _coordinator.getComponentType<ECS::Spacial>())) {
                     auto &spacial = _coordinator.getComponent<ECS::Spacial>(entity);
+                    std::cout << _coordinator.getEntityName(entity) << " - " << entity << " - " << spacial.position.x << " - " << spacial.position.y << std::endl;
                     auto request = _factory.createPositionsRequests(_coordinator.getEntityName(entity), entity, spacial.position.x, spacial.position.y);
                     this->sendRequestToAllClients(request);
                 }
