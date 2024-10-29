@@ -35,7 +35,7 @@ if ($args[0] -eq "help") {
 } else {
     git submodule update --init
     New-Item -ItemType Directory -Force -Path "build" | Out-Null
-    cmake -S . -B build
+    cmake -S . -B build #-G Ninja -DCMAKE_MAKE_PROGRAM=ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++
     cmake --build build
     Move-Item -Path "Debug/r-type_client.exe" -Destination "./"
     Move-Item -Path "Debug/r-type_server.exe" -Destination "./"

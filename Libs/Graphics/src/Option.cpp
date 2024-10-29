@@ -6,7 +6,6 @@
 */
 
 #include "Option.hpp"
-#include <raylib.h>
 
 namespace Graphics {
     Option::Option(Graphics::Game& game) : _selected("Controls"),

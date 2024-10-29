@@ -7,9 +7,11 @@
 
 #pragma once
 
-#include "Game.hpp"
-#include <iostream>
 #include <ctime>
+#include <vector>
+
+#include "ICore.hpp"
+#include "Game.hpp"
 
 namespace Graphics {
     /**
@@ -18,7 +20,7 @@ namespace Graphics {
      * It provides functions to initialize the graphics, close the graphics, initialize the stars,
      * and launch the game.
      */
-    class Core {
+    class Core : public ICore {
         public:
             /**
              * @brief Construct a new Core object
@@ -34,7 +36,7 @@ namespace Graphics {
              */
             ~Core() {}
 
-            Game &getGame() { return _game; }
+            IGame& getGame() override { return _game; }
 
             /**
              * @brief Initialize the graphics.
@@ -42,7 +44,7 @@ namespace Graphics {
              * It initializes the graphics by setting the window size, the window title, and the background color.
              * As well as setting the target FPS and the number of stars.
              */
-            void InitGame();
+            void InitGame() override;
 
             /**
              * @brief Initialize the stars for the star field.
@@ -52,14 +54,14 @@ namespace Graphics {
              * 
              * @param numStars The number of stars.
              */
-            void InitStars(int numStars);
+            void InitStars(int numStars) override;
 
             /**
              * @brief Launch the game.
              * 
              * It starts the game loop.
              */
-            void Caillou(bool *isRunning);
+            void Caillou(bool *isRunning) override;
         protected:
         private:
             /**
