@@ -27,6 +27,7 @@ class Client : virtual public Network::AClient<Network::RequestsTypes> {
 
         void handleData();
         void checkForInput();
+        void registerID(Network::Request<Network::RequestsTypes> request);
         void addPosEventInCore(Network::Request<Network::RequestsTypes> request);
 
     protected:

@@ -28,10 +28,9 @@ class Server : virtual public Network::AServer<Network::RequestsTypes> {
         void run();
         void update() override;
 
-        void sendECSData(void);
-
     protected:
         void onRequestReceived(std::shared_ptr<Network::UDPConnection<Network::RequestsTypes>> client, Network::Request<Network::RequestsTypes> &request) override;
+        bool onClientConnection(std::shared_ptr<Network::UDPConnection<Network::RequestsTypes>> client) override;
 
         void inputReceive(Network::Input input);
     private:

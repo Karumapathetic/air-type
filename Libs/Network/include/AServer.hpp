@@ -37,7 +37,6 @@ namespace Network
                     std::cerr << "Exception: " << e.what() << std::endl;
                     return false;
                 }
-                std::cout << "Server started!" << std::endl;
                 return true;
             }
 
@@ -48,7 +47,6 @@ namespace Network
                 _context.stop();
                 if (_contextThread.joinable())
                     _contextThread.join();
-                std::cout << "Server stopped!" << std::endl;
             }
 
             void waitForRequest()
@@ -81,9 +79,7 @@ namespace Network
             void sendRequestToClient(const Request<T> &request, std::shared_ptr<UDPConnection<T>> client)
             {
                 if (client && client->isConnected()) {
-                    std::cout << "Sending to client" << std::endl;
                     client->sendRequest(request);
-                    std::cout << "Finished sending to client" << std::endl;
                 } else {
                     onClientDisconnection(client);
                     client.reset();
@@ -123,7 +119,6 @@ namespace Network
 
             void onRequestReceived(std::shared_ptr<Network::UDPConnection<RequestsTypes>> client, Network::Request<RequestsTypes> &request)
             {
-                std::cout << "Message received from client : " << client->getId() << std::endl;
             }
 
             bool onClientConnection(std::shared_ptr<Network::UDPConnection<RequestsTypes>> client)
@@ -136,7 +131,6 @@ namespace Network
 
             virtual void onClientDisconnection(std::shared_ptr<Network::UDPConnection<RequestsTypes>> client)
             {
-                std::cout << "Client disconnected: " << client->getId() << std::endl;
             }
     };
 

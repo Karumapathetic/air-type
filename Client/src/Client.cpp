@@ -30,10 +30,8 @@ void Client::run()
     while (_isClientRunning) {
         _core->Caillou(&_isClientRunning);
         checkForInput();
-        std::cout << "Start handle -> " << this->getIncomingRequests().getSize() << std::endl;
         while (this->getIncomingRequests().getSize() > 0)
             handleData();
-        std::cout << "Stop handle" << std::endl;
     }
     this->stop();
 }
@@ -53,17 +51,48 @@ void Client::handleData()
             break;
         case Network::RequestsTypes::NotifyKilledSprite:
             break;
+        case Network::RequestsTypes::ServerAcceptance:
+            registerID(request.request);
+            break;
         default:
             break;
     }
 }
 
+void Client::registerID(Network::Request<Network::RequestsTypes> request)
+{
+    Network::PlayerID playerID = _factory.transformConnectionAccepted(request);
+    _id = playerID.playerID;
+}
+
 void Client::addPosEventInCore(Network::Request<Network::RequestsTypes> request)
 {
     Network::SpritePositions positions = _factory.transformPositionsRequest(request);
-    std::string entityType = (positions.entityType == Network::SpritesTypes::Enemy ? "enemy" : (positions.entityType == Network::SpritesTypes::Missile ? "missile" : "player"));
-    std::string params = "position:" + std::to_string(positions.poxX) + "," + std::to_string(positions.poxY) + ";" + entityType + ";";
-    std::cout << "Pos: " << positions.spriteID << ", Params: '" + params + "'" << std::endl;
+    std::string entityName;
+    switch (positions.entityType) {
+        case Network::SpritesTypes::Bug:
+            entityName = "bug";
+            break;
+        case Network::SpritesTypes::Geld:
+            entityName = "geld";
+            break;
+        case Network::SpritesTypes::Wick:
+            entityName = "wick";
+            break;
+        case Network::SpritesTypes::Win:
+            entityName = "win";
+            break;
+        case Network::SpritesTypes::PataPata:
+            entityName = "pata-pata";
+            break;
+        case Network::SpritesTypes::Player:
+            entityName = "player";
+            break;
+        case Network::SpritesTypes::Missile:
+            entityName = "missile";
+            break;
+    }
+    std::string params = "position:" + std::to_string(positions.poxX) + "," + std::to_string(positions.poxY) + ";texture:" + entityName + ";";
     _core->getGame().UpdateEntity(positions.spriteID, params);
 }
 
@@ -78,7 +107,9 @@ void Client::checkForInput()
     if (!_core->getGame().getClientAction().empty()) {
         if (_core->getGame().getGameState() == Graphics::GameState::MENU || _core->getGame().getGameState() == Graphics::GameState::SETTINGS)
             return;
-        Network::Request<Network::RequestsTypes> request = _factory.createInputRequest(_id, _core->getGame().getClientAction()[0]);
-        sendRequest(request);
+        for (auto &action : _core->getGame().getClientAction()) {
+            Network::Request<Network::RequestsTypes> request = _factory.createInputRequest(_id, action);
+            sendRequest(request);
+        }
     }
 }

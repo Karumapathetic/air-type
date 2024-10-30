@@ -115,7 +115,6 @@ namespace Graphics {
         std::vector<float> values;
 
         if (_entities[id].priority == -1.0f) {
-            std::cout << "Entity: " << params << std::endl;
             CreateEntity(id, params);
             return;
         }

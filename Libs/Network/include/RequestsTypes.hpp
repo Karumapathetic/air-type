@@ -28,7 +28,11 @@ namespace Network {
     enum class SpritesTypes : uint32_t
     {
         Player,
-        Enemy,
+        PataPata,
+        Win,
+        Wick,
+        Geld,
+        Bug,
         Missile
     };
 
@@ -57,6 +61,10 @@ namespace Network {
     struct Input {
         int clientID;
         InputActions action;
+    };
+
+    struct PlayerID {
+        int playerID;
     };
 
 };

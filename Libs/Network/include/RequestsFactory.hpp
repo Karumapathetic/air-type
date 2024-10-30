@@ -21,8 +21,16 @@ namespace Network
                 Request<T> request;
                 request.header.id = T::SetSpritePosition;
                 SpritesTypes spriteType;
-                if (entityName == "enemy")
-                    spriteType = SpritesTypes::Enemy;
+                if (entityName == "pata-pata")
+                    spriteType = SpritesTypes::PataPata;
+                if (entityName == "win")
+                    spriteType = SpritesTypes::Win;
+                if (entityName == "wick")
+                    spriteType = SpritesTypes::Wick;
+                if (entityName == "geld")
+                    spriteType = SpritesTypes::Geld;
+                if (entityName == "bug")
+                    spriteType = SpritesTypes::Bug;
                 if (entityName == "player")
                     spriteType = SpritesTypes::Player;
                 if (entityName == "missile")
@@ -67,6 +75,17 @@ namespace Network
                 return request;
             }
 
+            Request<T> createConnectionAccepted(int spriteID)
+            {
+                Request<T> request;
+                request.header.id = T::ServerAcceptance;
+                PlayerID playerid = {spriteID};
+                std::vector<uint8_t> body(reinterpret_cast<uint8_t *>(&spriteID), reinterpret_cast<uint8_t *>(&spriteID) + sizeof(PlayerID));
+                request.body.insert(request.body.end(), body.begin(), body.end());
+                request.header.size = request.getSize();
+                return request;
+            }
+
             Request<T> createLaunchGameRequest()
             {
                 Request<T> request;
@@ -92,6 +111,13 @@ namespace Network
             {
                 Input result;
                 std::memcpy(&result, request.body.data(), sizeof(Input));
+                return result;
+            }
+
+            PlayerID transformConnectionAccepted(Request<T> request)
+            {
+                PlayerID result;
+                std::memcpy(&result, request.body.data(), sizeof(PlayerID));
                 return result;
             }
     };
