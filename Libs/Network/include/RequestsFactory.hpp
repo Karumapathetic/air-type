@@ -12,10 +12,24 @@
 
 namespace Network
 {
+    /**
+     * @brief Requests Factory class
+     * 
+     * @tparam T Type of requests
+     */
     template <typename T>
     class RequestsFactory
     {
         public:
+            /**
+             * @brief Create a Positions Requests object
+             * 
+             * @param entityName Type of the entity's sprite
+             * @param spriteID ID of the sprite
+             * @param posX Position X of the sprite
+             * @param posY Position Y of the sprite
+             * @return Request<T> Request of the sprite
+             */
             Request<T> createPositionsRequests(std::string entityName, int spriteID, float posX, float posY)
             {
                 Request<T> request;
@@ -42,6 +56,14 @@ namespace Network
                 return request;
             }
 
+            /**
+             * @brief Create a Killed Sprite object
+             * 
+             * @param spriteID ID of the sprite killed
+             * @param posX Position X of the sprite
+             * @param posY Position Y of the sprite
+             * @return Request<T> Request of the killed sprite
+             */
             Request<T> createKilledSprite(int spriteID, float posX, float posY)
             {
                 Request<T> request;
@@ -53,6 +75,13 @@ namespace Network
                 return request;
             }
 
+            /**
+             * @brief Create a Input Request object
+             * 
+             * @param clientID ID of the client
+             * @param action Action done by the user
+             * @return Request<T> Request of the input
+             */
             Request<T> createInputRequest(int clientID, std::string action)
             {
                 Request<T> request;
@@ -75,24 +104,41 @@ namespace Network
                 return request;
             }
 
+            /**
+             * @brief Create a Connection Accepted object
+             * 
+             * @param spriteID ID of the player's sprite
+             * @return Request<T> Request of the connection accepted
+             */
             Request<T> createConnectionAccepted(int spriteID)
             {
                 Request<T> request;
                 request.header.id = T::ServerAcceptance;
-                PlayerID playerid = {spriteID};
-                std::vector<uint8_t> body(reinterpret_cast<uint8_t *>(&spriteID), reinterpret_cast<uint8_t *>(&spriteID) + sizeof(PlayerID));
+                std::vector<uint8_t> body(reinterpret_cast<uint8_t *>(&spriteID), reinterpret_cast<uint8_t *>(&spriteID) + sizeof(int));
                 request.body.insert(request.body.end(), body.begin(), body.end());
                 request.header.size = request.getSize();
                 return request;
             }
 
+            /**
+             * @brief Create a Launch Game Request object
+             * 
+             * @return Request<T> Request of the game launch
+             */
             Request<T> createLaunchGameRequest()
             {
                 Request<T> request;
                 request.header.id = T::LaunchGame;
+                request.header.size = 0;
                 return request;
             }
 
+            /**
+             * @brief Transform the Positions request to SpritePositions struct
+             * 
+             * @param request Request received
+             * @return SpritePositions Struct containing the infos of the sprite
+             */
             SpritePositions transformPositionsRequest(Request<T> request)
             {
                 SpritePositions result;
@@ -100,6 +146,12 @@ namespace Network
                 return result;
             }
 
+            /**
+             * @brief Transform the Killed request to KilledSprite struct
+             * 
+             * @param request Request received
+             * @return KilledSprite Struct containing the infos of the killed sprite
+             */
             KilledSprite transformKilledRequest(Request<T> request)
             {
                 KilledSprite result;
@@ -107,6 +159,12 @@ namespace Network
                 return result;
             }
 
+            /**
+             * @brief Transform the Input request to Input struct
+             * 
+             * @param request Request received
+             * @return Input Struct containing the infos of the input
+             */
             Input transformInputRequest(Request<T> request)
             {
                 Input result;
@@ -114,10 +172,16 @@ namespace Network
                 return result;
             }
 
-            PlayerID transformConnectionAccepted(Request<T> request)
+            /**
+             * @brief Transform the Connection accepted to player ID
+             * 
+             * @param request Request received
+             * @return int Player ID
+             */
+            int transformConnectionAccepted(Request<T> request)
             {
-                PlayerID result;
-                std::memcpy(&result, request.body.data(), sizeof(PlayerID));
+                int result;
+                std::memcpy(&result, request.body.data(), sizeof(int));
                 return result;
             }
     };
