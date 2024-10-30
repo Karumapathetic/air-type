@@ -9,8 +9,10 @@
 
 namespace ECS {
     void settingsHandler(Coordinator &gCoordinator, std::uint32_t entity) {
+        gCoordinator.addComponent(entity, Spacial{{0.0f, 0.0f}, {0.0f, 0.0f}});
         gCoordinator.addComponent(entity, Keybind());
         //gCoordinator.addComponent(entity, Sounds{LoadSound(""), 50, "Background Music" });
+
         Keybind& keybindComponent = gCoordinator.getComponent<Keybind>(entity);
         keybindComponent.addKeybind(265, "Up", "Move Up");
         keybindComponent.addKeybind(264, "Down", "Move Down");

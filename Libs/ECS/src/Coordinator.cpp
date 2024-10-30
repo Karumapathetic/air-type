@@ -44,13 +44,9 @@ namespace ECS {
         this->registerComponent<Sounds>();
         this->registerComponent<Cooldown>();
 
-        this->registerSystem<ECS::Collision>();
         this->registerSystem<ECS::Shoot>();
         this->registerSystem<ECS::Move>();
-
-        Signature collisionSignature;
-        collisionSignature.set(this->getComponentType<Spacial>());
-        this->setSystemSignature<ECS::Collision>(collisionSignature);
+        this->registerSystem<ECS::Collision>();
 
         Signature shootSignature;
         shootSignature.set(this->getComponentType<Power>());
@@ -63,8 +59,12 @@ namespace ECS {
         moveSignature.set(this->getComponentType<Speed>());
         this->setSystemSignature<ECS::Move>(moveSignature);
 
+        Signature collisionSignature;
+        collisionSignature.set(this->getComponentType<Spacial>());
+        this->setSystemSignature<ECS::Collision>(collisionSignature);
+
         this->createEntity("settings");
-        Entity enemy = this->createEntity("win");
+        Entity enemy = this->createEntity("pata-pata");
         this->initEntities();
 
         auto &spacial = this->getComponent<Spacial>(enemy);
@@ -280,17 +280,20 @@ namespace ECS {
 
     void Coordinator::updateSystems()
     {
+        bool collisionActivated = false;
         for (auto& [typeName, system] : this->getSystems()) {
             Signature systemSignature = this->getSystemSignature(typeName);
             for (auto currentEntity : system->entities) {
                 Signature entitySignature = this->getEntitySignature(currentEntity);
-
+                if (getEntityName(currentEntity) == "settings" && !collisionActivated) {
+                    addEvent(currentEntity, "collision");
+                    collisionActivated = true;
+                }
                 if ((entitySignature & systemSignature) == systemSignature) {
-                    if (_actionQueue.empty()) {
+                    if (_actionQueue.empty())
                         return;
-                    }
                     for (int x = 0; x <= _actionQueue.size(); x++) {
-                        if (_actionQueue.front().first == currentEntity || _actionQueue.front().second == "update") {
+                        if (_actionQueue.front().first == currentEntity) {
                             system->update(*this);
                         } else {
                             this->putEventAtEnd();
@@ -313,7 +316,7 @@ namespace ECS {
             _actionQueue.pop_front();
         }
         this->_actionQueue.push_back({id, action});
-        std::cout << "Event added: " << action << " for entity: " << id << std::endl;
+        //std::cout << "Event added: " << action << " for entity: " << id << std::endl;
     }
 
     std::pair<Entity, std::string> Coordinator::getFirstEvent() const
