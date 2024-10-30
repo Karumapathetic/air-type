@@ -14,6 +14,7 @@
 #include <iostream>
 #include <functional>
 #include <memory>
+#include <chrono>
 
 #define MAX_X 1920.0f
 #define MAX_Y 1080.0f
@@ -277,6 +278,6 @@ namespace Graphics {
             /**
              * @brief The animations for the entities
              */
-            std::unordered_map<std::string, std::function<void(int, Vector2, Vector2)>> _animationMap;
+            std::unordered_map<std::string, std::pair<std::function<void(int, Vector2, Vector2)>, std::chrono::steady_clock::time_point>> _animationMap;
     };
 }

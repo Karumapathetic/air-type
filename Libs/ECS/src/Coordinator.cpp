@@ -266,24 +266,29 @@ namespace ECS {
     void Coordinator::updateGame()
     {
         for (auto entity: this->getEntities()) {
-            if (this->getEntityName(entity) == "enemy") {
+            if (!hasComponent(entity, this->getComponentType<EntityTypes>()))
+                continue;
+            auto entityType = this->getComponent<EntityTypes>(entity);
+            if (entityType.type == "enemy") {
                 // std::cout << "Enemy position: " << this->getComponent<Spacial>(entity).position.x << std::endl;
-                if (this->getComponent<Spacial>(entity).position.x < 0) {
-                    this->destroyEntity(entity);
+                auto &spacial = this->getComponent<Spacial>(entity);
+                if (spacial.position.x - spacial.size.x < 0) {
+                    spacial.position.x = MAX_X;
+                    // this->destroyEntity(entity);
                     continue;
                 }
-                auto &spacial = this->getComponent<Spacial>(entity);
-                auto speed = this->getComponent<Speed>(entity);
-                // spacial.position.x -= speed.velocity;
-                //this->setEntityUpdated(entity, true);
-            } else if (this->getEntityName(entity) == "missile") {
+                // auto speed = this->getComponent<Speed>(entity);
+                // auto pathing = this->getComponent<Pathing>(entity);
+                // pathing.pathing->updatePosition(spacial.position, speed.velocity);
+                // this->setEntityUpdated(entity, true);
+            } else if (entityType.type == "missile") {
                 // std::cout << "Missile position: " << this->getComponent<Spacial>(entity).position.x << std::endl;
-                if (this->getComponent<Spacial>(entity).position.x > MAX_X) {
+                auto &spacial = this->getComponent<Spacial>(entity);
+                if (spacial.position.x > MAX_X) {
                     std::cout << "Destroying missile: " << entity << std::endl;
                     this->destroyEntity(entity);
                     continue;
                 }
-                auto &spacial = this->getComponent<Spacial>(entity);
                 auto speed = this->getComponent<Speed>(entity);
                 spacial.position.x += speed.velocity;
                 this->setEntityUpdated(entity, true);

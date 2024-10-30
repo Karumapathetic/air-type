@@ -24,7 +24,7 @@ namespace Graphics {
         for (auto entity : _entities) {
             if (entity.second.priority != -1.0f) {
                 _graphics->RenderPreciseTexture(entity.first, entity.second.crop, {entity.second.position.x * scale, entity.second.position.y * scale, entity.second.scale.x * scale, entity.second.scale.y * scale}, {0.0f, 0.0f}, 0.0f, WHITE);
-                if (entity.second.name == "killed")
+                if (entity.second.name != "player")
                     AnimateEntity(entity.second.position, entity.second.position, entity.first);
             }
         }
