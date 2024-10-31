@@ -21,7 +21,7 @@ namespace Network
             {
                 std::cout << "Server address: " << std::flush;
                 #ifdef _WIN32
-                    system("powershell -Command \"(Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceAlias -like \"Wi-Fi\"}).IPAddress\"");
+                    system("powershell -Command \"(Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceAlias -like \"'Wi-Fi'\"}).IPAddress\"");
                 #else
                     system("ip -o route get to 8.8.8.8 | sed -n 's/.*src \\([0-9.]\\+\\).*/\\1/p'");
                 #endif
