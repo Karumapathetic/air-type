@@ -117,18 +117,6 @@ namespace Graphics {
             void HandleKeyboardInput();
 
             /**
-             * @brief Extracts values from a string of parameters.
-             * 
-             * @param params The string of parameters to extract values from.
-             * @param key The key to search for in the parameters.
-             * @param values The vector to store the extracted values in.
-             * @param numValues The number of values to extract.
-             * 
-             * @return True if the values were successfully extracted, false otherwise.
-             */
-            bool ExtractValues(const std::string& params, const std::string& key, std::vector<float>& values, int numValues);
-
-            /**
              * @brief Creates a new entity in the game.
              * 
              * This function initializes a new entity with the given ID and parameters.

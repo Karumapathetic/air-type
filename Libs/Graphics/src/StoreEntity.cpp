@@ -8,25 +8,6 @@
 #include "Game.hpp"
 
 namespace Graphics {
-    bool Game::ExtractValues(const std::string& params, const std::string& key, std::vector<float>& values, int numValues) {
-        size_t keyIndex = params.find(key);
-        if (keyIndex != std::string::npos) {
-            size_t endPos = params.find(';', keyIndex);
-            std::string extractedValues = params.substr(keyIndex + key.length(), endPos - (keyIndex + key.length()));
-            std::string format;
-            for (int i = 0; i < numValues; ++i) {
-                format += "%f";
-                if (i < numValues - 1) {
-                    format += ",";
-                }
-            }
-            values.resize(numValues);
-            int result = sscanf(extractedValues.c_str(), format.c_str(), &values[0], &values[1], &values[2], &values[3]);
-            return result == numValues;
-        }
-        return false;
-    }
-
     float Game::GetNumberOfClients() {
         float result = 0;
         for (auto entity: _entities) {
@@ -39,10 +20,22 @@ namespace Graphics {
     void Game::CreateEntity(Entity id, const std::string& params) {
         if (id < 0 || id >= MAX_ENTITIES) return;
 
-        std::vector<float> values;
+        size_t positionIndex = params.find("position:");
+        if (positionIndex != std::string::npos) {
+            size_t endPos = params.find(';', positionIndex);
+            std::string positionValues = params.substr(positionIndex + 9, endPos - (positionIndex + 9));
 
-        if (ExtractValues(params, "position:", values, 2)) {
-            _entities[id].position = {values[0], values[1]};
+            size_t commaPos = positionValues.find(',');
+            if (commaPos != std::string::npos) {
+                std::string xPos = positionValues.substr(0, commaPos);
+                std::string yPos = positionValues.substr(commaPos + 1);
+
+                float x = std::stof(xPos);
+                float y = std::stof(yPos);
+
+                _entities[id].position = {x, y};
+
+            }
         } else {
             _entities[id].position = {0, 0};
         }
@@ -119,10 +112,24 @@ namespace Graphics {
             return;
         }
 
-        if (ExtractValues(params, "position:", values, 2)) {
-            Vector2 oldPos = _entities[id].position;
-            _entities[id].position = {values[0], values[1]};
-            AnimateEntity(oldPos, _entities[id].position, id);
+        size_t positionIndex = params.find("position:");
+        if (positionIndex != std::string::npos) {
+            size_t endPos = params.find(';', positionIndex);
+            std::string positionValues = params.substr(positionIndex + 9, endPos - (positionIndex + 9));
+
+            size_t commaPos = positionValues.find(',');
+            if (commaPos != std::string::npos) {
+                std::string xPos = positionValues.substr(0, commaPos);
+                std::string yPos = positionValues.substr(commaPos + 1);
+
+                float x = std::stof(xPos);
+                float y = std::stof(yPos);
+
+                Vector2 oldPos = _entities[id].position;
+                _entities[id].position = {x, y};
+                AnimateEntity(oldPos, _entities[id].position, id);
+
+            }
         }
     }
 
