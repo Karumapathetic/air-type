@@ -41,7 +41,8 @@ namespace Network {
         Wick = 3,           // Wick type
         Geld = 4,           // Geld type
         Bug = 5,            // Bug type
-        Missile = 6         // Missile type
+        Missile = 6,        // Missile type
+        Default = 7         // Default type
     };
 
     /// @brief Enum that define every types of actions
