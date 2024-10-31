@@ -9,45 +9,50 @@
 
 #include <cstdint>
 
+/**
+ * @brief Namespace for Network library
+ * 
+ * This namespace contains all the classes and functions for the Network library.
+ */
 namespace Network {
 
     /// @brief Enum that define every types of requests
     /// @enum RequestsTypes
     enum class RequestsTypes : uint32_t
     {
-        ClientConnection,       // The Client try to connect
-        ServerPing,             // The Client ping the server
-        ServerAcceptance,       // The Server accept Client connection
-        ServerDenial,           // The Server refuse Client connection
-        AcknowledgeRequest,     // The Server or Client acknowledge previous request
-        SetSpritePosition,      // The Server send a sprite positions
-        NotifyKilledSprite,     // The Server notify a entity is killed
-        SetInput,               // The Client send user input to Server
-        LaunchGame              // The Server launch the game
+        ClientConnection = 0,       // The Client try to connect
+        ServerPing = 1,             // The Client ping the server
+        ServerAcceptance = 2,       // The Server accept Client connection
+        ServerDenial = 3,           // The Server refuse Client connection
+        AcknowledgeRequest = 4,     // The Server or Client acknowledge previous request
+        SetSpritePosition = 5,      // The Server send a sprite positions
+        NotifyKilledSprite = 6,     // The Server notify a entity is killed
+        SetInput = 7,               // The Client send user input to Server
+        LaunchGame = 8              // The Server launch the game
     };
 
     /// @brief Enum that define every types of sprites
     /// @enum SpritesTypes
     enum class SpritesTypes : uint32_t
     {
-        Player,         // Player type
-        PataPata,       // Pata-Pata type
-        Win,            // Win type
-        Wick,           // Wick type
-        Geld,           // Geld type
-        Bug,            // Bug type
-        Missile         // Missile type
+        Player = 0,         // Player type
+        PataPata = 1,       // Pata-Pata type
+        Win = 2,            // Win type
+        Wick = 3,           // Wick type
+        Geld = 4,           // Geld type
+        Bug = 5,            // Bug type
+        Missile = 6         // Missile type
     };
 
     /// @brief Enum that define every types of actions
     /// @enum InputActions
     enum class InputActions : uint32_t
     {
-        UP,         // Player goes up
-        DOWN,       // Player goes down
-        LEFT,       // Player goes left
-        RIGHT,      // Player goes right
-        SHOOT       // Player shoots
+        UP = 0,         // Player goes up
+        DOWN = 1,       // Player goes down
+        LEFT = 2,       // Player goes left
+        RIGHT = 3,      // Player goes right
+        SHOOT = 4       // Player shoots
     };
 
     /**
