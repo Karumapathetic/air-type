@@ -9,6 +9,7 @@
 
 #include "ISystem.hpp"
 #include "Coordinator.hpp"
+#include "Behaviour.hpp"
 
 namespace ECS {
     /**
@@ -16,7 +17,7 @@ namespace ECS {
      */
     class Move : public ISystem {
         public:
-            void update( Coordinator& _coordinator);
+            void update( Coordinator& _coordinator, Entity entity);
             /**
              * @brief Moves the entities based on the given parameters.
              * 
@@ -28,7 +29,7 @@ namespace ECS {
              * 
              * @return bool
              */
-            bool MoveEntities(Coordinator &coordinator, Entity entity, const std::string &params);
+            bool MoveEntities(Coordinator &coordinator, Entity entity);
         protected:
         private:
     };

@@ -12,6 +12,7 @@
 #include <queue>
 #include <array>
 #include <cassert>
+#include <iostream>
 
 #include "ECSValues.hpp"
 
@@ -50,6 +51,12 @@ namespace ECS {
              */
             void destroyEntity(Entity entity);
 
+            bool isEntityValid(Entity entity) const;
+
+            std::vector<Entity> getEntities();
+
+            void setEntities(std::size_t index, Entity entity);
+
             /**
              * @brief Sets the signature of an entity.
              * 
@@ -70,6 +77,7 @@ namespace ECS {
              * @throw std::runtime_error if the entity is out of range.
              */
             Signature getSignature(Entity entity);
+
             /**
              * @brief Set the Entity Name object
              * 
@@ -153,6 +161,11 @@ namespace ECS {
             std::queue<Entity> availableEntities{};
 
             /**
+             * @brief Variable that stores the entities.
+             */
+            std::vector<Entity> _entities;
+
+            /**
              * @brief Array of entity signatures.
              * 
              * The index is the entity and the value is the signature of the entity.
@@ -173,7 +186,11 @@ namespace ECS {
              */
             std::unordered_map<Entity, bool> entityInitialized{};
 
-
+            /**
+             * @brief Map of entity updated status.
+             * 
+             * The key is the entity and the value is the updated status of the entity.
+             */
             std::unordered_map<Entity, bool> entityUpdated{};
 
             /**

@@ -44,7 +44,6 @@ void Client::stop()
 void Client::handleData()
 {
     auto request = this->getIncomingRequests().popFront();
-
     switch (request.request.header.id) {
         case Network::RequestsTypes::SetSpritePosition:
             addPosEventInCore(request.request);

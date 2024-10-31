@@ -10,6 +10,7 @@
 Server::Server() : Network::AServer<Network::RequestsTypes>()
 {
     _isServerRunning = true;
+    _playerConnection = false;
 }
 
 Server::~Server()
@@ -29,21 +30,33 @@ void Server::run()
 
 void Server::update()
 {
+    auto start = std::chrono::high_resolution_clock::now();
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed = end - start;
     if (_isServerRunning) {
-        _coordinator.updateSystems();
-        for (auto entity: _coordinator.getEntities()) {
-            if (_coordinator.getEntityUpdated(entity)) {
-                if (_coordinator.hasComponent(entity, _coordinator.getComponentType<ECS::Spacial>())) {
-                    auto &spacial = _coordinator.getComponent<ECS::Spacial>(entity);
-                    auto request = _factory.createPositionsRequests(_coordinator.getEntityName(entity), entity, spacial.position.x, spacial.position.y);
-                    this->sendRequestToAllClients(request);
+        if (!_playerConnection) {
+            std::cout << "Action 1" << std::endl;
+            behaviour(_coordinator);
+            end = std::chrono::high_resolution_clock::now(); elapsed = end - start; std::cout << "Elapsed: " << elapsed.count() << std::endl; start = end;
+            std::cout << "Action 2" << std::endl;
+            _coordinator.updateSystems();
+            end = std::chrono::high_resolution_clock::now(); elapsed = end - start; std::cout << "Elapsed: " << elapsed.count() << std::endl; start = end;
+            std::cout << "Action 3" << std::endl;
+            for (auto entity: _coordinator.getEntities()) {
+                if (_coordinator.getEntityUpdated(entity)) {
+                    if (_coordinator.hasComponent(entity, _coordinator.getComponentType<ECS::Spacial>())) {
+                        auto &spacial = _coordinator.getComponent<ECS::Spacial>(entity);
+                        auto request = _factory.createPositionsRequests(_coordinator.getEntityName(entity), entity, spacial.position.x, spacial.position.y);
+                        this->sendRequestToAllClients(request);
+                    }
+                    _coordinator.setEntityUpdated(entity, false);
                 }
-                _coordinator.setEntityUpdated(entity, false);
             }
-        }
-        while (!this->_incomingRequests.isEmpty()) {
-            auto request = this->_incomingRequests.popFront();
-            onRequestReceived(request.remoteConnection, request.request);
+            end = std::chrono::high_resolution_clock::now(); elapsed = end - start; std::cout << "Elapsed: " << elapsed.count() << std::endl; start = end;
+            while (!this->_incomingRequests.isEmpty()) {
+                auto request = this->_incomingRequests.popFront();
+                onRequestReceived(request.remoteConnection, request.request);
+            }
         }
     } else
         this->stop();
@@ -51,6 +64,7 @@ void Server::update()
 
 bool Server::onClientConnection(std::shared_ptr<Network::UDPConnection<Network::RequestsTypes>> client)
 {
+    _playerConnection = true;
     auto newEntity = _coordinator.createEntity("player");
     _coordinator.initEntities();
     auto &entityTypePlayer = _coordinator.getComponent<ECS::EntityTypes>(newEntity);
@@ -64,6 +78,7 @@ bool Server::onClientConnection(std::shared_ptr<Network::UDPConnection<Network::
             this->sendRequestToClient(request, client);
         }
     }
+    _playerConnection = false;
     return true;
 }
 

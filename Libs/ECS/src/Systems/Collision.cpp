@@ -8,12 +8,9 @@
 #include "Collision.hpp"
 
 namespace ECS {
-    void Collision::update( Coordinator& _coordinator)
+    void Collision::update( Coordinator& _coordinator, Entity entity)
     {
-        this->detectCollision(_coordinator);
-        if (_coordinator.getFirstEvent().second == "collision") {
-            _coordinator.removeFirstEvent();
-        }
+        //this->detectCollision(_coordinator);
     }
 
     void Collision::detectCollision(ECS::Coordinator &gCoordinator) {

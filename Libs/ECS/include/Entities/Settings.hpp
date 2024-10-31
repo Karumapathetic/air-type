@@ -8,7 +8,6 @@
 #pragma once
 
 #include "Coordinator.hpp"
-#include "Components.hpp"
 
 namespace ECS {
     /**
