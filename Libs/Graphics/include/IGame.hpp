@@ -62,16 +62,16 @@ namespace Graphics {
         virtual ~IGame() = default;
 
         virtual void setGameState(GameState gameState) = 0;
-        virtual GameState getGameState() = 0;
+        virtual GameState getGameState() const = 0;
         virtual void setStars(std::vector<Star> stars) = 0;
-        virtual void DrawStars() = 0;
+        virtual void DrawStars() const = 0;
         virtual void DrawGraphics() = 0;
         virtual void HandleKeyboardInput() = 0;
         virtual void CreateEntity(Entity id, const std::string& params) = 0;
         virtual void UpdateEntity(Entity id, const std::string& params) = 0;
         virtual void DestroyEntity(Entity id) = 0;
-        virtual float GetNumberOfClients() = 0;
-        virtual std::shared_ptr<IGraphic> getGraphics() = 0;
-        virtual std::vector<std::string> getClientAction() = 0;
+        virtual float GetNumberOfClients() const = 0;
+        virtual std::shared_ptr<IGraphic> getGraphics() const = 0;
+        virtual std::vector<std::string> getClientAction() const = 0;
     };
 }

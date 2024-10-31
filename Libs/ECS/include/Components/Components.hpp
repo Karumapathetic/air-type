@@ -11,6 +11,8 @@
 #include <chrono>
 #include <unordered_map>
 
+#include "PathingStrategy.hpp"
+
 namespace ECS {
     /**
      * @brief A struct that represents a 2D vector.
@@ -22,6 +24,7 @@ namespace ECS {
         float x;
         float y;
     };
+
     /**
      * @brief A struct that represents the texture of an entity.
      * 
@@ -162,5 +165,15 @@ namespace ECS {
             }
             return 0.0f;
         }
+    };
+
+    /**
+     * @brief A struct that handles the pathing of an enemy
+     * 
+     * Handles all his changes of positions
+     * 
+     */
+    struct Pathing {
+        std::shared_ptr<PathingStrategy> pathing;
     };
 }

@@ -30,6 +30,13 @@ namespace Network
              */
             AServer() : Network::IServer<RequestsTypes>(), _socket(_context, asio::ip::udp::endpoint(asio::ip::udp::v4(), 60000))
             {
+                std::cout << "Server address: " << std::flush;
+                #ifdef _WIN32
+                    system("powershell -Command \"(Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceAlias -like \"'Wi-Fi'\"}).IPAddress\"");
+                #else
+                    system("ip -o route get to 8.8.8.8 | sed -n 's/.*src \\([0-9.]\\+\\).*/\\1/p'");
+                #endif
+                std::cout << std::endl;
                 start();
             }
 
@@ -239,5 +246,4 @@ namespace Network
             {
             }
     };
-
 };

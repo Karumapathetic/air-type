@@ -34,7 +34,7 @@ namespace Network
             {
                 Request<T> request;
                 request.header.id = T::SetSpritePosition;
-                SpritesTypes spriteType;
+                SpritesTypes spriteType = SpritesTypes::Default;
                 if (entityName == "pata-pata")
                     spriteType = SpritesTypes::PataPata;
                 if (entityName == "win")

@@ -338,8 +338,6 @@ namespace ECS {
              */
             bool isEntityValid(Entity entity) const;
 
-            void updateGame();
-
             /**
              * @brief Updates the systems in the ECS.
              * 
@@ -525,14 +523,6 @@ namespace ECS {
     void settingsHandler(Coordinator &gCoordinator, std::uint32_t entity);
 
     /**
-     * @brief Function that handles the collectible entity.
-     * 
-     * @param gCoordinator The coordinator.
-     * @param entity The entity.
-     */
-    void collectibleHandler(Coordinator &gCoordinator, std::uint32_t entity);
-
-    /**
      * @brief Function that handles the pata-pata entity.
      * 
      * This function handles the pata-pata entity. It creates the components for the entity
@@ -586,4 +576,37 @@ namespace ECS {
      * @param entity The entity to be handled.
      */
     void geldHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the collectible "force1" entity.
+     * 
+     * This function handles the collectible "force1" entity. It creates the components for the entity
+     * and sets the entity as initialized. The components created are Spacial, Speed, Images, and EntityTypes.
+     * 
+     * @param gCoordinator The coordinator object.
+     * @param entity The entity to be handled.
+     */
+    void forceOneHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the collectible "roundbit" entity.
+     * 
+     * This function handles the collectible "roundbit" entity. It creates the components for the entity
+     * and sets the entity as initialized. The components created are Spacial, Speed, Images, and EntityTypes and one Cooldown.
+     * 
+     * @param gCoordinator The coordinator object.
+     * @param entity The entity to be handled.
+     */
+    void roundbitHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the collectible "speed" entity.
+     * 
+     * This function handles the collectible "speed" entity. It creates the components for the entity
+     * and sets the entity as initialized. The components created are Spacial, Speed, Images, and EntityTypes.
+     * 
+     * @param gCoordinator The coordinator object.
+     * @param entity The entity to be handled.
+     */
+    void speedHandler(Coordinator &gCoordinator, std::uint32_t entity);
 }
