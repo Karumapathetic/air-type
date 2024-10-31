@@ -8,7 +8,7 @@
 #include "Game.hpp"
 
 namespace Graphics {
-    void Game::DrawRectangleBackground() {
+    void Game::DrawRectangleBackground() const {
         Rectangle rec = {
             25,
             25,

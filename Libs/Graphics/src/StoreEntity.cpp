@@ -8,7 +8,7 @@
 #include "Game.hpp"
 
 namespace Graphics {
-    float Game::GetNumberOfClients() {
+    float Game::GetNumberOfClients() const {
         float result = 0;
         for (auto entity: _entities) {
             if (entity.second.name == "player")
@@ -55,31 +55,31 @@ namespace Graphics {
                 _entities[id].scale = {66, 72};
                 _entities[id].crop = {0, 0, 33, 36};
                 _entities[id].priority = {1};
-                _entities[id].name = "enemy";
+                _entities[id].name = "pata-pata";
             } else if (texturePath.find("win") != std::string::npos) {
                 _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_win.gif");
                 _entities[id].scale = {44, 45};
                 _entities[id].crop = {0, 0, 33, 34};
                 _entities[id].priority = {1};
-                _entities[id].name = "enemy";
+                _entities[id].name = "win";
             } else if (texturePath.find("bug") != std::string::npos) {
                 _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_pata-pata.png");
                 _entities[id].scale = {86, 48};
                 _entities[id].crop = {0, 0, 33, 36}; //temporary
                 _entities[id].priority = {1};
-                _entities[id].name = "enemy";
+                _entities[id].name = "bug";
             } else if (texturePath.find("wick") != std::string::npos) {
                 _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_wick.gif");
-                _entities[id].scale = {86, 48};
+                _entities[id].scale = {32, 28};
                 _entities[id].crop = {0, 0, 17, 15};
                 _entities[id].priority = {1};
-                _entities[id].name = "enemy";
+                _entities[id].name = "wick";
             } else if (texturePath.find("geld") != std::string::npos) {
                 _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_pata-pata.png");
                 _entities[id].scale = {86, 48};
                 _entities[id].crop = {0, 0, 33, 36}; //temporary
                 _entities[id].priority = {1};
-                _entities[id].name = "enemy";
+                _entities[id].name = "geld";
             } else if (texturePath.find("missile") != std::string::npos) {
                 _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/missile.gif");
                 _entities[id].scale = {60, 12};
