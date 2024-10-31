@@ -1,8 +1,15 @@
 cmake_minimum_required(VERSION 3.27)
 project("R-Type Graphics Lib")
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+add_subdirectory(
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdParties/raylib
+    ${CMAKE_CURRENT_BINARY_DIR}/raylib
+)
+
 add_library(
-    Graphics STATIC
+    Graphics SHARED
     Core.cpp
     src/Game.cpp
     src/Option.cpp
@@ -26,5 +33,4 @@ target_include_directories(
 target_link_libraries(
     Graphics
     raylib
-    ECS
 )

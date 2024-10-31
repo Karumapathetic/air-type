@@ -9,10 +9,10 @@
 
 #include "Game.hpp"
 
-#include <iostream>
 #include <unordered_map>
 #include <functional>
 #include <vector>
+#include <string>
 
 namespace Graphics {
     class Game;

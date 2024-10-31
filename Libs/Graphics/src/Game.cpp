@@ -6,6 +6,7 @@
 */
 
 #include <ctime>
+
 #include "Game.hpp"
 
 namespace Graphics {
@@ -65,4 +66,28 @@ namespace Graphics {
         }
         _graphics->EndRendering();
     }
+}
+
+/**
+ * @brief Creates a new instance of the Game class.
+ *
+ * This function allocates memory for a new Game object and returns a pointer to it.
+ * The caller is responsible for deallocating the memory using the DestroyGame function.
+ *
+ * @return A pointer to the newly created Game object.
+ */
+EXPORT_API Graphics::Game* CreateGame() {
+    return new Graphics::Game();
+}
+
+/**
+ * @brief Destroys the Game object and deallocates memory.
+ *
+ * This function releases the memory allocated for the given Game object.
+ * After calling this function, the caller should not use the game pointer again.
+ *
+ * @param game A pointer to the Game object to be destroyed.
+ */
+EXPORT_API void DestroyGame(Graphics::IGame* game) {
+    delete game;
 }

@@ -19,6 +19,7 @@ add_library(
     src/Entities/Collectible.cpp
 
     src/Systems/Collision.cpp
+    src/Systems/Update.cpp
     src/Systems/Damage.cpp
     src/Systems/Heal.cpp
     src/Systems/Killed.cpp

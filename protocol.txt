@@ -1,15 +1,15 @@
-1X: Connection
--> 10: Connect (10 <address: X.X.X.X> <port: XXXXX>) (server)
--> 11: Disconnexion (11 <clientId: ???>) (server)
--> 12: Connexion accepted (12 <clientId: ???>) (client)
--> 13: Disconnexion accepted (13) (client)
+0X: Connection
+-> 00: Connect (00 <address: X.X.X.X> <port: XXXXX>) (server)
+-> 01: Disconnexion (01 <clientId: ???>) (server)
+-> 02: Connexion accepted (02 <clientId: ???>) (client)
+-> 03: Disconnexion accepted (03) (client)
 
-2X: ECS
--> 21: Sprite position (21 <entityName: ???> <spriteId: ???> <posX: ???> <posY: ???>) (Positions are centered) (client)
--> 22: User input (22 <clientId: ???> <action: ???> {<action: ???> ...}) (server)
+1X: ECS
+-> 11: Sprite position (11 <entityName: ???> <spriteId: ???> <posX: ???> <posY: ???>) (Positions are centered) (client)
+-> 12: User input (12 <clientId: ???> <action: ???>) (server)
 
-3X: Errors
--> 30: Invalid command (30) (client)
--> 31: Connexion refused (31) (client)
--> 32: Server crashed (32) (client)
--> 33: Client crashed (33 <clientId: ???>) (server)
+2X: Errors
+-> 20: Invalid command (20) (client)
+-> 21: Connexion refused (21) (client)
+-> 22: Server crashed (22) (client)
+-> 23: Client crashed (23 <clientId: ???>) (server)

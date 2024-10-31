@@ -13,4 +13,3 @@ add_subdirectory(Libs/ECS)
 add_subdirectory(Libs/Network)
 add_subdirectory(Libs/Graphics)
 
-add_subdirectory(3rdParties/raylib)

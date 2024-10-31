@@ -22,6 +22,7 @@ namespace ECS {
         auto entitySpeed = coordinator.getComponent<Speed>(entity);
         std::string entityName = coordinator.getEntityName(entity);
         if (entityName == "player") {
+            //std::cout << "System Move : " << params << std::endl;
             if (params == "up") {
                 if (entityPos.position.y - entitySpeed.velocity > 0)
                     entityPos.position.y -= entitySpeed.velocity;
@@ -35,6 +36,7 @@ namespace ECS {
                 if (entityPos.position.x + entitySpeed.velocity + entityPos.size.x < MAX_X)
                     entityPos.position.x += entitySpeed.velocity;
             }
+            coordinator.setEntityUpdated(entity, true);
             return true;
         }
         return false;

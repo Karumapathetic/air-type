@@ -7,11 +7,10 @@
 
 #pragma once
 
-#include "raylib.h"
+#include <unordered_map>
+#include <raylib.h>
 
 #include "IGraphic.hpp"
-
-#include <unordered_map>
 
 namespace Graphics {
     class RaylibGraphics : public IGraphic {
