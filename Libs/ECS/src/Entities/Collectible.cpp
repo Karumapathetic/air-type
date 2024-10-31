@@ -8,11 +8,30 @@
 #include "Coordinator.hpp"
 
 namespace ECS {
-    void collectibleHandler(Coordinator &gCoordinator, std::uint32_t entity) {
+    void forceOneHandler(Coordinator &gCoordinator, std::uint32_t entity) {
         gCoordinator.addComponent(entity, Spacial{{1.0f, 1.0f}});
-        gCoordinator.addComponent(entity, Speed{2.0f, 1.0f});
-        gCoordinator.addComponent(entity, Images{ 0 });
-        gCoordinator.addComponent(entity, EntityTypes{"collectible", 1, -1});
+        gCoordinator.addComponent(entity, Speed{0.1f, 1.0f});
+        gCoordinator.addComponent(entity, Images{"Libs/Graphics/assets/texture/force1.gif"});
+        gCoordinator.addComponent(entity, EntityTypes{"collectible", 0});
+        gCoordinator.setEntityInitialized(entity, true);
+    }
+
+    void roundbitHandler(Coordinator &gCoordinator, std::uint32_t entity) {
+        gCoordinator.addComponent(entity, Spacial{{1.0f, 1.0f}});
+        gCoordinator.addComponent(entity, Speed{0.1f, 1.0f});
+        gCoordinator.addComponent(entity, ECS::Cooldown());
+        auto &cooldown = gCoordinator.getComponent<ECS::Cooldown>(entity);
+        cooldown.addCooldown("missile", 1.0f, -1.0f);
+        gCoordinator.addComponent(entity, Images{"Libs/Graphics/assets/texture/roundbit.gif"});
+        gCoordinator.addComponent(entity, EntityTypes{"collectible", 1});
+        gCoordinator.setEntityInitialized(entity, true);
+    }
+
+    void speedHandler(Coordinator &gCoordinator, std::uint32_t entity) {
+        gCoordinator.addComponent(entity, Spacial{{1.0f, 1.0f}});
+        gCoordinator.addComponent(entity, Speed{0.1f, 1.0f});
+        gCoordinator.addComponent(entity, Images{"Libs/Graphics/assets/texture/speed.gif"});
+        gCoordinator.addComponent(entity, EntityTypes{"collectible", 2});
         gCoordinator.setEntityInitialized(entity, true);
     }
 }

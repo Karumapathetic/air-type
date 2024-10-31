@@ -16,15 +16,14 @@ namespace ECS {
      */
     class Shoot : public ISystem {
         public:
-            void MissileShoot(Coordinator &coordinator, Entity entity) {
-                
-                auto entityPos = coordinator.getComponent<Spacial>(entity);
-                Entity missile = coordinator.createEntity("missile");
-                coordinator.initEntities();
-                auto &missilePos = coordinator.getComponent<Spacial>(missile);
-                missilePos.position.x = entityPos.position.x;
-                missilePos.position.y = entityPos.position.y;
-            }
+            void update( Coordinator& _coordinator);
+            /**
+             * @brief Shoots a missile from the entity.
+             * 
+             * @param coordinator The coordinator that contains the entities.
+             * @param entity The entity that is shooting the missile.
+             */
+            bool MissileShoot(Coordinator &coordinator, Entity entity);
         protected:
         private:
     };

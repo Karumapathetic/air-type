@@ -11,6 +11,7 @@
 #include "ECSValues.hpp"
 
 namespace ECS {
+    class Coordinator;
     /**
      * @brief Interface for the systems.
      * 
@@ -19,6 +20,14 @@ namespace ECS {
      */
     class ISystem {
         public:
+            /**
+             * @brief Updates the system.
+             * 
+             * This function is responsible for updating the system. It is called once per frame.
+             * 
+             * @return void
+             */
+            virtual void update(Coordinator& _coordinator) = 0;
             std::set<Entity> entities;
     };
 }

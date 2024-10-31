@@ -16,6 +16,9 @@
 #include "EntityManager.hpp"
 #include "SystemManager.hpp"
 
+#define MAX_X 1920
+#define MAX_Y 1080
+
 namespace ECS {
     /**
      * @brief Main class of the ECS that will handle the coordination of everything.
@@ -132,19 +135,6 @@ namespace ECS {
             }
 
             /**
-             * @brief Retrieves the signature of a system.
-             * 
-             * @tparam T The type of the system.
-             * 
-             * @return The signature of the system.
-             */
-            template<typename T>
-            Signature getSystemSignature()
-            {
-                return systemManager->getSystemSignature<T>();
-            }
-
-            /**
              * @brief Sets the signature of a system.
              * 
              * @tparam T The type of the system.
@@ -174,7 +164,7 @@ namespace ECS {
              * 
              * @return The entity.
              */
-            Entity createEntity(const std::string& name);
+            Entity createEntity(const std::string& name); // Here
 
             /**
              * @brief Destroys an entity.
@@ -198,7 +188,7 @@ namespace ECS {
              * @param entity The entity whose name is to be set.
              * @param name The name of the entity.
              */
-            void setEntityName(Entity entity, bool initialized);
+            void setEntityName(Entity entity, const std::string& name);
 
             /**
              * @brief Retrieves the initialized status of an entity.
@@ -239,7 +229,7 @@ namespace ECS {
              * 
              * @return The entities.
              */
-            std::vector<Entity> getEntities();
+            std::vector<Entity> getEntities() const;
 
             /**
              * @brief Retrieves the entity.
@@ -267,6 +257,53 @@ namespace ECS {
              */
             void setEntities(std::size_t index, Entity entity);
 
+                        /**
+             * @brief Retrieves the signature of a system.
+             * 
+             * @tparam T The type of the system.
+             * 
+             * @return The signature of the system.
+             */
+
+            Signature getSystemSignature(const std::string& typeName);
+
+            /**
+             * @brief Retrieves the systems registered in the ECS.
+             * 
+             * This function returns a constant reference to an unordered map that contains the 
+             * registered systems in the ECS. The map is keyed by the system type names and 
+             * the values are shared pointers to the system interfaces.
+             * 
+             * @return A constant reference to an unordered map containing the system type names 
+             *         as keys and shared pointers to the system interfaces as values.
+             */
+            const std::unordered_map<std::string, std::shared_ptr<ISystem>>& getSystems() const;
+
+            /**
+             * @brief Sets the updated status of an entity.
+             * 
+             * This function updates the 'updated' status of a specific entity in the ECS.
+             * The updated status indicates whether the entity has been updated or not.
+             * 
+             * @param entity The unique identifier of the entity.
+             * @param updated The updated status of the entity.
+             * 
+             * @return void
+             */
+            void setEntityUpdated(Entity entity, const bool updated);
+
+            /**
+             * @brief Retrieves the updated status of an entity.
+             * 
+             * This function checks the 'updated' status of a specific entity in the ECS.
+             * The updated status indicates whether the entity has been updated or not.
+             * 
+             * @param entity The entity whose updated status is to be retrieved.
+             * 
+             * @return True if the entity has been updated, false otherwise.
+             */
+            bool getEntityUpdated(Entity entity);
+
             /**
              * @brief Spawns an entity in the ECS based on the provided name and parameters.
              * 
@@ -282,7 +319,93 @@ namespace ECS {
              */
             void spawnEntity(Coordinator& coordinator, const std::string& name, const std::string& params);
 
+            /**
+             * @brief Checks if the entity has a specific component.
+             * 
+             * @param entity The entity to check.
+             * @param componentType The type of the component.
+             *
+             * @return True if the entity has the component, false otherwise.
+             */
             bool hasComponent(Entity entity, ComponentType componentType);
+
+            /**
+             * @brief Check if the entity is valid or Invalid.
+             * 
+             * @param entity The entity to check.
+             *
+             * @return True if the entity is valid, false otherwise.
+             */
+            bool isEntityValid(Entity entity) const;
+
+            /**
+             * @brief Updates the systems in the ECS.
+             * 
+             * This function iterates through all the registered systems in the ECS and calls their update functions.
+             * The update function of each system is responsible for processing the entities that match its signature.
+             * 
+             * @return void
+             */
+            void updateSystems();
+
+            /**
+             * @brief Retrieves the action queue containing entity-action pairs.
+             * 
+             * This function returns a deque of pairs, where each pair consists of an entity and a string representing an action.
+             * The action queue is used to store and retrieve actions that need to be performed on specific entities.
+             * 
+             * @return A deque of pairs containing entity-action pairs.
+             */
+            std::deque<std::pair<Entity, std::string>> getActionQueue();
+
+            /**
+             * @brief Adds an event to the action queue.
+             * 
+             * This function adds a new event to the action queue, consisting of an entity ID and an action string.
+             * The event is placed at the end of the queue.
+             * 
+             * @param id The unique identifier of the entity associated with the event.
+             * @param action The action string representing the event to be performed.
+             * 
+             * @return void
+             */
+            void addEvent(Entity id, const std::string& action);
+
+            /**
+             * @brief Retrieves the first event from the action queue.
+             * 
+             * This function retrieves the first event from the action queue, which is a deque of pairs.
+             * Each pair consists of an entity and a string representing an action.
+             * 
+             * @return A pair containing the entity ID and the action string of the first event.
+             *         If the action queue is empty, it returns a pair with -1 as the entity ID and an empty string as the action.
+             */
+            std::pair<Entity, std::string> getFirstEvent() const;
+
+            /**
+             * @brief Removes the first event from the action queue.
+             * 
+             * This function removes the first event from the action queue, which is a deque of pairs.
+             * Each pair consists of an entity and a string representing an action. The function 
+             * ensures that the queue is not empty before attempting to remove an event.
+             * 
+             * @return void
+             */
+            void removeFirstEvent();
+
+            /**
+             * @brief Moves the last added event to the end of the action queue.
+             * 
+             * This function is used to ensure that a specific event, which might be required to be processed last,
+             * is moved to the end of the action queue. This is useful when there are multiple events that need to be
+             * processed in a specific order.
+             * 
+             * @return void
+             * 
+             * @note This function does not remove the event from its current position in the queue. It simply moves
+             *       it to the end. If the action queue is empty, this function does nothing.
+             */
+            void putEventAtEnd();
         private:
             /**
              * @brief Variable that stores the component manager.
@@ -308,6 +431,15 @@ namespace ECS {
              * @brief Variable that stores the entities.
              */
             std::vector<Entity> _entities;
+
+            /**
+             * @brief A double-ended queue (deque) that stores pairs of entities and their associated actions.
+             *        This queue is used to manage and process events or actions related to entities in the ECS.
+             * 
+             * @note The deque is implemented using a doubly-linked list, allowing efficient insertion and removal
+             *       of elements from both ends.
+             */
+            std::deque<std::pair<Entity, std::string>> _actionQueue;
 
             /**
              * @brief Creates an entity based on the specified type.
@@ -367,14 +499,6 @@ namespace ECS {
     void playerHandler(Coordinator &gCoordinator, std::uint32_t entity);
 
     /**
-     * @brief Function that handles the enemy entity.
-     * 
-     * @param gCoordinator The coordinator.
-     * @param entity The entity.
-     */
-    void enemyHandler(Coordinator &gCoordinator, std::uint32_t entity);
-
-    /**
      * @brief Function that handles the missile entity.
      * 
      * @param gCoordinator The coordinator.
@@ -399,10 +523,90 @@ namespace ECS {
     void settingsHandler(Coordinator &gCoordinator, std::uint32_t entity);
 
     /**
-     * @brief Function that handles the collectible entity.
+     * @brief Function that handles the pata-pata entity.
      * 
-     * @param gCoordinator The coordinator.
-     * @param entity The entity.
+     * This function handles the pata-pata entity. It creates the components for the entity
+     * and sets the entity as initialized. The components created are Spacial, Speed, Images, EntityTypes, Life and Power.
+     * 
+     * @param gCoordinator The coordinator object.
+     * @param entity The entity to be handled.
      */
-    void collectibleHandler(Coordinator &gCoordinator, std::uint32_t entity);
+    void patapataHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the win entity.
+     * 
+     * This function handles the win entity. It creates the components for the entity
+     * and sets the entity as initialized. The components created are Spacial, Speed, Images, EntityTypes, Life and Power.
+     * 
+     * @param gCoordinator The coordinator object.
+     * @param entity The entity to be handled.
+     */
+    void winHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the bug entity.
+     * 
+     * This function handles the bug entity. It creates the components for the entity
+     * and sets the entity as initialized. The components created are Spacial, Speed, Images, EntityTypes, Life and Power.
+     * 
+     * @param gCoordinator The coordinator object.
+     * @param entity The entity to be handled.
+     */
+    void bugHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the wick entity.
+     * 
+     * This function handles the wick entity. It creates the components for the entity
+     * and sets the entity as initialized. The components created are Spacial, Speed, Images, EntityTypes, Life and Power.
+     * 
+     * @param gCoordinator The coordinator object.
+     * @param entity The entity to be handled.
+     */
+    void wickHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the geld entity.
+     * 
+     * This function handles the geld entity. It creates the components for the entity
+     * and sets the entity as initialized. The components created are Spacial, Speed, Images, EntityTypes, Life and Power.
+     * 
+     * @param gCoordinator The coordinator object.
+     * @param entity The entity to be handled.
+     */
+    void geldHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the collectible "force1" entity.
+     * 
+     * This function handles the collectible "force1" entity. It creates the components for the entity
+     * and sets the entity as initialized. The components created are Spacial, Speed, Images, and EntityTypes.
+     * 
+     * @param gCoordinator The coordinator object.
+     * @param entity The entity to be handled.
+     */
+    void forceOneHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the collectible "roundbit" entity.
+     * 
+     * This function handles the collectible "roundbit" entity. It creates the components for the entity
+     * and sets the entity as initialized. The components created are Spacial, Speed, Images, and EntityTypes and one Cooldown.
+     * 
+     * @param gCoordinator The coordinator object.
+     * @param entity The entity to be handled.
+     */
+    void roundbitHandler(Coordinator &gCoordinator, std::uint32_t entity);
+
+    /**
+     * @brief Function that handles the collectible "speed" entity.
+     * 
+     * This function handles the collectible "speed" entity. It creates the components for the entity
+     * and sets the entity as initialized. The components created are Spacial, Speed, Images, and EntityTypes.
+     * 
+     * @param gCoordinator The coordinator object.
+     * @param entity The entity to be handled.
+     */
+    void speedHandler(Coordinator &gCoordinator, std::uint32_t entity);
 }

@@ -8,14 +8,17 @@
 #pragma once
 
 #include <thread>
+#include <cstring>
 #include <unordered_map>
 
-#include "UDPClient.hpp"
-#include "Core.hpp"
+#include "AClient.hpp"
+#include "RequestsFactory.hpp"
+#include "ICore.hpp"
+#include "DLLoader.hpp"
 
-class Client {
+class Client : virtual public Network::AClient<Network::RequestsTypes> {
     public:
-        Client(std::string host);
+        Client(std::string host, const std::string& coreLibPath);
         ~Client();
 
         void init();
@@ -23,21 +26,15 @@ class Client {
         void stop();
 
         void handleData();
-        std::vector<std::string> split(std::string s, std::string delimiter);
-        std::unordered_map<std::string, std::function<void(std::vector<std::string>)>> _commands;
+        void checkForInput();
+        void registerID(Network::Request<Network::RequestsTypes> request);
+        void addPosEventInCore(Network::Request<Network::RequestsTypes> request);
 
     protected:
     private:
-        Graphics::Core _core;
-        Network::UDPClient _client;
+        Network::RequestsFactory<Network::RequestsTypes> _factory;
+        DLLoader<Graphics::ICore> _coreLoader;
+        std::unique_ptr<Graphics::ICore> _core;
         bool _isClientRunning;
-        std::thread _networkThread;
-        std::string _id;
-
-        void connexionAccepted(std::vector<std::string> command);
-        void disconnexionAccepted(std::vector<std::string> command);
-        void setSpritePos(std::vector<std::string> command);
-        void invalidCommand(std::vector<std::string> command);
-        void connexionRefused(std::vector<std::string> command);
-        void serverCrashed(std::vector<std::string> command);
+        int _id = 0;
 };

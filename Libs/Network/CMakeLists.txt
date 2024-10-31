@@ -1,14 +1,10 @@
 cmake_minimum_required(VERSION 3.27)
 project("R-Type Network Lib")
 
-add_library(
-    Network STATIC
-    src/UDPClient.cpp
-    src/UDPServer.cpp
-)
+add_library(Network INTERFACE)
 
 target_include_directories(
-    Network PUBLIC
+    Network INTERFACE
     "include"
     "../../3rdParties/asio/asio/include"
 )

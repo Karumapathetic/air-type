@@ -112,6 +112,40 @@ namespace ECS {
              */
             bool getEntityInitialized(Entity entity);
 
+            /**
+             * @brief Sets the updated status of an entity.
+             * 
+             * This function is used to set the updated status of a specific entity. The updated status
+             * indicates whether the entity has been updated since its last state.
+             * 
+             * @param entity The entity whose updated status is to be set. This parameter is of type Entity,
+             * which is a unique identifier for each entity in the ECS system.
+             * 
+             * @param updated The updated status of the entity. This parameter is of type bool, where
+             * true indicates that the entity has been updated, and false indicates that it has not been updated.
+             * 
+             * @throw std::runtime_error if the entity is out of range. This exception is thrown when the
+             * provided entity is not a valid entity within the ECS system.
+             */
+            void setEntityUpdated(Entity entity, const bool updated);
+
+            /**
+             * @brief Retrieves the updated status of an entity.
+             * 
+             * This function is used to retrieve the updated status of a specific entity. The updated status
+             * indicates whether the entity has been updated since its last state.
+             * 
+             * @param entity The entity whose updated status is to be retrieved. This parameter is of type Entity,
+             * which is a unique identifier for each entity in the ECS system.
+             * 
+             * @return The updated status of the entity. This return value is of type bool, where
+             * true indicates that the entity has been updated, and false indicates that it has not been updated.
+             * 
+             * @throw std::runtime_error if the entity is out of range. This exception is thrown when the
+             * provided entity is not a valid entity within the ECS system.
+             */
+            bool getEntityUpdated(Entity entity);
+
         private:
             /**
              * @brief Queue of available entities.
@@ -138,6 +172,9 @@ namespace ECS {
              * The key is the entity and the value is the initialized status of the entity.
              */
             std::unordered_map<Entity, bool> entityInitialized{};
+
+
+            std::unordered_map<Entity, bool> entityUpdated{};
 
             /**
              * @brief The number of living entities.

@@ -8,20 +8,23 @@
 #pragma once
 
 #include <string>
+#include <chrono>
+#include <unordered_map>
+
+#include "PathingStrategy.hpp"
 
 namespace ECS {
-
-    struct Rectangle {
-        float x;
-        float y;
-        float width;
-        float height;
-    };
-
+    /**
+     * @brief A struct that represents a 2D vector.
+     * 
+     * This struct contains the x and y coordinates of a 2D vector.
+     * 
+     */
     struct Vector2 {
         float x;
         float y;
     };
+
     /**
      * @brief A struct that represents the texture of an entity.
      * 
@@ -99,7 +102,7 @@ namespace ECS {
      */
     struct Spacial {
         Vector2 position;
-        Vector2 scale;
+        Vector2 size;
     };
 
     /**
@@ -132,7 +135,45 @@ namespace ECS {
      */
     struct EntityTypes {
         std::string type;
-        bool isPlayer;
-        int idPlayer;
+        int id;
+    };
+
+    /**
+     * @brief A struct that handles various types of cooldowns.
+     * 
+     * This struct contains maps of cooldown times and last activation times for each type of cooldown.
+     * 
+     */
+    struct Cooldown {
+        std::unordered_map<std::string, float> cooldowns; // <type, cooldown time>
+        std::unordered_map<std::string,std::pair<float, std::chrono::steady_clock::time_point>> activation; // pair:<number of times it needs to be activated, timer since last activation>
+
+        Cooldown() = default;
+
+        void addCooldown(const std::string &type, float cooldownTime, float activationTimes) {
+            cooldowns[type] = cooldownTime;
+            activation[type].first = activationTimes;
+            activation[type].second = std::chrono::steady_clock::now();
+        }
+
+        float getRemainingCooldown(const std::string &type) const {
+            auto it = activation.find(type);
+            if (it != activation.end()) {
+                auto now = std::chrono::steady_clock::now();
+                float elapsed = std::chrono::duration<float>(now - it->second.second).count();
+                return cooldowns.at(type) - elapsed;
+            }
+            return 0.0f;
+        }
+    };
+
+    /**
+     * @brief A struct that handles the pathing of an enemy
+     * 
+     * Handles all his changes of positions
+     * 
+     */
+    struct Pathing {
+        std::shared_ptr<PathingStrategy> pathing;
     };
 }

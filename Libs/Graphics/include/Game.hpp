@@ -6,10 +6,18 @@
 */
 
 #pragma once
-#include "Coordinator.hpp"
-#include "Option.hpp"
 
-#include "raylib.h"
+#include "Option.hpp"
+#include "Raylib.hpp"
+#include "IGame.hpp"
+
+#include <iostream>
+#include <functional>
+#include <memory>
+#include <chrono>
+
+#define MAX_X 1920.0f
+#define MAX_Y 1080.0f
 
 /**
  * @brief Namespace that contains all the graphics related classes
@@ -19,55 +27,6 @@
  */
 namespace Graphics {
     class Option;
-    /// @brief Enum that define the state of the game
-    /// @enum GameState
-    enum class GameState {
-        MENU,       // The menu state
-        GAME,       // The game state
-        PAUSE,      // The pause state
-        SETTINGS,   // The settings state
-        QUIT,       // The quit state
-        GAMEOVER,   // The game over state
-        WIN,        // The win state
-    };
-
-    /// @brief Struct that define a star for the background
-    /// @param x The x position of the star
-    /// @param y The y position of the star
-    /// @param size The size of the star
-    /// @param color The color of the star
-    struct Star {
-        float x; // The x position of the star
-        float y; // The y position of the star
-        int size; // Size of the star
-        Color color; // Color of the star
-    };
-
-    /**
-     * @brief Struct that holds data related to an entity in the game.
-     * 
-     * This struct is used to store the position, scale, texture, crop rectangle, and priority of an entity.
-     * The constructor initializes the position to (0, 0), scale to (1, 1), texture to an empty Texture2D,
-     * crop rectangle to (0, 0, 0, 0), and priority to 0.0f.
-     */
-    struct EntityData {
-        Vector2 position;  ///< The position of the entity in the game world.
-        Vector2 scale;     ///< The scale of the entity.
-        Texture2D texture;  ///< The texture of the entity.
-        Rectangle crop;    ///< The crop rectangle of the texture.
-        float priority;    ///< The priority of the entity for rendering.
-
-        /**
-         * @brief Constructor of EntityData.
-         * 
-         * Initializes the position to (0, 0), scale to (1, 1), texture to an empty Texture2D,
-         * crop rectangle to (0, 0, 0, 0), and priority to 0.0f.
-         */
-        EntityData(): position({0, 0}), scale({1, 1}), texture({}), crop({0, 0, 0, 0}), priority(-1.0f) {}
-    };
-
-    using Entity = int;
-    const int MAX_ENTITIES = 100;
 
     /**
      * @brief Game class that will handle the game loop
@@ -77,7 +36,7 @@ namespace Graphics {
      * and handle the keyboard input.
      * 
      */
-    class Game {
+    class Game : public IGame{
         public:
             /// @brief Constructor of the game
             Game();
@@ -85,40 +44,51 @@ namespace Graphics {
             /// @brief Destructor of the game
             ~Game() {}
 
-            // void DrawSprites();
-
             /// @brief Set the enum game state
             /// @param gameState The game state to set
-            void setGameState(GameState gameState) { _gameState = gameState; }
+            void setGameState(GameState gameState) override { _gamestate.first = _gamestate.second; _gamestate.second = gameState; }
 
             /// @brief Get the game state
             /// @return The game state that the game is in
-            GameState getGameState() { return _gameState; }
+            GameState getGameState() const override { return _gamestate.second; }
 
             /// @brief Get the previous state
             /// @return The previous state of the game
-            GameState getPreviousState() { return _previousState; }
+            GameState getPreviousState() const { return _gamestate.first; }
 
             /// @brief Set the stars
             /// @param stars The stars to set
-            void setStars(std::vector<Star> stars) { _stars = stars; }
+            void setStars(std::vector<Star> stars) override { _stars = stars; }
 
-            std::string getClientAction() { return _clientAction; }
+            /**
+             * @brief Get the Client Action object
+             * 
+             * @return std::vector<std::string> 
+             */
+            std::vector<std::string> getClientAction() const override { return _clientAction; }
 
-            void setClientAction(std::string clientAction) { _clientAction = clientAction; }
+            /**
+             * @brief Add a client action to the vector client action
+             * 
+             * @param clientAction The client action to add
+             */
+            void addClientAction(std::string clientAction) { _clientAction.push_back(clientAction); }
 
-            std::vector<EntityData> getEntities() { return entities; }
-
-            void setEntities(std::vector<EntityData> entities) { this->entities = entities; }
+            /**
+             * @brief Get the Graphics object
+             * 
+             * @return std::shared_ptr<IGraphic> 
+             */
+            std::shared_ptr<IGraphic> getGraphics() const override { return _graphics; }
 
             /** @brief Draw the stars of the background
              * 
              * This function is responsible for rendering stars in the game's graphical interface.
              */
-            void DrawStars();
+            void DrawStars() const override;
 
             /// @brief Draw the client graphics
-            void DrawGraphics();
+            void DrawGraphics() override;
 
             /// @brief Display the menu
             void DrawMenu();
@@ -132,18 +102,20 @@ namespace Graphics {
             /// @brief Display the settings menu
             void DrawSettings();
 
+            /// @brief Draw the rectangle background of the settings
+            void DrawRectangleBackground() const;
+
             /// @brief Draw the settings titles
             void DrawSettingsTitles();
 
             /// @brief Draw add ons like FPS, etc.
-            void DrawAddOns();
+            void DrawAddOns() const;
 
+            /// @brief Draw all the entities
             void DrawSprites();
 
             /// @brief Handle the keyboard input
-            void HandleKeyboardInput();
-
-            bool ExtractValues(const std::string& params, const std::string& key, std::vector<float>& values, int numValues);
+            void HandleKeyboardInput() override;
 
             /**
              * @brief Creates a new entity in the game.
@@ -156,7 +128,7 @@ namespace Graphics {
              * 
              * @return void
              */
-            void CreateEntity(Entity id, const std::string& params);
+            void CreateEntity(Entity id, const std::string& params) override;
 
             /**
              * @brief Updates the properties of an entity in the game.
@@ -169,7 +141,7 @@ namespace Graphics {
              * 
              * @return void
              */
-            void UpdateEntity(Entity id, const std::string& params);
+            void UpdateEntity(Entity id, const std::string& params) override;
 
             /**
              * @brief Destroys the entity with the given ID from the game.
@@ -181,7 +153,7 @@ namespace Graphics {
              * 
              * @return void
              */
-            void DestroyEntity(Entity id);
+            void DestroyEntity(Entity id) override;
 
             /**
              * @brief Prints all the entities currently registered in the game.
@@ -194,22 +166,48 @@ namespace Graphics {
              * @note This function does not return any meaningful value. It only prints the entities' information.
              */
             void PrintEntities();
+
+            /**
+             * @brief Initializes the animations for the entities in the game.
+             * 
+             * It sets up the animations for each entity based on its movement direction.
+             * 
+             * @return void
+             */
+            void InitializeAnimationsMap();
+
+            /**
+             * @brief Animates an entity from its old position to its new position.
+             * 
+             * This function takes the old and new positions of an entity and animates it from the old position to the new position.
+             * The entity's texture is updated based on the direction of movement.
+             * 
+             * @param oldPos The old position of the entity.
+             * @param newPos The new position of the entity.
+             * @param id The unique identifier of the entity to animate.
+             */
+            void AnimateEntity(Vector2 oldPos, Vector2 newPos, int id);
+
+            /**
+             * @brief Get the Number Of Clients already inGame
+             * 
+             * @return The number of clients in the game
+             */
+            float GetNumberOfClients() const override;
         protected:
         private:
             /**
-             * @brief The previous state of the game
-             */
-            GameState _previousState;
-
-            /**
              * @brief The state of the game
+             * 
+             * First state is the previous game state
+             * Second state is the current game state
              */
-            GameState _gameState;
+            std::pair<GameState, GameState> _gamestate;
 
             /**
              * @brief The entities of the game
              */
-            std::vector<EntityData> entities;
+            std::unordered_map<int, EntityData> _entities;
 
             /**
              * @brief The stars of the background
@@ -222,8 +220,18 @@ namespace Graphics {
             Option *_option;
 
             /**
-             * @brief The key that the client pressed (action)
+             * @brief The keys that the client pressed (actions)
              */
-            std::string _clientAction;
+            std::vector<std::string> _clientAction;
+
+            /**
+             * @brief The graphics object
+             */
+            std::shared_ptr<IGraphic> _graphics;
+
+            /**
+             * @brief The animations for the entities
+             */
+            std::unordered_map<std::string, std::pair<std::function<void(int, Vector2, Vector2)>, std::chrono::steady_clock::time_point>> _animationMap;
     };
 }

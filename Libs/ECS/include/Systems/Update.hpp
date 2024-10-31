@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2024
 ** air-type
 ** File description:
-** Update
+** update.hpp
 */
 
 #pragma once
@@ -11,24 +11,10 @@
 #include "Coordinator.hpp"
 
 namespace ECS {
-    /**
-     * @brief System that handles the update of entities.
-     */
-    class Update : public ISystem {
+    class Update : public ISystem{
         public:
-            void UpdatePositions(Coordinator &gCoordinator) {
-                for (auto entity: gCoordinator.getEntities()) {
-                    if (gCoordinator.getEntityName(entity) == "enemy") {
-                        auto &spacial = gCoordinator.getComponent<Spacial>(entity);
-                        auto &speed = gCoordinator.getComponent<Speed>(entity);
-                        spacial.position.x -= speed.velocity;
-                    } else if (gCoordinator.getEntityName(entity) == "missile") {
-                        auto &spacial = gCoordinator.getComponent<Spacial>(entity);
-                        auto &speed = gCoordinator.getComponent<Speed>(entity);
-                        spacial.position.x += speed.velocity;
-                    }
-                }
-            }
+            void update( Coordinator& _coordinator);
+            void gameUpdate(Coordinator& _coordinator);
         protected:
         private:
     };

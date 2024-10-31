@@ -7,7 +7,9 @@
 
 #pragma once
 
+#include <iostream>
 #include "ISystem.hpp"
+#include "Coordinator.hpp"
 
 namespace ECS {
     /**
@@ -15,8 +17,8 @@ namespace ECS {
      */
     class Killed : public ISystem {
         public:
-            Killed();
-            ~Killed();
+            void update( Coordinator& _coordinator) override;
+            void applyKilled(Coordinator& _coordinator, const Entity entity);
         protected:
         private:
     };

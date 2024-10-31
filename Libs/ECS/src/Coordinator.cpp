@@ -6,8 +6,12 @@
 */
 
 #include "Coordinator.hpp"
-#include "Draw.hpp"
 #include "Collision.hpp"
+#include "Shoot.hpp"
+#include "Move.hpp"
+#include "Damage.hpp"
+#include "Killed.hpp"
+#include "Update.hpp"
 
 namespace ECS {
     Coordinator::Coordinator() {
@@ -22,11 +26,15 @@ namespace ECS {
         // Initialisation des handlers
         entityHandlers = {
             {"player", playerHandler},
-            {"enemy", enemyHandler},
+            {"pata-pata", patapataHandler},
+            {"win", winHandler},
+            {"bug", bugHandler},
+            {"wick", wickHandler},
+            {"geld", geldHandler},
             {"missile", missileHandler},
             {"background", backgroundHandler},
             {"settings", settingsHandler},
-            {"collectible", collectibleHandler}
+            {"force1", forceOneHandler}
         };
 
         this->registerComponent<Spacial>();
@@ -37,26 +45,69 @@ namespace ECS {
         this->registerComponent<EntityTypes>();
         this->registerComponent<Keybind>();
         this->registerComponent<Sounds>();
+        this->registerComponent<Cooldown>();
+        this->registerComponent<Pathing>();
 
-        this->registerSystem<ECS::Draw>();
+        this->registerSystem<ECS::Shoot>();
+        this->registerSystem<ECS::Move>();
+        this->registerSystem<ECS::Damage>();
+        this->registerSystem<ECS::Killed>();
         this->registerSystem<ECS::Collision>();
+        this->registerSystem<ECS::Update>();
 
-        Signature drawSignature;
-        drawSignature.set(this->getComponentType<Images>());
-        this->setSystemSignature<ECS::Draw>(drawSignature);
+        Signature shootSignature;
+        shootSignature.set(this->getComponentType<Power>());
+        shootSignature.set(this->getComponentType<Cooldown>());
+        shootSignature.set(this->getComponentType<Spacial>());
+        this->setSystemSignature<ECS::Shoot>(shootSignature);
+
+        Signature moveSignature;
+        moveSignature.set(this->getComponentType<Spacial>());
+        moveSignature.set(this->getComponentType<Speed>());
+        this->setSystemSignature<ECS::Move>(moveSignature);
+
+        Signature damageSignature;
+        damageSignature.set(this->getComponentType<Life>());
+        damageSignature.set(this->getComponentType<Power>());
+        this->setSystemSignature<ECS::Damage>(damageSignature);
+
+        Signature killedSignature;
+        this->setSystemSignature<ECS::Killed>(killedSignature);
 
         Signature collisionSignature;
         collisionSignature.set(this->getComponentType<Spacial>());
-        this->setSystemSignature<ECS::Collision>(drawSignature);
+        this->setSystemSignature<ECS::Collision>(collisionSignature);
+
+        Signature updateSignature;
+        updateSignature.set(this->getComponentType<Spacial>());
+        updateSignature.set(this->getComponentType<Speed>());
+        this->setSystemSignature<ECS::Update>(updateSignature);
 
         this->createEntity("settings");
+        Entity enemy = this->createEntity("pata-pata");
         this->initEntities();
+
+        auto &spacial = this->getComponent<Spacial>(enemy);
+        spacial.position = {MAX_X - 100, MAX_Y / 2};
+    }
+
+    void Coordinator::initEntities()
+    {
+        auto entities = this->getEntities();
+        for (const Entity& entity : entities) {
+            std::string name = this->getEntityName(entity);
+            bool initialized = this->getEntityInitialized(entity);
+
+            if (!initialized) {
+                this->createEntityFromType(name, entity);
+            }
+        }
     }
 
     Entity Coordinator::createEntity(const std::string& name) {
         Entity id = entityManager->createEntity(name);
         this->setEntities(id, id);
-        std::cout << "Entity : " << name << " have the ID : " << id << std::endl;
+        std::cout << std::endl << "Entity : " << name << " have the ID : " << id << std::endl;
         return id;
     }
 
@@ -71,8 +122,8 @@ namespace ECS {
         return entityManager->getEntityName(entity);
     }
 
-    void Coordinator::setEntityName(Entity entity, bool initialized) {
-        entityManager->setEntityInitialized(entity, initialized);
+    void Coordinator::setEntityName(Entity entity, const std::string& name) {
+        entityManager->setEntityName(entity, name);
     }
 
     bool Coordinator::getEntityInitialized(Entity entity) {
@@ -91,8 +142,18 @@ namespace ECS {
         entityManager->setSignature(entity, signature);
     }
 
-    std::vector<Entity> Coordinator::getEntities() {
-        return _entities;
+    bool Coordinator::isEntityValid(Entity entity) const {
+        return entity != INVALID_ENTITY;
+    }
+
+    std::vector<Entity> Coordinator::getEntities() const {
+        std::vector<Entity> validEntities;
+        for (const Entity& entity : _entities) {
+            if (isEntityValid(entity)) {
+                validEntities.push_back(entity);
+            }
+        }
+        return validEntities;
     }
 
     Entity Coordinator::getEntity(std::string name) {
@@ -109,7 +170,7 @@ namespace ECS {
             std::string entityName = this->getEntityName(entity);
             if (entityName == "player") {
                 auto entityType = this->getComponent<EntityTypes>(entity);
-                if (entityType.idPlayer == id) {
+                if (entityType.id == id) {
                     return entity;
                 }
             }
@@ -126,17 +187,24 @@ namespace ECS {
         }
     }
 
-    void Coordinator::initEntities()
+    Signature Coordinator::getSystemSignature(const std::string& typeName)
     {
-        auto entities = this->getEntities();
-        for (const Entity& entity : entities) {
-            std::string name = this->getEntityName(entity);
-            bool initialized = this->getEntityInitialized(entity);
+        return systemManager->getSystemSignature(typeName);
+    }
 
-            if (!initialized) {
-                this->createEntityFromType(name, entity);
-            }
-        }
+    const std::unordered_map<std::string, std::shared_ptr<ISystem>>& Coordinator::getSystems() const
+    {
+        return systemManager->getSystems();
+    }
+
+    void Coordinator::setEntityUpdated(Entity entity, const bool updated)
+    {
+        entityManager->setEntityUpdated(entity, updated);
+    }
+
+    bool Coordinator::getEntityUpdated(Entity entity)
+    {
+        return entityManager->getEntityUpdated(entity);
     }
 
     void Coordinator::createEntityFromType(const std::string &type, std::uint32_t entity)
@@ -144,7 +212,7 @@ namespace ECS {
         std::cout << "Creating entity from type: " << type << std::endl;
         auto it = entityHandlers.find(type);
         if (it != entityHandlers.end()) {
-            std::cout << "Found handler for entity type: " << type << std::endl;
+            std::cout << "Found handler for entity type: " << type << std::endl << std::endl;
             it->second(*this, entity);
         }
     }
@@ -161,7 +229,7 @@ namespace ECS {
             if (key == "pos:") {
                 currentPos.position = value;
             } else {
-                currentPos.scale = value;
+                currentPos.size = value;
             }
         }
     }
@@ -200,5 +268,62 @@ namespace ECS {
     bool Coordinator::hasComponent(Entity entity, ComponentType componentType)
     {
         return entityManager->getSignature(entity).test(componentType);
+    }
+
+    void Coordinator::updateSystems()
+    {
+        if (_actionQueue.empty()) {
+            addEvent(0, "collision");
+            addEvent(0, "update");
+        }
+        for (auto& [typeName, system] : this->getSystems()) {
+            Signature systemSignature = this->getSystemSignature(typeName);
+            for (auto currentEntity : system->entities) {
+                Signature entitySignature = this->getEntitySignature(currentEntity);
+                if ((entitySignature & systemSignature) == systemSignature) {
+                    if (_actionQueue.empty())
+                        return;
+                    for (int x = 0; x <= _actionQueue.size(); x++) {
+                        if (_actionQueue.front().first == currentEntity) {
+                            system->update(*this);
+                        } else {
+                            this->putEventAtEnd();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    std::deque<std::pair<Entity, std::string>> Coordinator::getActionQueue()
+    {
+        return _actionQueue;
+    }
+
+    void Coordinator::addEvent(Entity id, const std::string& action)
+    {
+        const size_t maxQueueSize = 1000;
+        if (_actionQueue.size() >= maxQueueSize) {
+            _actionQueue.pop_front();
+        }
+        this->_actionQueue.push_back({id, action});
+        //std::cout << "Event added: " << action << " for entity: " << id << std::endl;
+    }
+
+    std::pair<Entity, std::string> Coordinator::getFirstEvent() const
+    {
+        return _actionQueue.front();
+    }
+
+    void Coordinator::removeFirstEvent()
+    {
+        // std::cout << "Event removed: " << _actionQueue.front().second << " for entity: " << _actionQueue.front().first << std::endl;
+        _actionQueue.pop_front();
+    }
+
+    void Coordinator::putEventAtEnd()
+    {
+        _actionQueue.push_back(_actionQueue.front());
+        _actionQueue.pop_front();
     }
 }
