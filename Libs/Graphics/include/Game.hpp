@@ -46,11 +46,11 @@ namespace Graphics {
 
             /// @brief Set the enum game state
             /// @param gameState The game state to set
-            void setGameState(GameState gameState) { _gamestate.first = _gamestate.second; _gamestate.second = gameState; }
+            void setGameState(GameState gameState) override { _gamestate.first = _gamestate.second; _gamestate.second = gameState; }
 
             /// @brief Get the game state
             /// @return The game state that the game is in
-            GameState getGameState() const { return _gamestate.second; }
+            GameState getGameState() const override { return _gamestate.second; }
 
             /// @brief Get the previous state
             /// @return The previous state of the game
@@ -58,14 +58,14 @@ namespace Graphics {
 
             /// @brief Set the stars
             /// @param stars The stars to set
-            void setStars(std::vector<Star> stars) { _stars = stars; }
+            void setStars(std::vector<Star> stars) override { _stars = stars; }
 
             /**
              * @brief Get the Client Action object
              * 
              * @return std::vector<std::string> 
              */
-            std::vector<std::string> getClientAction() const { return _clientAction; }
+            std::vector<std::string> getClientAction() const override { return _clientAction; }
 
             /**
              * @brief Add a client action to the vector client action
@@ -79,16 +79,16 @@ namespace Graphics {
              * 
              * @return std::shared_ptr<IGraphic> 
              */
-            std::shared_ptr<IGraphic> getGraphics() const { return _graphics; }
+            std::shared_ptr<IGraphic> getGraphics() const override { return _graphics; }
 
             /** @brief Draw the stars of the background
              * 
              * This function is responsible for rendering stars in the game's graphical interface.
              */
-            void DrawStars() const;
+            void DrawStars() const override;
 
             /// @brief Draw the client graphics
-            void DrawGraphics();
+            void DrawGraphics() override;
 
             /// @brief Display the menu
             void DrawMenu();
@@ -115,7 +115,7 @@ namespace Graphics {
             void DrawSprites();
 
             /// @brief Handle the keyboard input
-            void HandleKeyboardInput();
+            void HandleKeyboardInput() override;
 
             /**
              * @brief Creates a new entity in the game.
@@ -128,7 +128,7 @@ namespace Graphics {
              * 
              * @return void
              */
-            void CreateEntity(Entity id, const std::string& params);
+            void CreateEntity(Entity id, const std::string& params) override;
 
             /**
              * @brief Updates the properties of an entity in the game.
@@ -141,7 +141,7 @@ namespace Graphics {
              * 
              * @return void
              */
-            void UpdateEntity(Entity id, const std::string& params);
+            void UpdateEntity(Entity id, const std::string& params) override;
 
             /**
              * @brief Destroys the entity with the given ID from the game.
@@ -153,7 +153,7 @@ namespace Graphics {
              * 
              * @return void
              */
-            void DestroyEntity(Entity id);
+            void DestroyEntity(Entity id) override;
 
             /**
              * @brief Prints all the entities currently registered in the game.
@@ -193,7 +193,7 @@ namespace Graphics {
              * 
              * @return The number of clients in the game
              */
-            float GetNumberOfClients() const;
+            float GetNumberOfClients() const override;
         protected:
         private:
             /**
