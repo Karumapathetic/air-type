@@ -18,22 +18,21 @@ namespace ECS {
 
     void Collision::detectCollision(ECS::Coordinator &gCoordinator) {
         auto entities = gCoordinator.getEntities();
-        std::unordered_set<std::string> targetNames = {"player", "pata-pata", "win", "bug", "wick", "geld", "missile"};
-        bool done = false;
 
         for (size_t i = 0; i < entities.size(); ++i) {
             auto entity = entities[i];
             std::string entityName = gCoordinator.getEntityName(entity);
-            if (targetNames.find(entityName) == targetNames.end()) continue;
+            if (entityName == "settings") continue;
 
             for (size_t j = i + 1; j < entities.size(); ++j) {
                 auto otherEntity = entities[j];
                 std::string otherEntityName = gCoordinator.getEntityName(otherEntity);
-                if (targetNames.find(otherEntityName) == targetNames.end()) continue;
+                if (otherEntityName == "settings") continue;
 
                 auto entitySpacial = gCoordinator.getComponent<Spacial>(entity);
                 auto otherEntitySpacial = gCoordinator.getComponent<Spacial>(otherEntity);
                 auto otherEntityType = gCoordinator.getComponent<EntityTypes>(otherEntity);
+                auto entityType = gCoordinator.getComponent<EntityTypes>(entity);
 
                 if (entitySpacial.position.x < otherEntitySpacial.position.x + otherEntitySpacial.size.x &&
                     entitySpacial.position.x + entitySpacial.size.x > otherEntitySpacial.position.x &&
@@ -42,7 +41,7 @@ namespace ECS {
                     if (gCoordinator.getEntityName(entity) == "player" && otherEntityType.type == "enemy") {
                         std::cout << "Player collided with an enemy" << std::endl;
                         return;
-                    } else if (otherEntityType.type == "enemy" && gCoordinator.getEntityName(otherEntity) == "missile") {
+                    } else if (entityType.type == "enemy" && gCoordinator.getEntityName(otherEntity) == "missile") {
                         gCoordinator.addEvent(entity, "damage" + std::to_string(otherEntity));
                         std::cout << "Missile collided with an enemy" << std::endl;
                         return;

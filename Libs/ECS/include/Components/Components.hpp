@@ -80,20 +80,6 @@ namespace ECS {
     };
 
     /**
-     * @brief A struct that represents the sounds of an entity.
-     * 
-     * This struct contains the sound, volume, and description of an entity. The sound is the sound
-     * that the entity makes. The volume is the volume of the sound. The description is the description
-     * of the sound.
-     * 
-     */
-    struct Sounds {
-        std::string sound;
-        float volume;
-        std::string desc;
-    };
-
-    /**
      * @brief A struct that represents the spacial properties of an entity.
      * 
      * This struct contains the position and scale of an entity. The position is the position of the

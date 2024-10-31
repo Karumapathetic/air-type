@@ -44,7 +44,6 @@ namespace ECS {
         this->registerComponent<Images>();
         this->registerComponent<EntityTypes>();
         this->registerComponent<Keybind>();
-        this->registerComponent<Sounds>();
         this->registerComponent<Cooldown>();
         this->registerComponent<Pathing>();
 
@@ -72,6 +71,7 @@ namespace ECS {
         this->setSystemSignature<ECS::Damage>(damageSignature);
 
         Signature killedSignature;
+        killedSignature.set(this->getComponentType<Spacial>());
         this->setSystemSignature<ECS::Killed>(killedSignature);
 
         Signature collisionSignature;

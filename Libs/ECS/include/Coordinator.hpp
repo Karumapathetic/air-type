@@ -11,6 +11,7 @@
 #include <memory>
 #include <functional>
 #include <unordered_map>
+#include <chrono>
 
 #include "ComponentManager.hpp"
 #include "EntityManager.hpp"
