@@ -31,7 +31,6 @@ void Server::update()
 {
     if (_isServerRunning) {
         _coordinator.updateSystems();
-        _coordinator.updateGame();
         for (auto entity: _coordinator.getEntities()) {
             if (_coordinator.getEntityUpdated(entity)) {
                 if (_coordinator.hasComponent(entity, _coordinator.getComponentType<ECS::Spacial>())) {

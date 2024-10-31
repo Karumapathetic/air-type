@@ -10,8 +10,8 @@
 namespace ECS {
     void Collision::update( Coordinator& _coordinator)
     {
+        this->detectCollision(_coordinator);
         if (_coordinator.getFirstEvent().second == "collision") {
-            this->detectCollision(_coordinator);
             _coordinator.removeFirstEvent();
         }
     }

@@ -9,6 +9,7 @@
 #include "Collision.hpp"
 #include "Shoot.hpp"
 #include "Move.hpp"
+#include "Update.hpp"
 
 namespace ECS {
     Coordinator::Coordinator() {
@@ -47,6 +48,7 @@ namespace ECS {
         this->registerSystem<ECS::Shoot>();
         this->registerSystem<ECS::Move>();
         this->registerSystem<ECS::Collision>();
+        this->registerSystem<ECS::Update>();
 
         Signature shootSignature;
         shootSignature.set(this->getComponentType<Power>());
@@ -62,6 +64,11 @@ namespace ECS {
         Signature collisionSignature;
         collisionSignature.set(this->getComponentType<Spacial>());
         this->setSystemSignature<ECS::Collision>(collisionSignature);
+
+        Signature updateSignature;
+        updateSignature.set(this->getComponentType<Spacial>());
+        updateSignature.set(this->getComponentType<Speed>());
+        this->setSystemSignature<ECS::Update>(updateSignature);
 
         this->createEntity("settings");
         Entity enemy = this->createEntity("pata-pata");
@@ -250,45 +257,16 @@ namespace ECS {
         return entityManager->getSignature(entity).test(componentType);
     }
 
-    void Coordinator::updateGame()
-    {
-        for (auto entity: this->getEntities()) {
-            if (this->getEntityName(entity) == "enemy") {
-                // std::cout << "Enemy position: " << this->getComponent<Spacial>(entity).position.x << std::endl;
-                if (this->getComponent<Spacial>(entity).position.x < 0) {
-                    this->destroyEntity(entity);
-                    continue;
-                }
-                auto &spacial = this->getComponent<Spacial>(entity);
-                auto speed = this->getComponent<Speed>(entity);
-                // spacial.position.x -= speed.velocity;
-                //this->setEntityUpdated(entity, true);
-            } else if (this->getEntityName(entity) == "missile") {
-                // std::cout << "Missile position: " << this->getComponent<Spacial>(entity).position.x << std::endl;
-                if (this->getComponent<Spacial>(entity).position.x > MAX_X) {
-                    std::cout << "Destroying missile: " << entity << std::endl;
-                    this->destroyEntity(entity);
-                    continue;
-                }
-                auto &spacial = this->getComponent<Spacial>(entity);
-                auto speed = this->getComponent<Speed>(entity);
-                spacial.position.x += speed.velocity;
-                this->setEntityUpdated(entity, true);
-            }
-        }
-    }
-
     void Coordinator::updateSystems()
     {
-        bool collisionActivated = false;
+        if (_actionQueue.empty()) {
+            addEvent(0, "collision");
+            addEvent(0, "update");
+        }
         for (auto& [typeName, system] : this->getSystems()) {
             Signature systemSignature = this->getSystemSignature(typeName);
             for (auto currentEntity : system->entities) {
                 Signature entitySignature = this->getEntitySignature(currentEntity);
-                if (getEntityName(currentEntity) == "settings" && !collisionActivated) {
-                    addEvent(currentEntity, "collision");
-                    collisionActivated = true;
-                }
                 if ((entitySignature & systemSignature) == systemSignature) {
                     if (_actionQueue.empty())
                         return;

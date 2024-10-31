@@ -10,6 +10,7 @@
 namespace ECS {
     void settingsHandler(Coordinator &gCoordinator, std::uint32_t entity) {
         gCoordinator.addComponent(entity, Spacial{{0.0f, 0.0f}, {0.0f, 0.0f}});
+        gCoordinator.addComponent(entity, Speed{0.0f, 0.0f});
         gCoordinator.addComponent(entity, Keybind());
         //gCoordinator.addComponent(entity, Sounds{LoadSound(""), 50, "Background Music" });
 
