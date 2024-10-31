@@ -26,10 +26,10 @@ namespace ECS {
         Entity missile = coordinator.createEntity("missile");
         coordinator.initEntities();
         auto &missilePos = coordinator.getComponent<Spacial>(missile);
-        missilePos.position.x = entityPos.position.x;
-        missilePos.position.y = entityPos.position.y;
+        missilePos.position.x = entityPos.position.x + entityPos.size.x;
+        missilePos.position.y = entityPos.position.y + entityPos.size.y / 2;
         std::cout << "Shooting missile: " << missile << std::endl;
-            coordinator.removeFirstEvent();
+        coordinator.removeFirstEvent();
         return true;
     }
 }

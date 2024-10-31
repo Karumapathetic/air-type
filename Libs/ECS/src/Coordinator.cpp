@@ -9,6 +9,8 @@
 #include "Collision.hpp"
 #include "Shoot.hpp"
 #include "Move.hpp"
+#include "Damage.hpp"
+#include "Killed.hpp"
 #include "Update.hpp"
 
 namespace ECS {
@@ -32,7 +34,7 @@ namespace ECS {
             {"missile", missileHandler},
             {"background", backgroundHandler},
             {"settings", settingsHandler},
-            {"collectible", collectibleHandler}
+            {"force1", forceOneHandler}
         };
 
         this->registerComponent<Spacial>();
@@ -44,9 +46,12 @@ namespace ECS {
         this->registerComponent<Keybind>();
         this->registerComponent<Sounds>();
         this->registerComponent<Cooldown>();
+        this->registerComponent<Pathing>();
 
         this->registerSystem<ECS::Shoot>();
         this->registerSystem<ECS::Move>();
+        this->registerSystem<ECS::Damage>();
+        this->registerSystem<ECS::Killed>();
         this->registerSystem<ECS::Collision>();
         this->registerSystem<ECS::Update>();
 
@@ -60,6 +65,14 @@ namespace ECS {
         moveSignature.set(this->getComponentType<Spacial>());
         moveSignature.set(this->getComponentType<Speed>());
         this->setSystemSignature<ECS::Move>(moveSignature);
+
+        Signature damageSignature;
+        damageSignature.set(this->getComponentType<Life>());
+        damageSignature.set(this->getComponentType<Power>());
+        this->setSystemSignature<ECS::Damage>(damageSignature);
+
+        Signature killedSignature;
+        this->setSystemSignature<ECS::Killed>(killedSignature);
 
         Signature collisionSignature;
         collisionSignature.set(this->getComponentType<Spacial>());

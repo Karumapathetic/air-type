@@ -36,6 +36,11 @@ namespace Graphics {
              */
             ~Core() {}
 
+            /**
+             * @brief Get the game object.
+             * 
+             * @return The game object.
+             */
             IGame& getGame() override { return _game; }
 
             /**

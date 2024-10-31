@@ -33,7 +33,8 @@ namespace Network {
         Wick,
         Geld,
         Bug,
-        Missile
+        Missile,
+        Default
     };
 
     enum class InputActions : uint32_t

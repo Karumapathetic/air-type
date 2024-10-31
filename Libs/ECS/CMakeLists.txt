@@ -31,6 +31,7 @@ target_include_directories(
     ECS PUBLIC
     "include"
     "include/Components"
+    "include/Components/PathingStrategy"
     "include/Entities"
     "include/Systems"
 )
