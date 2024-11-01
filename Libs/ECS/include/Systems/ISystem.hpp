@@ -27,7 +27,7 @@ namespace ECS {
              * 
              * @return void
              */
-            virtual void update(Coordinator& _coordinator) = 0;
+            virtual void update(Coordinator& _coordinator, Entity entity) = 0;
             std::set<Entity> entities;
     };
 }

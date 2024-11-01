@@ -28,13 +28,14 @@ class Client : virtual public Network::AClient<Network::RequestsTypes> {
         void handleData();
         void checkForInput();
         void registerID(Network::Request<Network::RequestsTypes> request);
+        void destroyID(Network::Request<Network::RequestsTypes> request);
         void addPosEventInCore(Network::Request<Network::RequestsTypes> request);
 
     protected:
     private:
-        Network::RequestsFactory<Network::RequestsTypes> _factory;
+        Network::RequestsFactory _factory;
         DLLoader<Graphics::ICore> _coreLoader;
         std::unique_ptr<Graphics::ICore> _core;
         bool _isClientRunning;
-        int _id = 0;
+        int _id = -1;
 };

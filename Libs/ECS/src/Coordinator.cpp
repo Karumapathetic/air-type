@@ -6,24 +6,13 @@
 */
 
 #include "Coordinator.hpp"
-#include "Collision.hpp"
-#include "Shoot.hpp"
-#include "Move.hpp"
-#include "Damage.hpp"
-#include "Killed.hpp"
-#include "Update.hpp"
 
 namespace ECS {
     Coordinator::Coordinator() {
         componentManager = std::make_unique<ComponentManager>();
         entityManager = std::make_unique<EntityManager>();
         systemManager = std::make_unique<SystemManager>();
-        _entities.resize(MAX_ENTITIES);
-        for (size_t i = 0; i < _entities.size(); ++i) {
-            _entities[i] = Entity(); // Ou une valeur par défaut appropriée
-        }
 
-        // Initialisation des handlers
         entityHandlers = {
             {"player", playerHandler},
             {"pata-pata", patapataHandler},
@@ -32,7 +21,6 @@ namespace ECS {
             {"wick", wickHandler},
             {"geld", geldHandler},
             {"missile", missileHandler},
-            {"background", backgroundHandler},
             {"settings", settingsHandler},
             {"force1", forceOneHandler}
         };
@@ -47,18 +35,11 @@ namespace ECS {
         this->registerComponent<Cooldown>();
         this->registerComponent<Pathing>();
 
-        this->registerSystem<ECS::Shoot>();
         this->registerSystem<ECS::Move>();
         this->registerSystem<ECS::Damage>();
         this->registerSystem<ECS::Killed>();
         this->registerSystem<ECS::Collision>();
         this->registerSystem<ECS::Update>();
-
-        Signature shootSignature;
-        shootSignature.set(this->getComponentType<Power>());
-        shootSignature.set(this->getComponentType<Cooldown>());
-        shootSignature.set(this->getComponentType<Spacial>());
-        this->setSystemSignature<ECS::Shoot>(shootSignature);
 
         Signature moveSignature;
         moveSignature.set(this->getComponentType<Spacial>());
@@ -106,16 +87,17 @@ namespace ECS {
 
     Entity Coordinator::createEntity(const std::string& name) {
         Entity id = entityManager->createEntity(name);
-        this->setEntities(id, id);
         std::cout << std::endl << "Entity : " << name << " have the ID : " << id << std::endl;
         return id;
     }
 
     void Coordinator::destroyEntity(Entity entity) {
+        std::string entityName = getEntityName(entity);
+        pushKilledQueue(std::pair(entity, entityName));
+        std::cout << "Destroying : " << entity << std::endl;
         entityManager->destroyEntity(entity);
         componentManager->entityDestroyed(entity);
         systemManager->entityDestroyed(entity);
-        this->setEntities(entity, INVALID_ENTITY);
     }
 
     std::string Coordinator::getEntityName(Entity entity) {
@@ -148,7 +130,7 @@ namespace ECS {
 
     std::vector<Entity> Coordinator::getEntities() const {
         std::vector<Entity> validEntities;
-        for (const Entity& entity : _entities) {
+        for (const Entity& entity : entityManager->getEntities()) {
             if (isEntityValid(entity)) {
                 validEntities.push_back(entity);
             }
@@ -157,7 +139,7 @@ namespace ECS {
     }
 
     Entity Coordinator::getEntity(std::string name) {
-        for (Entity entity : _entities) {
+        for (Entity entity : entityManager->getEntities()) {
             if (this->getEntityName(entity) == name) {
                 return entity;
             }
@@ -166,7 +148,7 @@ namespace ECS {
     }
 
     Entity Coordinator::getEntityById(int id) {
-        for (Entity entity : _entities) {
+        for (Entity entity : entityManager->getEntities()) {
             std::string entityName = this->getEntityName(entity);
             if (entityName == "player") {
                 auto entityType = this->getComponent<EntityTypes>(entity);
@@ -180,11 +162,7 @@ namespace ECS {
 
     void Coordinator::setEntities(std::size_t index, Entity entity)
     {
-        if (index < _entities.size()) {
-            _entities[index] = entity;
-        } else {
-            std::cerr << "Index out of bounds: " << index << std::endl;
-        }
+        entityManager->setEntities(index, entity);
     }
 
     Signature Coordinator::getSystemSignature(const std::string& typeName)
@@ -251,20 +229,6 @@ namespace ECS {
         }
     }
 
-    void Coordinator::spawnEntity(Coordinator& coordinator, const std::string& name, const std::string& params)
-    {
-        Vector2 position = {0, 0}, scale = {0, 0};
-        float damage = 0, health = 0, armor = 0;
-
-        ECS::Entity newEntity = coordinator.createEntity(name);
-        coordinator.initEntities();
-        updateComponentVector(coordinator, newEntity, params, "pos:");
-        updateComponentVector(coordinator, newEntity, params, "scale:");
-        updateComponentValue<Power>(coordinator, newEntity, params, "damage:", &Power::damage);
-        updateComponentValue<Life>(coordinator, newEntity, params, "health:", &Life::health);
-        updateComponentValue<Life>(coordinator, newEntity, params, "armor:", &Life::armor);
-    }
-
     bool Coordinator::hasComponent(Entity entity, ComponentType componentType)
     {
         return entityManager->getSignature(entity).test(componentType);
@@ -272,24 +236,12 @@ namespace ECS {
 
     void Coordinator::updateSystems()
     {
-        if (_actionQueue.empty()) {
-            addEvent(0, "collision");
-            addEvent(0, "update");
-        }
         for (auto& [typeName, system] : this->getSystems()) {
             Signature systemSignature = this->getSystemSignature(typeName);
             for (auto currentEntity : system->entities) {
                 Signature entitySignature = this->getEntitySignature(currentEntity);
                 if ((entitySignature & systemSignature) == systemSignature) {
-                    if (_actionQueue.empty())
-                        return;
-                    for (int x = 0; x <= _actionQueue.size(); x++) {
-                        if (_actionQueue.front().first == currentEntity) {
-                            system->update(*this);
-                        } else {
-                            this->putEventAtEnd();
-                        }
-                    }
+                    system->update(*this, currentEntity);
                 }
             }
         }
@@ -325,5 +277,20 @@ namespace ECS {
     {
         _actionQueue.push_back(_actionQueue.front());
         _actionQueue.pop_front();
+    }
+
+    std::queue<std::pair<Entity, std::string>> Coordinator::getKilledQueue()
+    {
+        return _killedQueue;
+    }
+
+    void Coordinator::pushKilledQueue(std::pair<Entity, std::string> entity)
+    {
+        _killedQueue.push(entity);
+    }
+
+    void Coordinator::popKilledQueue()
+    {
+        _killedQueue.pop();
     }
 }

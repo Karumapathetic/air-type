@@ -101,6 +101,7 @@ namespace ECS {
     struct Speed {
         float velocity;
         float acceleration;
+        bool vertically;
     };
 
     /**

@@ -135,8 +135,10 @@ namespace Graphics {
 
     void Game::DestroyEntity(Entity id)
     {
-        if (id < 0 || id >= MAX_ENTITIES) return;
+        if (id < 0 || id >= MAX_ENTITIES || _entities[id].priority == -1.0f) return;
         _entities[id] = EntityData();
+        _graphics->UnloadTextureById(id);
+        std::cout << "Entité ID: " << id << " détruite avec succès" << std::endl;
     }
 
     void Game::PrintEntities()
