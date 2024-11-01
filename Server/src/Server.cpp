@@ -70,6 +70,7 @@ void Server::update()
 
 bool Server::onClientConnection(std::shared_ptr<Network::UDPConnection<Network::RequestsTypes>> client)
 {
+    std::cout << "Connection from a new player" << std::endl;
     _playerConnection = true;
     auto newEntity = _coordinator.createEntity("player");
     _coordinator.initEntities();

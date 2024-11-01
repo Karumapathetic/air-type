@@ -37,10 +37,15 @@ void Client::init()
 void Client::run()
 {
     auto start = std::chrono::system_clock::now();
+    #ifdef _WIN32
+        float delta = 5.0f;
+    #else
+        float delta = 0.1f;
+    #endif
     while (_isClientRunning) {
         auto end = std::chrono::system_clock::now();
         std::chrono::duration<double> elapsed = end - start;
-        if (elapsed.count() > 0.1 && _id == -1) {
+        if (elapsed.count() > delta && _id == -1) {
             _isClientRunning = false;
             std::cout << "Server full" << std::endl;
         }
@@ -51,7 +56,6 @@ void Client::run()
         while (this->getIncomingRequests().getSize() > 0)
             handleData();
     }
-    this->stop();
 }
 
 void Client::stop()
