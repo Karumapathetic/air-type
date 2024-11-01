@@ -30,18 +30,10 @@ void Server::run()
 
 void Server::update()
 {
-    auto start = std::chrono::high_resolution_clock::now();
-    auto end = std::chrono::high_resolution_clock::now();
-    auto elapsed = end - start;
     if (_isServerRunning) {
         if (!_playerConnection) {
-            std::cout << "Action 1" << std::endl;
             behaviour(_coordinator);
-            end = std::chrono::high_resolution_clock::now(); elapsed = end - start; std::cout << "Elapsed: " << elapsed.count() << std::endl; start = end;
-            std::cout << "Action 2" << std::endl;
             _coordinator.updateSystems();
-            end = std::chrono::high_resolution_clock::now(); elapsed = end - start; std::cout << "Elapsed: " << elapsed.count() << std::endl; start = end;
-            std::cout << "Action 3" << std::endl;
             for (auto entity: _coordinator.getEntities()) {
                 if (_coordinator.getEntityUpdated(entity)) {
                     if (_coordinator.hasComponent(entity, _coordinator.getComponentType<ECS::Spacial>())) {
@@ -52,7 +44,13 @@ void Server::update()
                     _coordinator.setEntityUpdated(entity, false);
                 }
             }
-            end = std::chrono::high_resolution_clock::now(); elapsed = end - start; std::cout << "Elapsed: " << elapsed.count() << std::endl; start = end;
+            while (!_coordinator.getKilledQueue().empty()) {
+                auto killed = _coordinator.getKilledQueue().front();
+                _coordinator.popKilledQueue();
+                auto request = _factory.createKilledSprite(killed.first, 0.0f, 0.0f);
+                this->sendRequestToAllClients(request);
+                std::cout << "Killed: " << killed.first << " Named: " << killed.second << std::endl;
+            }
             while (!this->_incomingRequests.isEmpty()) {
                 auto request = this->_incomingRequests.popFront();
                 onRequestReceived(request.remoteConnection, request.request);
