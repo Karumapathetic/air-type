@@ -68,6 +68,11 @@ namespace Network
              */
             void disconnect()
             {
+                Network::Request<Network::RequestsTypes> request;
+                request.header.id = Network::RequestsTypes::ClientDisconnection;
+                request.header.size = 0;
+                this->sendRequest(request);
+                usleep(500);
                 if (isConnected())
                     _connection->disconnect();
                 _context.stop();

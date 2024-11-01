@@ -84,6 +84,12 @@ namespace Network
              */
             void stop()
             {
+                Network::Request<Network::RequestsTypes> request;
+                request.header.id = Network::RequestsTypes::ClientDisconnection;
+                request.header.size = 0;
+                for (auto &client : _connectionsQueue)
+                    client->sendRequest(request);
+                usleep(500);
                 _context.stop();
                 if (_contextThread.joinable())
                     _contextThread.join();
@@ -100,10 +106,11 @@ namespace Network
                     if (_clientEndpoint.protocol() != asio::ip::udp::v4())
                         return waitForRequest();
                     if (!ec) {
+                        if (_nbClients >= 4)
+                            return;
                         for (std::shared_ptr<UDPConnection<T>> &connection : _connectionsQueue) {
-                            if (connection->getEndpoint() == _clientEndpoint) {
+                            if (connection->getEndpoint() == _clientEndpoint)
                                 return;
-                            }
                         }
                         asio::ip::udp::socket newSocket(_context, asio::ip::udp::endpoint(asio::ip::udp::v4(), 0));
                         std::shared_ptr<UDPConnection<T>> newConnection = std::make_shared<UDPConnection<T>>(UDPConnection<T>::actualOwner::SERVER, _context, std::move(newSocket), _clientEndpoint, _incomingRequests);
@@ -212,6 +219,10 @@ namespace Network
              */
             uint32_t _id = 0;
 
+            std::array<int, 4> _clientsID = {-1, -1, -1, -1};
+
+            int _nbClients = 0;
+
             /**
              * @brief Handle the request reception
              * 
@@ -244,6 +255,9 @@ namespace Network
              */
             virtual void onClientDisconnection(std::shared_ptr<Network::UDPConnection<RequestsTypes>> client)
             {
+                Network::Request<RequestsTypes> request;
+                request.header.id = RequestsTypes::ServerAcceptance;
+                client->sendRequest(request);
             }
     };
 };

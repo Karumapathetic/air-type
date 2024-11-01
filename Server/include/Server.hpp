@@ -10,6 +10,7 @@
 #include <thread>
 #include <unordered_map>
 #include <cstring>
+#include <array>
 
 #include "AServer.hpp"
 #include "RequestsFactory.hpp"
@@ -31,11 +32,12 @@ class Server : virtual public Network::AServer<Network::RequestsTypes> {
     protected:
         void onRequestReceived(std::shared_ptr<Network::UDPConnection<Network::RequestsTypes>> client, Network::Request<Network::RequestsTypes> &request) override;
         bool onClientConnection(std::shared_ptr<Network::UDPConnection<Network::RequestsTypes>> client) override;
+        void onClientDisconnection(std::shared_ptr<Network::UDPConnection<Network::RequestsTypes>> client) override;
 
         void inputReceive(Network::Input input);
     private:
         ECS::Coordinator _coordinator;
-        Network::RequestsFactory<Network::RequestsTypes> _factory;
+        Network::RequestsFactory _factory;
         bool _isServerRunning;
         bool _playerConnection;
 };

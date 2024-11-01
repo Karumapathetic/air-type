@@ -7,13 +7,22 @@
 
 #include "Client.hpp"
 
+static bool isRunning;
+
+void sigHandler(int sig)
+{
+    isRunning = false;
+}
+
 Client::Client(std::string host, const std::string& coreLibPath) : Network::AClient<Network::RequestsTypes>(), _coreLoader(coreLibPath)
 {
     _isClientRunning = true;
+    isRunning = true;
 
     auto createCoreFunc = _coreLoader.getFunction<Graphics::ICore*(*)()>("CreateCore");
     _core.reset(createCoreFunc());
     this->connect(host, 60000);
+    signal(SIGINT, sigHandler);
 }
 
 Client::~Client()
@@ -27,7 +36,16 @@ void Client::init()
 
 void Client::run()
 {
+    auto start = std::chrono::system_clock::now();
     while (_isClientRunning) {
+        auto end = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed = end - start;
+        if (elapsed.count() > 0.1 && _id == -1) {
+            _isClientRunning = false;
+            std::cout << "Server full" << std::endl;
+        }
+        if (isRunning == false)
+            break;
         _core->Caillou(&_isClientRunning);
         checkForInput();
         while (this->getIncomingRequests().getSize() > 0)
@@ -38,6 +56,7 @@ void Client::run()
 
 void Client::stop()
 {
+    this->disconnect();
     _core->getGame().getGraphics()->CloseGraphics();
 }
 
@@ -52,6 +71,10 @@ void Client::handleData()
             break;
         case Network::RequestsTypes::ServerAcceptance:
             registerID(request.request);
+            break;
+        case Network::RequestsTypes::ServerDenial:
+        case Network::RequestsTypes::ClientDisconnection:
+            _isClientRunning = false;
             break;
         default:
             break;
