@@ -33,9 +33,9 @@ class Client : virtual public Network::AClient<Network::RequestsTypes> {
 
     protected:
     private:
-        Network::RequestsFactory<Network::RequestsTypes> _factory;
+        Network::RequestsFactory _factory;
         DLLoader<Graphics::ICore> _coreLoader;
         std::unique_ptr<Graphics::ICore> _core;
         bool _isClientRunning;
-        int _id = 0;
+        int _id = -1;
 };

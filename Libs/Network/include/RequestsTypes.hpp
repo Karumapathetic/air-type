@@ -21,14 +21,15 @@ namespace Network {
     enum class RequestsTypes : uint32_t
     {
         ClientConnection = 0,       // The Client try to connect
-        ServerPing = 1,             // The Client ping the server
-        ServerAcceptance = 2,       // The Server accept Client connection
-        ServerDenial = 3,           // The Server refuse Client connection
-        AcknowledgeRequest = 4,     // The Server or Client acknowledge previous request
-        SetSpritePosition = 5,      // The Server send a sprite positions
-        NotifyKilledSprite = 6,     // The Server notify a entity is killed
-        SetInput = 7,               // The Client send user input to Server
-        LaunchGame = 8              // The Server launch the game
+        ClientDisconnection = 1,    // The Client try to disconnect
+        ServerPing = 2,             // The Client ping the server
+        ServerAcceptance = 3,       // The Server accept Client connection
+        ServerDenial = 4,           // The Server refuse Client connection
+        AcknowledgeRequest = 5,     // The Server or Client acknowledge previous request
+        SetSpritePosition = 6,      // The Server send a sprite positions
+        NotifyKilledSprite = 7,     // The Server notify a entity is killed
+        SetInput = 8,               // The Client send user input to Server
+        LaunchGame = 9              // The Server launch the game
     };
 
     /// @brief Enum that define every types of sprites
