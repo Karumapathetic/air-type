@@ -68,6 +68,7 @@ void Client::handleData()
             addPosEventInCore(request.request);
             break;
         case Network::RequestsTypes::NotifyKilledSprite:
+            destroyID(request.request);
             break;
         case Network::RequestsTypes::ServerAcceptance:
             registerID(request.request);
@@ -79,6 +80,12 @@ void Client::handleData()
         default:
             break;
     }
+}
+
+void Client::destroyID(Network::Request<Network::RequestsTypes> request)
+{
+    auto response = _factory.transformKilledRequest(request);
+    _core->getGame().DestroyEntity(response.spriteID);
 }
 
 void Client::registerID(Network::Request<Network::RequestsTypes> request)

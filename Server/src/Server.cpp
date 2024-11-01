@@ -54,6 +54,13 @@ void Server::update()
                 _coordinator.setEntityUpdated(entity, false);
             }
         }
+        while (!_coordinator.getKilledQueue().empty()) {
+            auto killed = _coordinator.getKilledQueue().front();
+            _coordinator.popKilledQueue();
+            auto request = _factory.createKilledSprite(killed.first, 0.0f, 0.0f);
+            this->sendRequestToAllClients(request);
+            std::cout << "Killed: " << killed.first << " Named: " << killed.second << std::endl;
+        }
         while (!this->_incomingRequests.isEmpty()) {
             auto request = this->_incomingRequests.popFront();
             onRequestReceived(request.remoteConnection, request.request);

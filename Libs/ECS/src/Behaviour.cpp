@@ -22,7 +22,6 @@ namespace ECS {
             } else if (action == "shoot") {
                 createMissile(_coordinator, currentEntity);
             } else if (action == "destroy") {
-                std::cout << "Destroying missile: " << currentEntity << std::endl;
                 _coordinator.destroyEntity(currentEntity);
                 _coordinator.removeFirstEvent();
             }
