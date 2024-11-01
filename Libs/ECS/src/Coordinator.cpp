@@ -92,6 +92,9 @@ namespace ECS {
     }
 
     void Coordinator::destroyEntity(Entity entity) {
+        std::string entityName = getEntityName(entity);
+        pushKilledQueue(std::pair(entity, entityName));
+        std::cout << "Destroying : " << entity << std::endl;
         entityManager->destroyEntity(entity);
         componentManager->entityDestroyed(entity);
         systemManager->entityDestroyed(entity);
