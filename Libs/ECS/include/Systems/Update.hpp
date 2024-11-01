@@ -13,8 +13,8 @@
 namespace ECS {
     class Update : public ISystem{
         public:
-            void update( Coordinator& _coordinator);
-            void gameUpdate(Coordinator& _coordinator);
+            void update( Coordinator& _coordinator, Entity entity);
+            void gameUpdate(Coordinator& _coordinator, Entity entity);
         protected:
         private:
     };

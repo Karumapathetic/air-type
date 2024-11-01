@@ -8,12 +8,12 @@
 #include "Damage.hpp"
 
 namespace ECS {
-    void Damage::update( Coordinator& _coordinator)
+    void Damage::update( Coordinator& _coordinator, Entity entity)
     {
-        if (_coordinator.getFirstEvent().second.substr(0, 6) == "damage") {
-            std::cout << "Damage update: " << _coordinator.getFirstEvent().first << " " << _coordinator.getFirstEvent().second << std::endl;
-            this->applyDamage(_coordinator, _coordinator.getFirstEvent().first, _coordinator.getFirstEvent().second);
-        }
+        //if (_coordinator.getFirstEvent().second.substr(0, 6) == "damage") {
+        //    std::cout << "Damage update: " << _coordinator.getFirstEvent().first << " " << _coordinator.getFirstEvent().second << std::endl;
+        //    this->applyDamage(_coordinator, _coordinator.getFirstEvent().first, _coordinator.getFirstEvent().second);
+        //}
     }
 
     void Damage::applyDamage(Coordinator& _coordinator, Entity entity, const std::string &params) const

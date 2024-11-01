@@ -15,6 +15,11 @@
 #include "ComponentManager.hpp"
 #include "EntityManager.hpp"
 #include "SystemManager.hpp"
+#include "Collision.hpp"
+#include "Move.hpp"
+#include "Damage.hpp"
+#include "Killed.hpp"
+#include "Update.hpp"
 
 #define MAX_X 1920
 #define MAX_Y 1080
@@ -164,7 +169,7 @@ namespace ECS {
              * 
              * @return The entity.
              */
-            Entity createEntity(const std::string& name); // Here
+            Entity createEntity(const std::string& name);
 
             /**
              * @brief Destroys an entity.
@@ -305,21 +310,6 @@ namespace ECS {
             bool getEntityUpdated(Entity entity);
 
             /**
-             * @brief Spawns an entity in the ECS based on the provided name and parameters.
-             * 
-             * This function creates an entity with the given name and initializes it using the provided parameters.
-             * It then registers the entity handler for the given name and calls the handler to perform additional
-             * initialization tasks specific to the entity type.
-             * 
-             * @param coordinator The ECS coordinator.
-             * @param name The name of the entity to be spawned.
-             * @param params The parameters string containing additional information for initializing the entity.
-             * 
-             * @return void
-             */
-            void spawnEntity(Coordinator& coordinator, const std::string& name, const std::string& params);
-
-            /**
              * @brief Checks if the entity has a specific component.
              * 
              * @param entity The entity to check.
@@ -430,7 +420,7 @@ namespace ECS {
             /**
              * @brief Variable that stores the entities.
              */
-            std::vector<Entity> _entities;
+            //std::vector<Entity> _entities;
 
             /**
              * @brief A double-ended queue (deque) that stores pairs of entities and their associated actions.
@@ -505,14 +495,6 @@ namespace ECS {
      * @param entity The entity.
      */
     void missileHandler(Coordinator &gCoordinator, std::uint32_t entity);
-
-    /**
-     * @brief Function that handles the background entity.
-     * 
-     * @param gCoordinator The coordinator.
-     * @param entity The entity.
-     */
-    void backgroundHandler(Coordinator &gCoordinator, std::uint32_t entity);
 
     /**
      * @brief Function that handles the settings entity.

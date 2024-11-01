@@ -18,7 +18,7 @@ namespace ECS {
      */
     class Heal : public ISystem {
         public:
-            void update(Coordinator& _coordinator) override;
+            void update(Coordinator& _coordinator, Entity entity) override;
         protected:
         private:
     };

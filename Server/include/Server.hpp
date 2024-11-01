@@ -11,12 +11,12 @@
 #include <unordered_map>
 #include <cstring>
 
-#include "Coordinator.hpp"
 #include "AServer.hpp"
 #include "RequestsFactory.hpp"
 
+#include "Coordinator.hpp"
+#include "Behaviour.hpp"
 #include "Move.hpp"
-#include "Shoot.hpp"
 //#include "Collision.hpp"
 
 class Server : virtual public Network::AServer<Network::RequestsTypes> {
@@ -37,4 +37,5 @@ class Server : virtual public Network::AServer<Network::RequestsTypes> {
         ECS::Coordinator _coordinator;
         Network::RequestsFactory<Network::RequestsTypes> _factory;
         bool _isServerRunning;
+        bool _playerConnection;
 };

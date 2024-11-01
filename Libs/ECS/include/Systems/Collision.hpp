@@ -17,7 +17,7 @@ namespace ECS {
      */
     class Collision : public ISystem {
         public:
-            void update( Coordinator& _coordinator);
+            void update( Coordinator& _coordinator, Entity entity);
             /**
              * @brief Detects collisions between entities.
              * 

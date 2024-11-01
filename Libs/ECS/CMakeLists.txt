@@ -6,6 +6,7 @@ add_library(
     src/Coordinator.cpp
     src/EntityManager.cpp
     src/SystemManager.cpp
+    src/Behaviour.cpp
 
     src/Components/ComponentArray.cpp
     src/Components/Components.cpp
@@ -14,7 +15,6 @@ add_library(
     src/Entities/Player.cpp
     src/Entities/Enemy.cpp
     src/Entities/Missile.cpp
-    src/Entities/Background.cpp
     src/Entities/Settings.cpp
     src/Entities/Collectible.cpp
 
@@ -24,7 +24,6 @@ add_library(
     src/Systems/Heal.cpp
     src/Systems/Killed.cpp
     src/Systems/Move.cpp
-    src/Systems/Shoot.cpp
 )
 
 target_include_directories(

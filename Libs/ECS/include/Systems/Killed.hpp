@@ -17,7 +17,7 @@ namespace ECS {
      */
     class Killed : public ISystem {
         public:
-            void update( Coordinator& _coordinator) override;
+            void update( Coordinator& _coordinator, Entity entity) override;
             void applyKilled(Coordinator& _coordinator, const Entity entity);
         protected:
         private:
