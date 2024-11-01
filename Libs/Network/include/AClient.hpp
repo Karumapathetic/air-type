@@ -72,7 +72,7 @@ namespace Network
                 request.header.id = Network::RequestsTypes::ClientDisconnection;
                 request.header.size = 0;
                 this->sendRequest(request);
-                usleep(500);
+                std::this_thread::sleep_for(std::chrono::microseconds(500000));
                 if (isConnected())
                     _connection->disconnect();
                 _context.stop();

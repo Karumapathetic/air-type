@@ -89,7 +89,7 @@ namespace Network
                 request.header.size = 0;
                 for (auto &client : _connectionsQueue)
                     client->sendRequest(request);
-                usleep(500);
+                std::this_thread::sleep_for(std::chrono::microseconds(50000));
                 _context.stop();
                 if (_contextThread.joinable())
                     _contextThread.join();
