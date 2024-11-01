@@ -396,6 +396,41 @@ namespace ECS {
              *       it to the end. If the action queue is empty, this function does nothing.
              */
             void putEventAtEnd();
+
+            /**
+             * @brief Retrieves the killed queue containing entity and name pairs.
+             *
+             * This function returns a queue of pairs, where each pair consists of an entity and a string representing a name.
+             * The killed queue is used to send the entity that has been killed to the client.
+             *
+             * @return A queue of pairs containing entity-name pairs.
+             *         If the killed queue is empty, it returns an empty queue.
+             */
+            std::queue<std::pair<Entity, std::string>> getKilledQueue();
+
+            /**
+             * @brief Adds a new entity-name pair to the killed queue.
+             * 
+             * This function adds a new pair consisting of an entity and its associated name to the killed queue.
+             * The killed queue is used to store entities that have been killed and need to be sent to the client.
+             * 
+             * @param entity The unique identifier of the entity that has been killed.
+             * @param name The name of the entity that has been killed.
+             * 
+             * @return void
+             */
+            void pushKilledQueue(std::pair<Entity, std::string> entity);
+
+            /**
+             * @brief Removes the first entity-name pair from the killed queue.
+             * 
+             * This function removes the first entity-name pair from the killed queue. The killed queue is used to store 
+             * entities that have been killed and need to be sent to the client. This function ensures that the queue is 
+             * not empty before attempting to remove an entity-name pair.
+             * 
+             * @return void
+             */
+            void popKilledQueue();
         private:
             /**
              * @brief Variable that stores the component manager.
@@ -430,6 +465,17 @@ namespace ECS {
              *       of elements from both ends.
              */
             std::deque<std::pair<Entity, std::string>> _actionQueue;
+
+            /**
+             * @brief Retrieves the killed queue containing entity and name pairs.
+             *
+             * This function returns a queue of pairs, where each pair consists of an entity and a string representing a name.
+             * The killed queue is used to send the entity that has been killed to the client.
+             *
+             * @return A queue of pairs containing entity-name pairs.
+             *         If the killed queue is empty, it returns an empty queue.
+             */
+            std::queue<std::pair<Entity, std::string>> _killedQueue;
 
             /**
              * @brief Creates an entity based on the specified type.

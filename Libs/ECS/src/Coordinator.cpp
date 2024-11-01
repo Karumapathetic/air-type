@@ -275,4 +275,19 @@ namespace ECS {
         _actionQueue.push_back(_actionQueue.front());
         _actionQueue.pop_front();
     }
+
+    std::queue<std::pair<Entity, std::string>> Coordinator::getKilledQueue()
+    {
+        return _killedQueue;
+    }
+
+    void Coordinator::pushKilledQueue(std::pair<Entity, std::string> entity)
+    {
+        _killedQueue.push(entity);
+    }
+
+    void Coordinator::popKilledQueue()
+    {
+        _killedQueue.pop();
+    }
 }
