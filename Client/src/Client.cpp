@@ -60,8 +60,8 @@ void Client::handleData()
 
 void Client::registerID(Network::Request<Network::RequestsTypes> request)
 {
-    Network::PlayerID playerID = _factory.transformConnectionAccepted(request);
-    _id = playerID.playerID;
+    int playerID = _factory.transformConnectionAccepted(request);
+    _id = playerID;
 }
 
 void Client::addPosEventInCore(Network::Request<Network::RequestsTypes> request)

@@ -13,10 +13,21 @@
 namespace Network
 {
 
+    /**
+     * @brief Abstract class of the Server
+     * 
+     * @tparam T Type of the requests
+     */
     template <typename T>
     class AServer : virtual public Network::IServer<RequestsTypes>
     {
         public:
+            /**
+             * @brief Construct a new AServer object
+             * 
+             * Constructor of the AServer class
+             * This constructor sets the socket of the server and start it
+             */
             AServer() : Network::IServer<RequestsTypes>(), _socket(_context, asio::ip::udp::endpoint(asio::ip::udp::v4(), 60000))
             {
                 std::cout << "Server address: " << std::flush;
@@ -29,11 +40,23 @@ namespace Network
                 start();
             }
 
+            /**
+             * @brief Destroy the AServer object
+             * 
+             * Destructor of the server
+             * This destructor call the stop function to stop the server before being deleted
+             */
             ~AServer()
             {
                 stop();
             }
 
+            /**
+             * @brief Start to receive data in a separated thread
+             * 
+             * @return true If the server has started
+             * @return false If the server hasn't started
+             */
             bool start()
             {
                 try {
@@ -47,8 +70,18 @@ namespace Network
                 return true;
             }
 
+            /**
+             * @brief Update the server
+             * 
+             * This function is not define here because it can vary in the real Server class
+             */
             void update() {}
 
+            /**
+             * @brief Stops the server
+             * 
+             * This function stops the context, and the thread that receive requests
+             */
             void stop()
             {
                 _context.stop();
@@ -56,6 +89,10 @@ namespace Network
                     _contextThread.join();
             }
 
+            /**
+             * @brief Wait for new connection to register the clients
+             * 
+             */
             void waitForRequest()
             {
                 _socket.async_receive_from(asio::buffer(_tmpBuffer.data(), _tmpBuffer.size()),
@@ -83,6 +120,12 @@ namespace Network
                 });
             }
 
+            /**
+             * @brief Send a request to a specific client
+             * 
+             * @param request Request to be sent
+             * @param client Client to sent the request to
+             */
             void sendRequestToClient(const Request<T> &request, std::shared_ptr<UDPConnection<T>> client)
             {
                 if (client && client->isConnected()) {
@@ -94,6 +137,12 @@ namespace Network
                 }
             }
 
+            /**
+             * @brief Send a request to all clients
+             * 
+             * @param request Request to be sent
+             * @param clientToIgnore Client to ignore if there is one
+             */
             void sendRequestToAllClients(const Network::Request<T> &request, std::shared_ptr<Network::UDPConnection<T>> clientToIgnore = nullptr)
             {
                 bool invalidClientExists = false;
@@ -113,21 +162,73 @@ namespace Network
             }
 
         protected:
+            /**
+             * @brief Queue of received requests
+             * 
+             */
             Network::ThreadSafeQueue<Network::OwnedRequest<T>> _incomingRequests;
+
+            /**
+             * @brief Queue of connected clients
+             * 
+             */
             std::deque<std::shared_ptr<UDPConnection<T>>> _connectionsQueue;
 
+            /**
+             * @brief Context of the server (asio related)
+             * 
+             */
             asio::io_context _context;
+
+            /**
+             * @brief Separated thread that run the requests reception
+             * 
+             */
             std::thread _contextThread;
+
+            /**
+             * @brief Socket of the server (asio related)
+             * 
+             */
             asio::ip::udp::socket _socket;
+
+            /**
+             * @brief Temporary client endpoint (asio related)
+             * 
+             * This endpoint is used to receive new connection requests
+             */
             asio::ip::udp::endpoint _clientEndpoint;
 
+            /**
+             * @brief Temporary buffer
+             * 
+             * This buffer is used to receive new connection requests
+             */
             std::array<char, 1024> _tmpBuffer;
+
+            /**
+             * @brief Store the id of the client (and the connection)
+             * 
+             */
             uint32_t _id = 0;
 
+            /**
+             * @brief Handle the request reception
+             * 
+             * @param client Client sending the request
+             * @param request Request received
+             */
             void onRequestReceived(std::shared_ptr<Network::UDPConnection<RequestsTypes>> client, Network::Request<RequestsTypes> &request)
             {
             }
 
+            /**
+             * @brief Handle a client connection
+             * 
+             * @param client Client trying to connect
+             * @return true If the client is connected
+             * @return false If the client is not connected
+             */
             bool onClientConnection(std::shared_ptr<Network::UDPConnection<RequestsTypes>> client)
             {
                 Network::Request<RequestsTypes> request;
@@ -136,6 +237,11 @@ namespace Network
                 return true;
             }
 
+            /**
+             * @brief Handle a client disconnection
+             * 
+             * @param client Client trying to disconnect
+             */
             virtual void onClientDisconnection(std::shared_ptr<Network::UDPConnection<RequestsTypes>> client)
             {
             }
