@@ -23,6 +23,7 @@ add_library(
     src/Systems/Damage.cpp
     src/Systems/Heal.cpp
     src/Systems/Move.cpp
+    src/Systems/Wave.cpp
 )
 
 target_include_directories(

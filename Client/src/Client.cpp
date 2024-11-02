@@ -129,19 +129,18 @@ void Client::addPosEventInCore(Network::Request<Network::RequestsTypes> request)
     _core->getGame().UpdateEntity(positions.spriteID, params);
 }
 
-// void Client::setSpritePos(std::vector<std::string> command)
-// {
-//     std::string pos = "position:" + command[3] + "," + command[4] + ";" + "texture:" + command[1] + ";";
-//     _core->getGame().UpdateEntity(std::stoi(command[2]), pos);
-// }
-
 void Client::checkForInput()
 {
     if (!_core->getGame().getClientAction().empty()) {
         if (_core->getGame().getGameState() == Graphics::GameState::MENU || _core->getGame().getGameState() == Graphics::GameState::SETTINGS)
             return;
         for (auto &action : _core->getGame().getClientAction()) {
-            Network::Request<Network::RequestsTypes> request = _factory.createInputRequest(_id, action);
+            Network::Request<Network::RequestsTypes> request;
+            if (action == "start") {
+                request = _factory.createLaunchGameRequest();
+            } else {
+                request = _factory.createInputRequest(_id, action);
+            }
             sendRequest(request);
         }
     }

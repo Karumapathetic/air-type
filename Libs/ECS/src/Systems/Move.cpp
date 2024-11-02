@@ -25,7 +25,8 @@ namespace ECS {
             } else {
                 entityPos.position.x += entitySpeed.velocity;
             }
-            coordinator.setEntityUpdated(entity, true);
+            if (entitySpeed.velocity != 0.0f)
+                coordinator.setEntityUpdated(entity, true);
             entitySpeed.velocity = 0.0f;
             entitySpeed.vertically = false;
             return true;

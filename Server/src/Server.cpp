@@ -122,6 +122,7 @@ void Server::onRequestReceived(std::shared_ptr<Network::UDPConnection<Network::R
             this->inputReceive(_factory.transformInputRequest(request));
             break;
         case Network::RequestsTypes::LaunchGame:
+            _coordinator.setGameStarted(true);
             break;
         case Network::RequestsTypes::ClientDisconnection:
             onClientDisconnection(client);

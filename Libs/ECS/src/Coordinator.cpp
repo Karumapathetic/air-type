@@ -12,6 +12,7 @@ namespace ECS {
         componentManager = std::make_unique<ComponentManager>();
         entityManager = std::make_unique<EntityManager>();
         systemManager = std::make_unique<SystemManager>();
+        _gameStarted = false;
 
         entityHandlers = {
             {"player", playerHandler},
@@ -39,6 +40,7 @@ namespace ECS {
         this->registerSystem<ECS::Damage>();
         this->registerSystem<ECS::Collision>();
         this->registerSystem<ECS::Update>();
+        this->registerSystem<ECS::Wave>();
 
         Signature moveSignature;
         moveSignature.set(this->getComponentType<Spacial>());
@@ -59,12 +61,11 @@ namespace ECS {
         updateSignature.set(this->getComponentType<Speed>());
         this->setSystemSignature<ECS::Update>(updateSignature);
 
-        this->createEntity("settings");
-        Entity enemy = this->createEntity("pata-pata");
-        this->initEntities();
+        Signature waveSignature;
+        this->setSystemSignature<ECS::Wave>(waveSignature);
 
-        auto &spacial = this->getComponent<Spacial>(enemy);
-        spacial.position = {MAX_X - 100, MAX_Y / 2};
+        this->createEntity("settings");
+        this->initEntities();
     }
 
     void Coordinator::initEntities()
@@ -287,5 +288,15 @@ namespace ECS {
     void Coordinator::popKilledQueue()
     {
         _killedQueue.pop();
+    }
+
+    void Coordinator::setGameStarted(bool started)
+    {
+        _gameStarted = started;
+    }
+
+    bool Coordinator::getGameStarted()
+    {
+        return _gameStarted;
     }
 }
