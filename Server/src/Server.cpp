@@ -20,9 +20,6 @@ Server::Server() : Network::AServer<Network::RequestsTypes>()
     _isServerRunning = true;
     _playerConnection = false;
     signal(SIGINT, sigHandler);
-    signal(SIGSEGV, sigHandler);
-    signal(SIGABRT, sigHandler);
-    signal(SIGIOT, sigHandler);
 }
 
 Server::~Server()
