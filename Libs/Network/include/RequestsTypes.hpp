@@ -78,8 +78,7 @@ namespace Network {
      */
     struct KilledSprite {
         int spriteID;                   // The ID of the sprite
-        float posX;                     // The position X
-        float posY;                     // The position Y
+        SpritesTypes entityType;        // The type of sprite
     };
 
     /**
