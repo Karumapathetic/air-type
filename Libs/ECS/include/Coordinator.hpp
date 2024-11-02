@@ -19,7 +19,6 @@
 #include "Collision.hpp"
 #include "Move.hpp"
 #include "Damage.hpp"
-#include "Killed.hpp"
 #include "Update.hpp"
 
 #define MAX_X 1920

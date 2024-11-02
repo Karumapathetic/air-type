@@ -22,7 +22,6 @@ add_library(
     src/Systems/Update.cpp
     src/Systems/Damage.cpp
     src/Systems/Heal.cpp
-    src/Systems/Killed.cpp
     src/Systems/Move.cpp
 )
 

@@ -11,7 +11,7 @@ namespace ECS {
     void patapataHandler(Coordinator &gCoordinator, std::uint32_t entity) {
         gCoordinator.addComponent(entity, Spacial{{2000.0f, 100.0f}, {66.0f, 72.0f}});
         gCoordinator.addComponent(entity, Power{3.0f, 0.0f});
-        gCoordinator.addComponent(entity, Life{3.0f, 1.0f});
+        gCoordinator.addComponent(entity, Life{3.0f, 0.0f});
         gCoordinator.addComponent(entity, Speed{0.0f, 3.0f, false});
         gCoordinator.addComponent(entity, Images{"Libs/Graphics/assets/texture/enemy_pata-pata.gif"});
         gCoordinator.addComponent(entity, EntityTypes{"enemy", 0});
@@ -22,7 +22,7 @@ namespace ECS {
     void winHandler(Coordinator &gCoordinator, std::uint32_t entity) {
         gCoordinator.addComponent(entity, Spacial{{2000.0f, 100.0f}, {44.0f, 45.0f}});
         gCoordinator.addComponent(entity, Power{5.0f, 0.0f});
-        gCoordinator.addComponent(entity, Life{30000.0f, 1.0f});
+        gCoordinator.addComponent(entity, Life{30000.0f, 0.0f});
         gCoordinator.addComponent(entity, Speed{0.0f, 3.0f, false});
         gCoordinator.addComponent(entity, Images{"Libs/Graphics/assets/texture/enemy_win.gif"});
         gCoordinator.addComponent(entity, EntityTypes{"enemy", 1});
@@ -33,7 +33,7 @@ namespace ECS {
     void bugHandler(Coordinator &gCoordinator, std::uint32_t entity) {
         gCoordinator.addComponent(entity, Spacial{{2000.0f, 100.0f}, {86.0f, 48.0f}});
         gCoordinator.addComponent(entity, Power{3.0f, 0.0f});
-        gCoordinator.addComponent(entity, Life{3.0f, 1.0f});
+        gCoordinator.addComponent(entity, Life{3.0f, 0.0f});
         gCoordinator.addComponent(entity, Speed{0.0f, 2.0f, false});
         gCoordinator.addComponent(entity, Images{"Libs/Graphics/assets/texture/enemy_pata-pata.gif"});
         gCoordinator.addComponent(entity, EntityTypes{"enemy", 2});
@@ -44,7 +44,7 @@ namespace ECS {
     void wickHandler(Coordinator &gCoordinator, std::uint32_t entity) {
         gCoordinator.addComponent(entity, Spacial{{2000.0f, 100.0f}, {32.0f, 28.0f}});
         gCoordinator.addComponent(entity, Power{1.0f, 0.0f});
-        gCoordinator.addComponent(entity, Life{1.0f, 1.0f});
+        gCoordinator.addComponent(entity, Life{1.0f, 0.0f});
         gCoordinator.addComponent(entity, Speed{0.0f, 8.0f, false});
         gCoordinator.addComponent(entity, Images{"Libs/Graphics/assets/texture/enemy_wick.gif"});
         gCoordinator.addComponent(entity, EntityTypes{"enemy", 3});
@@ -55,7 +55,7 @@ namespace ECS {
     void geldHandler(Coordinator &gCoordinator, std::uint32_t entity) {
         gCoordinator.addComponent(entity, Spacial{{2000.0f, 100.0f}, {86.0f, 48.0f}});
         gCoordinator.addComponent(entity, Power{1.0f, 0.0f});
-        gCoordinator.addComponent(entity, Life{30.0f, 1.0f});
+        gCoordinator.addComponent(entity, Life{30.0f, 0.0f});
         gCoordinator.addComponent(entity, Speed{0.0f, 2.0f, false});
         gCoordinator.addComponent(entity, Images{"Libs/Graphics/assets/texture/enemy_pata-pata.gif"});
         gCoordinator.addComponent(entity, EntityTypes{"enemy", 4});

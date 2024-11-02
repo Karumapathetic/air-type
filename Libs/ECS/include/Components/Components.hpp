@@ -64,7 +64,7 @@ namespace ECS {
      */
     struct Life {
         float health;
-        float armor;
+        float damageTaken;
     };
 
     /**

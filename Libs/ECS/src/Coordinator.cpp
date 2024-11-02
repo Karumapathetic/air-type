@@ -37,7 +37,6 @@ namespace ECS {
 
         this->registerSystem<ECS::Move>();
         this->registerSystem<ECS::Damage>();
-        this->registerSystem<ECS::Killed>();
         this->registerSystem<ECS::Collision>();
         this->registerSystem<ECS::Update>();
 
@@ -50,10 +49,6 @@ namespace ECS {
         damageSignature.set(this->getComponentType<Life>());
         damageSignature.set(this->getComponentType<Power>());
         this->setSystemSignature<ECS::Damage>(damageSignature);
-
-        Signature killedSignature;
-        killedSignature.set(this->getComponentType<Spacial>());
-        this->setSystemSignature<ECS::Killed>(killedSignature);
 
         Signature collisionSignature;
         collisionSignature.set(this->getComponentType<Spacial>());
