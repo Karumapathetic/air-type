@@ -58,15 +58,30 @@ namespace Network
              * @brief Create a Killed Sprite object
              * 
              * @param spriteID ID of the sprite killed
-             * @param posX Position X of the sprite
-             * @param posY Position Y of the sprite
+             * @param entityType Type of the sprite killed
              * @return Request<Network::RequestsTypes> Request of the killed sprite
              */
-            Request<Network::RequestsTypes> createKilledSprite(int spriteID, float posX, float posY)
+            Request<Network::RequestsTypes> createKilledSprite(int spriteID, std::string entityType)
             {
                 Request<Network::RequestsTypes> request;
                 request.header.id = RequestsTypes::NotifyKilledSprite;
-                KilledSprite requestBody = {spriteID, posX, posY};
+                KilledSprite requestBody;
+                requestBody.spriteID = spriteID;
+                requestBody.entityType = SpritesTypes::Default;
+                if (entityType == "pata-pata")
+                    requestBody.entityType = SpritesTypes::PataPata;
+                if (entityType == "win")
+                    requestBody.entityType = SpritesTypes::Win;
+                if (entityType == "wick")
+                    requestBody.entityType = SpritesTypes::Wick;
+                if (entityType == "geld")
+                    requestBody.entityType = SpritesTypes::Geld;
+                if (entityType == "bug")
+                    requestBody.entityType = SpritesTypes::Bug;
+                if (entityType == "player")
+                    requestBody.entityType = SpritesTypes::Player;
+                if (entityType == "missile")
+                    requestBody.entityType = SpritesTypes::Missile;
                 std::vector<uint8_t> body(reinterpret_cast<uint8_t *>(&requestBody), reinterpret_cast<uint8_t *>(&requestBody) + sizeof(KilledSprite));
                 request.body.insert(request.body.end(), body.begin(), body.end());
                 request.header.size = request.getSize();

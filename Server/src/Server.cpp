@@ -57,7 +57,7 @@ void Server::update()
         while (!_coordinator.getKilledQueue().empty()) {
             auto killed = _coordinator.getKilledQueue().front();
             _coordinator.popKilledQueue();
-            auto request = _factory.createKilledSprite(killed.first, 0.0f, 0.0f);
+            auto request = _factory.createKilledSprite(killed.first, killed.second);
             this->sendRequestToAllClients(request);
             std::cout << "Killed: " << killed.first << " Named: " << killed.second << std::endl;
         }
