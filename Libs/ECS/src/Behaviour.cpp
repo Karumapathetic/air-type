@@ -68,7 +68,7 @@ namespace ECS {
         Entity missile = _coordinator.createEntity("missile");
         _coordinator.initEntities();
         auto &missilePos = _coordinator.getComponent<Spacial>(missile);
-        missilePos.position.x = entityPos.position.x + entityPos.size.x;
+        missilePos.position.x = entityPos.position.x + entityPos.size.x + 10;
         missilePos.position.y = entityPos.position.y + entityPos.size.y / 2;
         std::cout << "Shooting missile: " << missile << std::endl;
         _coordinator.removeFirstEvent();

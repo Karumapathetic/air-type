@@ -47,7 +47,7 @@ namespace Graphics {
             if (texturePath.find("player") != std::string::npos) {
                 _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/PlayerShip.gif");
                 _entities[id].scale = {86, 48};
-                _entities[id].crop = {66, 36 * GetNumberOfClients(), 33, 16};
+                _entities[id].crop = {66, 35 * GetNumberOfClients(), 33, 16};
                 _entities[id].priority = {1};
                 _entities[id].name = "player";
             } else if (texturePath.find("pata-pata") != std::string::npos) {

@@ -35,6 +35,11 @@ namespace ECS {
     }
 
     void Collision::handleCollision(ECS::Coordinator &gCoordinator, Entity entity, Entity otherEntity) {
+        auto entityName = gCoordinator.getEntityName(entity);
+        auto otherName = gCoordinator.getEntityName(otherEntity);
+        if (entityName == "player" && otherName == "player" ||
+        entityName == "player" && otherName == "missile" ||
+        entityName == "missile" && otherName == "player") return;
         auto &entityLife = gCoordinator.getComponent<Life>(entity);
         auto &otherEntityPower = gCoordinator.getComponent<Power>(otherEntity);
         entityLife.damageTaken = otherEntityPower.damage;
