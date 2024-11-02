@@ -36,10 +36,14 @@ namespace ECS {
                 _coordinator.addEvent(entity, "destroy");
                 return;
             }
-            auto &spacial = _coordinator.getComponent<Spacial>(entity);
-            auto speed = _coordinator.getComponent<Speed>(entity);
-            spacial.position.x += speed.acceleration;
-            _coordinator.setEntityUpdated(entity, true);
+            auto &entityCooldown = _coordinator.getComponent<Cooldown>(entity);
+            if (entityCooldown.getRemainingCooldown("missile") <= 0.0f) {
+                auto &spacial = _coordinator.getComponent<Spacial>(entity);
+                auto speed = _coordinator.getComponent<Speed>(entity);
+                spacial.position.x += speed.acceleration;
+                _coordinator.setEntityUpdated(entity, true);
+                entityCooldown.activation["missile"].second = std::chrono::steady_clock::now();
+            }
         }
     }
 }
