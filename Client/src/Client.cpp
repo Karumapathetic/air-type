@@ -23,9 +23,6 @@ Client::Client(std::string host, const std::string& coreLibPath) : Network::ACli
     _core.reset(createCoreFunc());
     this->connect(host, 60000);
     signal(SIGINT, sigHandler);
-    signal(SIGSEGV, sigHandler);
-    signal(SIGABRT, sigHandler);
-    signal(SIGIOT, sigHandler);
 }
 
 Client::~Client()
