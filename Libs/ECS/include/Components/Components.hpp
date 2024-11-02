@@ -64,7 +64,7 @@ namespace ECS {
      */
     struct Life {
         float health;
-        float armor;
+        float damageTaken;
     };
 
     /**
@@ -77,20 +77,6 @@ namespace ECS {
     struct Power {
         float damage;
         float amplifier;
-    };
-
-    /**
-     * @brief A struct that represents the sounds of an entity.
-     * 
-     * This struct contains the sound, volume, and description of an entity. The sound is the sound
-     * that the entity makes. The volume is the volume of the sound. The description is the description
-     * of the sound.
-     * 
-     */
-    struct Sounds {
-        std::string sound;
-        float volume;
-        std::string desc;
     };
 
     /**

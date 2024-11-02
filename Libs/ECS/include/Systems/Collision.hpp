@@ -23,7 +23,9 @@ namespace ECS {
              * 
              * @param gCoordinator The coordinator that contains the entities.
              */
-            void detectCollision(ECS::Coordinator &gCoordinator);
+            void detectCollision(ECS::Coordinator &gCoordinator, Entity entity);
+
+            void handleCollision(ECS::Coordinator &gCoordinator, Entity entity, Entity otherEntity);
         protected:
         private:
     };

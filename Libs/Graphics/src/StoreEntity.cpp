@@ -127,8 +127,10 @@ namespace Graphics {
 
                 Vector2 oldPos = _entities[id].position;
                 _entities[id].position = {x, y};
-                AnimateEntity(oldPos, _entities[id].position, id);
-
+                if (_entities[id].name == "player") {
+                    if (oldPos.x != _entities[id].position.x || oldPos.y != _entities[id].position.y)
+                        AnimateEntity(oldPos, _entities[id].position, id);
+                }
             }
         }
     }

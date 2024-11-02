@@ -11,6 +11,7 @@
 #include <memory>
 #include <functional>
 #include <unordered_map>
+#include <chrono>
 
 #include "ComponentManager.hpp"
 #include "EntityManager.hpp"
@@ -18,7 +19,6 @@
 #include "Collision.hpp"
 #include "Move.hpp"
 #include "Damage.hpp"
-#include "Killed.hpp"
 #include "Update.hpp"
 
 #define MAX_X 1920
