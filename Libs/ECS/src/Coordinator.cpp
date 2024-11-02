@@ -82,7 +82,8 @@ namespace ECS {
 
     Entity Coordinator::createEntity(const std::string& name) {
         Entity id = entityManager->createEntity(name);
-        std::cout << std::endl << "Entity : " << name << " have the ID : " << id << std::endl;
+        this->initEntities();
+        std::cout << "Entity : " << name << " have the ID : " << id << std::endl << std::endl;
         return id;
     }
 
@@ -185,7 +186,7 @@ namespace ECS {
         std::cout << "Creating entity from type: " << type << std::endl;
         auto it = entityHandlers.find(type);
         if (it != entityHandlers.end()) {
-            std::cout << "Found handler for entity type: " << type << std::endl << std::endl;
+            std::cout << "Found handler for entity type: " << type << std::endl;
             it->second(*this, entity);
         }
     }
