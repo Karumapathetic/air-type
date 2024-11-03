@@ -18,8 +18,8 @@ namespace ECS {
      */
     class Damage : public ISystem {
         public:
-            void update(Coordinator& _coordinator) override;
-            void applyDamage(Coordinator& _coordinator, Entity entity, const std::string &params) const;
+            void update(Coordinator& _coordinator, Entity entity) override;
+            void applyDamage(Coordinator& _coordinator, Entity entity);
         protected:
         private:
     };

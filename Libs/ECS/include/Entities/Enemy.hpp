@@ -8,7 +8,8 @@
 #pragma once
 
 #include "Coordinator.hpp"
-#include "Components.hpp"
+#include "LinearPathing.hpp"
+#include "CircularPathing.hpp"
 
 namespace ECS {
     /**

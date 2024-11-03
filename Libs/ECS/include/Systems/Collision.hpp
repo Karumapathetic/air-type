@@ -9,7 +9,6 @@
 
 #include "ISystem.hpp"
 #include "Coordinator.hpp"
-#include <unordered_set>
 
 namespace ECS {
     /**
@@ -17,13 +16,15 @@ namespace ECS {
      */
     class Collision : public ISystem {
         public:
-            void update( Coordinator& _coordinator);
+            void update(Coordinator& _coordinator, Entity entity);
             /**
              * @brief Detects collisions between entities.
              * 
              * @param gCoordinator The coordinator that contains the entities.
              */
-            void detectCollision(ECS::Coordinator &gCoordinator);
+            void detectCollision(ECS::Coordinator &gCoordinator, Entity entity);
+
+            void handleCollision(ECS::Coordinator &gCoordinator, Entity entity, Entity otherEntity);
         protected:
         private:
     };

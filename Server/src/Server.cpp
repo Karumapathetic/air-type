@@ -7,9 +7,19 @@
 
 #include "Server.hpp"
 
+static bool isRunning;
+
+void sigHandler(int sig)
+{
+    isRunning = false;
+}
+
 Server::Server() : Network::AServer<Network::RequestsTypes>()
 {
+    isRunning = true;
     _isServerRunning = true;
+    _playerConnection = false;
+    signal(SIGINT, sigHandler);
 }
 
 Server::~Server()
@@ -23,15 +33,18 @@ void Server::init()
 void Server::run()
 {
     while(_isServerRunning) {
+        if (isRunning == false)
+            break;
         update();
     }
 }
 
 void Server::update()
 {
-    if (_isServerRunning) {
+    if (!_playerConnection) {
+        behaviour(_coordinator);
         _coordinator.updateSystems();
-        for (auto entity: _coordinator.getEntities()) {
+        for (auto &entity: _coordinator.getEntities()) {
             if (_coordinator.getEntityUpdated(entity)) {
                 if (_coordinator.hasComponent(entity, _coordinator.getComponentType<ECS::Spacial>())) {
                     auto &spacial = _coordinator.getComponent<ECS::Spacial>(entity);
@@ -41,30 +54,72 @@ void Server::update()
                 _coordinator.setEntityUpdated(entity, false);
             }
         }
+        while (!_coordinator.getKilledQueue().empty()) {
+            auto killed = _coordinator.getKilledQueue().front();
+            _coordinator.popKilledQueue();
+            auto request = _factory.createKilledSprite(killed.first, killed.second);
+            this->sendRequestToAllClients(request);
+        }
         while (!this->_incomingRequests.isEmpty()) {
             auto request = this->_incomingRequests.popFront();
             onRequestReceived(request.remoteConnection, request.request);
         }
-    } else
-        this->stop();
+        while (_nbClients > 4) {
+            Network::Request<Network::RequestsTypes> request;
+            request.header.id = Network::RequestsTypes::ServerDenial;
+            request.header.size = 0;
+            _connectionsQueue.back()->sendRequest(request);
+            std::this_thread::sleep_for(std::chrono::microseconds(50000));
+            _id--;
+            _nbClients--;
+        }
+    }
 }
 
 bool Server::onClientConnection(std::shared_ptr<Network::UDPConnection<Network::RequestsTypes>> client)
 {
+    std::cout << "Connection from a new player" << std::endl;
+    _playerConnection = true;
     auto newEntity = _coordinator.createEntity("player");
-    _coordinator.initEntities();
     auto &entityTypePlayer = _coordinator.getComponent<ECS::EntityTypes>(newEntity);
-    entityTypePlayer.id = _id++;
+    entityTypePlayer.id = _id;
     auto request = _factory.createConnectionAccepted(newEntity);
     this->sendRequestToClient(request, client);
-    for (auto entity : _coordinator.getEntities()) {
+    for (auto &entity : _coordinator.getEntities()) {
         if (_coordinator.hasComponent(entity, _coordinator.getComponentType<ECS::Spacial>())) {
             auto &spacial = _coordinator.getComponent<ECS::Spacial>(entity);
             auto request = _factory.createPositionsRequests(_coordinator.getEntityName(entity), entity, spacial.position.x, spacial.position.y);
             this->sendRequestToClient(request, client);
         }
     }
+    for (int index = 0; index < 4; index++) {
+        if (_clientsID[index] == -1) {
+            _clientsID[index] = _id;
+            break;
+        }
+    }
+    _nbClients++;
+    _playerConnection = false;
     return true;
+}
+
+void Server::onClientDisconnection(std::shared_ptr<Network::UDPConnection<Network::RequestsTypes>> client)
+{
+    for (int index = 0; index < 4; index++) {
+        if (_clientsID[index] == client->getId()) {
+            _clientsID[index] = -1;
+            for (auto &entity : _coordinator.getEntities()) {
+                if (_coordinator.getEntityName(entity) == "player") {
+                    auto &entityTypePlayer = _coordinator.getComponent<ECS::EntityTypes>(entity);
+                    if (entityTypePlayer.id == client->getId()) {
+                        _coordinator.destroyEntity(entity);
+                    }
+                }
+            }
+            _nbClients--;
+            return;
+        }
+    }
 }
 
 void Server::onRequestReceived(std::shared_ptr<Network::UDPConnection<Network::RequestsTypes>> client, Network::Request<Network::RequestsTypes> &request)
@@ -74,6 +129,10 @@ void Server::onRequestReceived(std::shared_ptr<Network::UDPConnection<Network::R
             this->inputReceive(_factory.transformInputRequest(request));
             break;
         case Network::RequestsTypes::LaunchGame:
+            _coordinator.setGameStarted(true);
+            break;
+        case Network::RequestsTypes::ClientDisconnection:
+            onClientDisconnection(client);
             break;
         default:
             break;

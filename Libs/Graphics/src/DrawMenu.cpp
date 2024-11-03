@@ -38,6 +38,7 @@ namespace Graphics {
                 switch (i) {
                     case 0:
                         setGameState(GameState::GAME);
+                        addClientAction("start");
                         break;
                     case 1:
                         setGameState(GameState::SETTINGS);

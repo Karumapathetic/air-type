@@ -29,7 +29,7 @@ namespace ECS {
      * 
      * This constant defines the maximum number of entities that can be created in the ECS system.
      */
-    const Entity MAX_ENTITIES = 1000;
+    const Entity MAX_ENTITIES = 10000;
 
     /**
      * @brief Constant representing an invalid entity identifier.

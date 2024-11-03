@@ -11,10 +11,16 @@
 #include <memory>
 #include <functional>
 #include <unordered_map>
+#include <chrono>
 
 #include "ComponentManager.hpp"
 #include "EntityManager.hpp"
 #include "SystemManager.hpp"
+#include "Collision.hpp"
+#include "Move.hpp"
+#include "Damage.hpp"
+#include "Update.hpp"
+#include "Wave.hpp"
 
 #define MAX_X 1920
 #define MAX_Y 1080
@@ -164,7 +170,7 @@ namespace ECS {
              * 
              * @return The entity.
              */
-            Entity createEntity(const std::string& name); // Here
+            Entity createEntity(const std::string& name);
 
             /**
              * @brief Destroys an entity.
@@ -305,21 +311,6 @@ namespace ECS {
             bool getEntityUpdated(Entity entity);
 
             /**
-             * @brief Spawns an entity in the ECS based on the provided name and parameters.
-             * 
-             * This function creates an entity with the given name and initializes it using the provided parameters.
-             * It then registers the entity handler for the given name and calls the handler to perform additional
-             * initialization tasks specific to the entity type.
-             * 
-             * @param coordinator The ECS coordinator.
-             * @param name The name of the entity to be spawned.
-             * @param params The parameters string containing additional information for initializing the entity.
-             * 
-             * @return void
-             */
-            void spawnEntity(Coordinator& coordinator, const std::string& name, const std::string& params);
-
-            /**
              * @brief Checks if the entity has a specific component.
              * 
              * @param entity The entity to check.
@@ -406,6 +397,55 @@ namespace ECS {
              *       it to the end. If the action queue is empty, this function does nothing.
              */
             void putEventAtEnd();
+
+            /**
+             * @brief Retrieves the killed queue containing entity and name pairs.
+             *
+             * This function returns a queue of pairs, where each pair consists of an entity and a string representing a name.
+             * The killed queue is used to send the entity that has been killed to the client.
+             *
+             * @return A queue of pairs containing entity-name pairs.
+             *         If the killed queue is empty, it returns an empty queue.
+             */
+            std::queue<std::pair<Entity, std::string>> getKilledQueue();
+
+            /**
+             * @brief Adds a new entity-name pair to the killed queue.
+             * 
+             * This function adds a new pair consisting of an entity and its associated name to the killed queue.
+             * The killed queue is used to store entities that have been killed and need to be sent to the client.
+             * 
+             * @param entity The unique identifier of the entity that has been killed.
+             * @param name The name of the entity that has been killed.
+             * 
+             * @return void
+             */
+            void pushKilledQueue(std::pair<Entity, std::string> entity);
+
+            /**
+             * @brief Removes the first entity-name pair from the killed queue.
+             * 
+             * This function removes the first entity-name pair from the killed queue. The killed queue is used to store 
+             * entities that have been killed and need to be sent to the client. This function ensures that the queue is 
+             * not empty before attempting to remove an entity-name pair.
+             * 
+             * @return void
+             */
+            void popKilledQueue();
+
+            /**
+             * @brief Set the Game Started object
+             * 
+             * @param started the boolean to set
+             */
+            void setGameStarted(bool started);
+
+            /**
+             * @brief Get the Game Started object
+             * 
+             * @return true or false
+             */
+            bool getGameStarted();
         private:
             /**
              * @brief Variable that stores the component manager.
@@ -430,7 +470,7 @@ namespace ECS {
             /**
              * @brief Variable that stores the entities.
              */
-            std::vector<Entity> _entities;
+            //std::vector<Entity> _entities;
 
             /**
              * @brief A double-ended queue (deque) that stores pairs of entities and their associated actions.
@@ -440,6 +480,22 @@ namespace ECS {
              *       of elements from both ends.
              */
             std::deque<std::pair<Entity, std::string>> _actionQueue;
+
+            /**
+             * @brief Retrieves the killed queue containing entity and name pairs.
+             *
+             * This function returns a queue of pairs, where each pair consists of an entity and a string representing a name.
+             * The killed queue is used to send the entity that has been killed to the client.
+             *
+             * @return A queue of pairs containing entity-name pairs.
+             *         If the killed queue is empty, it returns an empty queue.
+             */
+            std::queue<std::pair<Entity, std::string>> _killedQueue;
+
+            /**
+             * @brief Boolean to know if a player has clicked the play button
+             */
+            bool _gameStarted;
 
             /**
              * @brief Creates an entity based on the specified type.
@@ -505,14 +561,6 @@ namespace ECS {
      * @param entity The entity.
      */
     void missileHandler(Coordinator &gCoordinator, std::uint32_t entity);
-
-    /**
-     * @brief Function that handles the background entity.
-     * 
-     * @param gCoordinator The coordinator.
-     * @param entity The entity.
-     */
-    void backgroundHandler(Coordinator &gCoordinator, std::uint32_t entity);
 
     /**
      * @brief Function that handles the settings entity.

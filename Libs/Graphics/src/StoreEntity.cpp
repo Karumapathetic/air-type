@@ -47,7 +47,7 @@ namespace Graphics {
             if (texturePath.find("player") != std::string::npos) {
                 _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/PlayerShip.gif");
                 _entities[id].scale = {86, 48};
-                _entities[id].crop = {66, 36 * GetNumberOfClients(), 33, 16};
+                _entities[id].crop = {66, 35 * GetNumberOfClients(), 33, 16};
                 _entities[id].priority = {1};
                 _entities[id].name = "player";
             } else if (texturePath.find("pata-pata") != std::string::npos) {
@@ -63,9 +63,9 @@ namespace Graphics {
                 _entities[id].priority = {1};
                 _entities[id].name = "win";
             } else if (texturePath.find("bug") != std::string::npos) {
-                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_pata-pata.png");
-                _entities[id].scale = {86, 48};
-                _entities[id].crop = {0, 0, 33, 36}; //temporary
+                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_bug.gif");
+                _entities[id].scale = {66.5, 68};
+                _entities[id].crop = {33.25, 0, 33.25, 34};
                 _entities[id].priority = {1};
                 _entities[id].name = "bug";
             } else if (texturePath.find("wick") != std::string::npos) {
@@ -127,16 +127,20 @@ namespace Graphics {
 
                 Vector2 oldPos = _entities[id].position;
                 _entities[id].position = {x, y};
-                AnimateEntity(oldPos, _entities[id].position, id);
-
+                if (_entities[id].name == "player") {
+                    if (oldPos.x != _entities[id].position.x || oldPos.y != _entities[id].position.y)
+                        AnimateEntity(oldPos, _entities[id].position, id);
+                }
             }
         }
     }
 
     void Game::DestroyEntity(Entity id)
     {
-        if (id < 0 || id >= MAX_ENTITIES) return;
+        if (id < 0 || id >= MAX_ENTITIES || _entities[id].priority == -1.0f) return;
         _entities[id] = EntityData();
+        _graphics->UnloadTextureById(id);
+        std::cout << "Entité ID: " << id << " détruite avec succès" << std::endl;
     }
 
     void Game::PrintEntities()
