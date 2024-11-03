@@ -73,7 +73,7 @@ namespace Network {
     /**
      * @brief Struct that holds data related to a killed sprite
      * 
-     * This struct is used to store the ID of the sprite, the position X and the position Y.
+     * This struct is used to store the ID of the sprite and the type of the sprite.
      * This struct is used to send the data from the server to the client.
      */
     struct KilledSprite {

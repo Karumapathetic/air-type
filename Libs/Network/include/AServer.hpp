@@ -73,7 +73,7 @@ namespace Network
             /**
              * @brief Update the server
              * 
-             * This function is not define here because it can vary in the real Server class
+             * This function is not defined here because it can vary in the real Server class
              */
             void update() {}
 
