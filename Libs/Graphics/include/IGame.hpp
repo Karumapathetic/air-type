@@ -73,5 +73,6 @@ namespace Graphics {
         virtual float GetNumberOfClients() const = 0;
         virtual std::shared_ptr<IGraphic> getGraphics() const = 0;
         virtual std::vector<std::string> getClientAction() const = 0;
+        virtual EntityData &getEntity(int &Id) = 0;
     };
 }

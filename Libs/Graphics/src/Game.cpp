@@ -14,7 +14,6 @@ namespace Graphics {
     {
         _option = new Option(*this);
         _graphics = std::make_shared<RaylibGraphics>();
-        InitializeAnimationsMap();
     }
 
     void Game::DrawSprites()
