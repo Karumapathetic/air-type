@@ -106,8 +106,6 @@ namespace Network
                     if (_clientEndpoint.protocol() != asio::ip::udp::v4())
                         return waitForRequest();
                     if (!ec) {
-                        if (_nbClients >= 4)
-                            return;
                         for (std::shared_ptr<UDPConnection<T>> &connection : _connectionsQueue) {
                             if (connection->getEndpoint() == _clientEndpoint)
                                 return;

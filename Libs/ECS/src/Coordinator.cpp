@@ -83,7 +83,8 @@ namespace ECS {
 
     Entity Coordinator::createEntity(const std::string& name) {
         Entity id = entityManager->createEntity(name);
-        // std::cout << std::endl << "Entity : " << name << " have the ID : " << id << std::endl;
+        this->initEntities();
+        // std::cout << "Entity : " << name << " have the ID : " << id << std::endl << std::endl;
         return id;
     }
 

@@ -57,12 +57,21 @@ void Server::update()
         while (!_coordinator.getKilledQueue().empty()) {
             auto killed = _coordinator.getKilledQueue().front();
             _coordinator.popKilledQueue();
-            auto request = _factory.createKilledSprite(killed.first, 0.0f, 0.0f);
+            auto request = _factory.createKilledSprite(killed.first, killed.second);
             this->sendRequestToAllClients(request);
         }
         while (!this->_incomingRequests.isEmpty()) {
             auto request = this->_incomingRequests.popFront();
             onRequestReceived(request.remoteConnection, request.request);
+        }
+        while (_nbClients > 4) {
+            Network::Request<Network::RequestsTypes> request;
+            request.header.id = Network::RequestsTypes::ServerDenial;
+            request.header.size = 0;
+            _connectionsQueue.back()->sendRequest(request);
+            std::this_thread::sleep_for(std::chrono::microseconds(50000));
+            _id--;
+            _nbClients--;
         }
     }
 }
@@ -72,7 +81,6 @@ bool Server::onClientConnection(std::shared_ptr<Network::UDPConnection<Network::
     std::cout << "Connection from a new player" << std::endl;
     _playerConnection = true;
     auto newEntity = _coordinator.createEntity("player");
-    _coordinator.initEntities();
     auto &entityTypePlayer = _coordinator.getComponent<ECS::EntityTypes>(newEntity);
     entityTypePlayer.id = _id;
     auto request = _factory.createConnectionAccepted(newEntity);

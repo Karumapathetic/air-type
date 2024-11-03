@@ -46,7 +46,7 @@ jobs:
           fi
 
       - name: Bundle Binary
-        run: tar -czf rtype-${{ github.sha }}-linux.tar.gz r-type_client r-type_server
+        run: tar -czf rtype-${{ github.sha }}-linux.tar.gz r-type_client r-type_server Libs/Graphics/assets
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4
@@ -88,7 +88,7 @@ jobs:
           }
 
       - name: Bundle Binary
-        run: tar -czf rtype-${{ github.sha }}-windows.tar.gz r-type_client.exe r-type_server.exe
+        run: tar -czf rtype-${{ github.sha }}-windows.tar.gz r-type_client.exe r-type_server.exe Libs/Graphics/assets
 
       - name: Upload Binaries
         uses: actions/upload-artifact@v4

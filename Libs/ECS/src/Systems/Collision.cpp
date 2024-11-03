@@ -20,7 +20,9 @@ namespace ECS {
 
         for (const auto &otherEntity : entities) {
             std::string otherEntityName = gCoordinator.getEntityName(otherEntity);
-            if (otherEntityName == "settings" || entity == otherEntity) continue;
+            if (otherEntityName == "settings" || entity == otherEntity ||
+                !gCoordinator.hasComponent(entity, gCoordinator.getComponentType<Spacial>()) ||
+                !gCoordinator.hasComponent(otherEntity, gCoordinator.getComponentType<Spacial>())) continue;
 
             auto &entitySpacial = gCoordinator.getComponent<Spacial>(entity);
             auto &otherEntitySpacial = gCoordinator.getComponent<Spacial>(otherEntity);

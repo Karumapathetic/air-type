@@ -36,19 +36,7 @@ void Client::init()
 
 void Client::run()
 {
-    auto start = std::chrono::system_clock::now();
-    #ifdef _WIN32
-        float delta = 5.0f;
-    #else
-        float delta = 0.1f;
-    #endif
     while (_isClientRunning) {
-        auto end = std::chrono::system_clock::now();
-        std::chrono::duration<double> elapsed = end - start;
-        if (elapsed.count() > delta && _id == -1) {
-            _isClientRunning = false;
-            std::cout << "Server full" << std::endl;
-        }
         if (isRunning == false)
             break;
         _core->Caillou(&_isClientRunning);
