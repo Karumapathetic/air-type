@@ -10,7 +10,6 @@
 namespace ECS {
     void behaviour(Coordinator& _coordinator)
     {
-        resetVelocity(_coordinator);
         if (_coordinator.getActionQueue().empty())
             return;
         for (int i = 0; i < _coordinator.getActionQueue().size(); i++) {
@@ -46,17 +45,6 @@ namespace ECS {
         }
     }
 
-    void resetVelocity(Coordinator& _coordinator)
-    {
-        for (auto &entity : _coordinator.getEntities()) {
-            if (_coordinator.getEntityName(entity) == "player") {
-                ECS::Speed &speed = _coordinator.getComponent<ECS::Speed>(entity);
-                speed.velocity = 0.0f;
-                speed.vertically = false;
-            }
-        }
-    }
-
     bool createMissile(Coordinator& _coordinator, Entity entity){
         auto &entityCooldown = _coordinator.getComponent<Cooldown>(entity);
         if (entityCooldown.getRemainingCooldown("missile") > 0.0f) {
@@ -68,9 +56,8 @@ namespace ECS {
         Entity missile = _coordinator.createEntity("missile");
         _coordinator.initEntities();
         auto &missilePos = _coordinator.getComponent<Spacial>(missile);
-        missilePos.position.x = entityPos.position.x + entityPos.size.x;
+        missilePos.position.x = entityPos.position.x + entityPos.size.x + 10;
         missilePos.position.y = entityPos.position.y + entityPos.size.y / 2;
-        std::cout << "Shooting missile: " << missile << std::endl;
         _coordinator.removeFirstEvent();
         return true;
     }

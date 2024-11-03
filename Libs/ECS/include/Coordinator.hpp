@@ -20,6 +20,7 @@
 #include "Move.hpp"
 #include "Damage.hpp"
 #include "Update.hpp"
+#include "Wave.hpp"
 
 #define MAX_X 1920
 #define MAX_Y 1080
@@ -431,6 +432,20 @@ namespace ECS {
              * @return void
              */
             void popKilledQueue();
+
+            /**
+             * @brief Set the Game Started object
+             * 
+             * @param started the boolean to set
+             */
+            void setGameStarted(bool started);
+
+            /**
+             * @brief Get the Game Started object
+             * 
+             * @return true or false
+             */
+            bool getGameStarted();
         private:
             /**
              * @brief Variable that stores the component manager.
@@ -476,6 +491,11 @@ namespace ECS {
              *         If the killed queue is empty, it returns an empty queue.
              */
             std::queue<std::pair<Entity, std::string>> _killedQueue;
+
+            /**
+             * @brief Boolean to know if a player has clicked the play button
+             */
+            bool _gameStarted;
 
             /**
              * @brief Creates an entity based on the specified type.
