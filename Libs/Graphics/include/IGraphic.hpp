@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <iostream>
 
 namespace Graphics {
     // Color type, RGBA (32bit)
@@ -343,7 +344,7 @@ namespace Graphics {
              * @param posY The y position of the texture
              * @param tint The color of the texture
              */
-            virtual void RenderPreciseTexture(int Id, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint) = 0;
+            virtual void RenderPreciseTexture(const std::string, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint) = 0;
 
             /**
              * @brief Render the frames per second
@@ -412,19 +413,10 @@ namespace Graphics {
             virtual bool IsWindowClosing() = 0;
 
             /**
-             * @brief Load a texture from a file
+             * @brief Play a sound with the music name linked to it
              * 
-             * @param Id The unique identifier of the texture
-             * @param filename The filename of the texture
              */
-            virtual void LoadTextureFromFile(int Id, const char *filename) = 0;
-
-            /**
-             * @brief Unload a texture by its unique identifier
-             * 
-             * @param Id The unique identifier of the texture
-             */
-            virtual void UnloadTextureById(int Id) = 0;
+            virtual void PlaySound(std::string music) = 0;
         protected:
         private:
     };

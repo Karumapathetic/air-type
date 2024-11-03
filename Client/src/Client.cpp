@@ -80,6 +80,8 @@ void Client::destroyID(Network::Request<Network::RequestsTypes> request)
     auto entity = _core->getGame().getEntity(response.spriteID);
     std::string explosionInfo = "position:" + std::to_string(entity.position.x) + "," + std::to_string(entity.position.y) + ";texture:killed";
     _core->getGame().DestroyEntity(response.spriteID);
+    if (entity.position.x < 0) return;
+    if (entity.name != "pata-pata" && entity.name != "win" && entity.name != "bug" && entity.name != "wick" && entity.name != "geld" && entity.name != "player") return;
     _core->getGame().CreateEntity(response.spriteID, explosionInfo);
 }
 

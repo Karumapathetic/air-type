@@ -19,7 +19,7 @@ namespace ECS {
         auto entityType = _coordinator.getComponent<EntityTypes>(entity);
         if (entityType.type == "enemy") {
             auto &spacial = _coordinator.getComponent<Spacial>(entity);
-            if (spacial.position.x + spacial.size.x < 0) {
+            if (spacial.position.x + spacial.size.x + 100.0f < 0) {
                 _coordinator.addEvent(entity, "destroy");
                 return;
             }
@@ -28,7 +28,7 @@ namespace ECS {
             pathing.pathing->updatePosition(spacial.position, speed.velocity);
             _coordinator.setEntityUpdated(entity, true);
         } else if (_coordinator.getEntityName(entity) == "missile") {
-            if (_coordinator.getComponent<Spacial>(entity).position.x > MAX_X) {
+            if (_coordinator.getComponent<Spacial>(entity).position.x + 50 > MAX_X) {
                 _coordinator.addEvent(entity, "destroy");
                 return;
             }

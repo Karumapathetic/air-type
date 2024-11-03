@@ -45,53 +45,47 @@ namespace Graphics {
             size_t endPos = params.find(';', textureIndex);
             std::string texturePath = params.substr(textureIndex + 8, endPos - (textureIndex + 8));
             if (texturePath.find("player") != std::string::npos) {
-                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/PlayerShip.gif");
                 _entities[id].scale = {86, 48};
                 _entities[id].crop = {66, 35 * GetNumberOfClients(), 33, 16};
                 _entities[id].priority = {1};
                 _entities[id].name = "player";
             } else if (texturePath.find("pata-pata") != std::string::npos) {
-                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_pata-pata.png");
                 _entities[id].scale = {66, 72};
                 _entities[id].crop = {0, 0, 33, 36};
                 _entities[id].priority = {1};
                 _entities[id].name = "pata-pata";
             } else if (texturePath.find("win") != std::string::npos) {
-                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_win.gif");
                 _entities[id].scale = {44, 45};
                 _entities[id].crop = {0, 0, 33, 34};
                 _entities[id].priority = {1};
                 _entities[id].name = "win";
             } else if (texturePath.find("bug") != std::string::npos) {
-                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_bug.gif");
                 _entities[id].scale = {66.5, 68};
                 _entities[id].crop = {33.25, 0, 33.25, 34};
                 _entities[id].priority = {1};
                 _entities[id].name = "bug";
             } else if (texturePath.find("wick") != std::string::npos) {
-                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_wick.gif");
                 _entities[id].scale = {32, 28};
                 _entities[id].crop = {0, 0, 17, 15};
                 _entities[id].priority = {1};
                 _entities[id].name = "wick";
             } else if (texturePath.find("geld") != std::string::npos) {
-                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_pata-pata.png");
                 _entities[id].scale = {86, 48};
                 _entities[id].crop = {0, 0, 33, 36}; //temporary
                 _entities[id].priority = {1};
                 _entities[id].name = "geld";
             } else if (texturePath.find("missile") != std::string::npos) {
-                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/missile.gif");
                 _entities[id].scale = {60, 12};
                 _entities[id].crop = {0, 0, 81, 18};
                 _entities[id].priority = {1};
                 _entities[id].name = "missile";
+                _graphics->PlaySound("missile");
             } else if (texturePath.find("killed") != std::string::npos) {
-                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/basic_explosion.gif");
                 _entities[id].scale = {66, 72};
                 _entities[id].crop = {0, 0, 33, 36};
                 _entities[id].priority = {1};
                 _entities[id].name = "killed";
+                _graphics->PlaySound("killed");
             } else {
                 _entities[id].scale = {1, 1};
                 _entities[id].crop = {0, 0, 1, 1};
@@ -100,13 +94,13 @@ namespace Graphics {
         }
         _animationMap[id] = std::chrono::steady_clock::now();
 
-        std::cout << "Entité ID: " << id << " créée avec succès:" << std::endl;
-        std::cout << "Name : " << _entities[id].name << std::endl;
-        std::cout << "Position: (" << _entities[id].position.x << ", " << _entities[id].position.y << ")" << std::endl;
-        std::cout << "Échelle: (" << _entities[id].scale.x << ", " << _entities[id].scale.y << ")" << std::endl;
-        std::cout << "Crop: (" << _entities[id].crop.x << ", " << _entities[id].crop.y << ", " 
-                  << _entities[id].crop.width << ", " << _entities[id].crop.height << ")" << std::endl;
-        std::cout << "Priorité: " << _entities[id].priority << std::endl;
+        // std::cout << "Entité ID: " << id << " créée avec succès:" << std::endl;
+        // std::cout << "Name : " << _entities[id].name << std::endl;
+        // std::cout << "Position: (" << _entities[id].position.x << ", " << _entities[id].position.y << ")" << std::endl;
+        // std::cout << "Échelle: (" << _entities[id].scale.x << ", " << _entities[id].scale.y << ")" << std::endl;
+        // std::cout << "Crop: (" << _entities[id].crop.x << ", " << _entities[id].crop.y << ", " 
+        //           << _entities[id].crop.width << ", " << _entities[id].crop.height << ")" << std::endl;
+        // std::cout << "Priorité: " << _entities[id].priority << std::endl;
     }
 
     void Game::UpdateEntity(Entity id, const std::string& params)
@@ -146,21 +140,6 @@ namespace Graphics {
     {
         if (id < 0 || id >= MAX_ENTITIES || _entities[id].priority == -1.0f) return;
         _entities[id] = EntityData();
-        _graphics->UnloadTextureById(id);
-        std::cout << "Entité ID: " << id << " détruite avec succès" << std::endl;
-    }
-
-    void Game::PrintEntities()
-    {
-        for (int i = 0; i < MAX_ENTITIES; ++i) {
-            if (_entities[i].position.x != 0 || _entities[i].position.y != 0) {
-                std::cout << "Entity ID: " << i
-                          << " Position: (" << _entities[i].position.x << ", " << _entities[i].position.y << ")"
-                          << " Scale: (" << _entities[i].scale.x << ", " << _entities[i].scale.y << ")"
-                          << " Crop: (x: " << _entities[i].crop.x << ", y: " << _entities[i].crop.y 
-                          << ", width: " << _entities[i].crop.width << ", height: " << _entities[i].crop.height << ")"
-                          << " Priority : " << _entities[i].priority << std::endl;
-            }
-        }
+        // std::cout << "Entité ID: " << id << " détruite avec succès" << std::endl;
     }
 }
