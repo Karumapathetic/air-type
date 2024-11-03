@@ -29,6 +29,14 @@ namespace Graphics {
                 ToggleFullscreen();
                 InitAudioDevice();
                 SetExitKey(KEY_BACKSPACE);
+                _textures["player"] = LoadTexture("Libs/Graphics/assets/texture/PlayerShip.gif");
+                _textures["pata-pata"] = LoadTexture("Libs/Graphics/assets/texture/enemy_pata-pata.png");
+                _textures["win"] = LoadTexture("Libs/Graphics/assets/texture/enemy_win.gif");
+                _textures["bug"] = LoadTexture("Libs/Graphics/assets/texture/enemy_bug.gif");
+                _textures["wick"] = LoadTexture("Libs/Graphics/assets/texture/enemy_wick.gif");
+                _textures["geld"] = LoadTexture("Libs/Graphics/assets/texture/enemy_pata-pata.png");
+                _textures["missile"] = LoadTexture("Libs/Graphics/assets/texture/missile.gif");
+                _textures["killed"] = LoadTexture("Libs/Graphics/assets/texture/basic_explosion.gif");
             }
 
             void CloseGraphics() override {
@@ -81,7 +89,7 @@ namespace Graphics {
                 return IsMouseButtonPressed(button);
             }
 
-            void RenderPreciseTexture(int Id, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint) override {
+            void RenderPreciseTexture(const std::string Id, Rectangle source, Rectangle dest, Vector2 origin, float rotation, Color tint) override {
                 DrawTexturePro(_textures[Id], {source.x, source.y, source.width, source.height}, {dest.x, dest.y, dest.width, dest.height}, {origin.x, origin.y}, rotation, {tint.r, tint.g, tint.b, tint.a});
             }
 
@@ -121,19 +129,8 @@ namespace Graphics {
             bool IsWindowClosing() override {
                 return WindowShouldClose();
             }
-
-            void LoadTextureFromFile(int Id, const char *filename) override {
-                _textures[Id] = LoadTexture(filename);
-            }
-
-            void UnloadTextureById(int Id) override {
-                if (_textures.find(Id) != _textures.end()) {
-                    UnloadTexture(_textures[Id]);
-                    _textures.erase(Id);
-                }
-            }
         protected:
         private:
-            std::unordered_map<int, ::Texture2D> _textures;
+            std::unordered_map<std::string, ::Texture2D> _textures;
     };
 }
