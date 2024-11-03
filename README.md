@@ -30,7 +30,7 @@ To run both the client and the server, execute:
 `./build.ps1`
 
 It will compile everything for you. Then you can launch the client with:
-`./r-type_client.exe`
+`./r-type_client.exe {server ip}`
 
 And the server with:
 `./r-type_server.exe`
@@ -43,7 +43,7 @@ To run both the client and the server, execute:
 `./build.sh`
 
 It will compile everything for you. Then you can launch the client with:
-`./r-type_client`
+`./r-type_client {server ip}`
 
 And the server with:
 `./r-type_server`
