@@ -47,3 +47,13 @@ It will compile everything for you. Then you can launch the client with:
 
 And the server with:
 `./r-type_server`
+
+# How to contribute
+
+You can do a pull request at any time, members of the team will be notified and review it
+
+# Author
+
+Baptiste Caulier <baptiste.caulier@epitech.eu/>
+Arthur Lassausaie <arthur.lassausaie@epitech.eu/>
+Anthony Ardhuin <anthony.ardhuin@epitech.eu/>
