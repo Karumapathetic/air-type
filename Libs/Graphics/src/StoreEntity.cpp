@@ -86,12 +86,19 @@ namespace Graphics {
                 _entities[id].crop = {0, 0, 81, 18};
                 _entities[id].priority = {1};
                 _entities[id].name = "missile";
+            } else if (texturePath.find("killed") != std::string::npos) {
+                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/basic_explosion.gif");
+                _entities[id].scale = {66, 72};
+                _entities[id].crop = {0, 0, 33, 36};
+                _entities[id].priority = {1};
+                _entities[id].name = "killed";
             } else {
                 _entities[id].scale = {1, 1};
                 _entities[id].crop = {0, 0, 1, 1};
                 _entities[id].priority = {0};
             }
         }
+        _animationMap[id] = std::chrono::steady_clock::now();
 
         std::cout << "Entité ID: " << id << " créée avec succès:" << std::endl;
         std::cout << "Name : " << _entities[id].name << std::endl;

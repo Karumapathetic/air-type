@@ -168,15 +168,6 @@ namespace Graphics {
             void PrintEntities();
 
             /**
-             * @brief Initializes the animations for the entities in the game.
-             * 
-             * It sets up the animations for each entity based on its movement direction.
-             * 
-             * @return void
-             */
-            void InitializeAnimationsMap();
-
-            /**
              * @brief Animates an entity from its old position to its new position.
              * 
              * This function takes the old and new positions of an entity and animates it from the old position to the new position.
@@ -188,12 +179,16 @@ namespace Graphics {
              */
             void AnimateEntity(Vector2 oldPos, Vector2 newPos, int id);
 
+            void AnimationsMap(int id, Vector2 oldPos, Vector2 newPos);
+
             /**
              * @brief Get the Number Of Clients already inGame
              * 
              * @return The number of clients in the game
              */
             float GetNumberOfClients() const override;
+
+            EntityData &getEntity(int &Id) override { return _entities[Id]; }
         protected:
         private:
             /**
@@ -232,6 +227,6 @@ namespace Graphics {
             /**
              * @brief The animations for the entities
              */
-            std::unordered_map<std::string, std::pair<std::function<void(int, Vector2, Vector2)>, std::chrono::steady_clock::time_point>> _animationMap;
+            std::unordered_map<int, std::chrono::steady_clock::time_point> _animationMap;
     };
 }
