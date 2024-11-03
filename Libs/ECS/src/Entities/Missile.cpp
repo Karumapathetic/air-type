@@ -15,7 +15,7 @@ namespace ECS {
         gCoordinator.addComponent(entity, ECS::Cooldown());
         auto &cooldown = gCoordinator.getComponent<ECS::Cooldown>(entity);
         cooldown.addCooldown("missile", 0.002f, -1.0f);
-        gCoordinator.addComponent(entity, Speed{0.0f, 5.0f, false});
+        gCoordinator.addComponent(entity, Speed{0.0f, 6.0f, false});
         gCoordinator.addComponent(entity, Images{"Libs/Graphics/assets/texture/MissileKill.gif"});
         gCoordinator.addComponent(entity, EntityTypes{"missile", 0});
         gCoordinator.setEntityInitialized(entity, true);

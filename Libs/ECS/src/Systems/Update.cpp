@@ -25,8 +25,8 @@ namespace ECS {
             }
             auto speed = _coordinator.getComponent<Speed>(entity);
             auto pathing = _coordinator.getComponent<Pathing>(entity);
-            // pathing.pathing->updatePosition(spacial.position, speed.velocity);
-            // _coordinator.setEntityUpdated(entity, true);
+            pathing.pathing->updatePosition(spacial.position, speed.velocity);
+            _coordinator.setEntityUpdated(entity, true);
         } else if (_coordinator.getEntityName(entity) == "missile") {
             if (_coordinator.getComponent<Spacial>(entity).position.x > MAX_X) {
                 _coordinator.addEvent(entity, "destroy");
