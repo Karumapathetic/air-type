@@ -70,7 +70,7 @@ namespace ECS {
 
     void Coordinator::initEntities()
     {
-        auto entities = this->getEntities();
+        const auto &entities = this->getEntities();
         for (const Entity& entity : entities) {
             std::string name = this->getEntityName(entity);
             bool initialized = this->getEntityInitialized(entity);
@@ -83,14 +83,14 @@ namespace ECS {
 
     Entity Coordinator::createEntity(const std::string& name) {
         Entity id = entityManager->createEntity(name);
-        std::cout << std::endl << "Entity : " << name << " have the ID : " << id << std::endl;
+        // std::cout << std::endl << "Entity : " << name << " have the ID : " << id << std::endl;
         return id;
     }
 
     void Coordinator::destroyEntity(Entity entity) {
         std::string entityName = getEntityName(entity);
         pushKilledQueue(std::pair(entity, entityName));
-        std::cout << "Destroying : " << entity << std::endl;
+        // std::cout << "Destroying : " << entity << std::endl;
         entityManager->destroyEntity(entity);
         componentManager->entityDestroyed(entity);
         systemManager->entityDestroyed(entity);
@@ -183,10 +183,10 @@ namespace ECS {
 
     void Coordinator::createEntityFromType(const std::string &type, std::uint32_t entity)
     {
-        std::cout << "Creating entity from type: " << type << std::endl;
+        // std::cout << "Creating entity from type: " << type << std::endl;
         auto it = entityHandlers.find(type);
         if (it != entityHandlers.end()) {
-            std::cout << "Found handler for entity type: " << type << std::endl << std::endl;
+            // std::cout << "Found handler for entity type: " << type << std::endl << std::endl;
             it->second(*this, entity);
         }
     }
@@ -250,7 +250,7 @@ namespace ECS {
 
     void Coordinator::addEvent(Entity id, const std::string& action)
     {
-        const size_t maxQueueSize = 1000;
+        const size_t maxQueueSize = 10000;
         if (_actionQueue.size() >= maxQueueSize) {
             _actionQueue.pop_front();
         }

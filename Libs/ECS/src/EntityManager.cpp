@@ -22,12 +22,12 @@ namespace ECS {
 
     Entity EntityManager::createEntity(const std::string& name)
     {
-        std::cout << livingEntityCount << " entities created" << std::endl;
+        // std::cout << livingEntityCount << " entities created" << std::endl;
         assert(livingEntityCount < MAX_ENTITIES && "Too many entities in existence.");
 
         Entity id = availableEntities.front();
         availableEntities.pop();
-        ++livingEntityCount;
+        livingEntityCount++;
         entityNames[id] = name;
         entityInitialized[id] = false;
         entityUpdated[id] = true;
@@ -45,7 +45,8 @@ namespace ECS {
         entityInitialized.erase(entity);
         entityNames.erase(entity);
         signatures[entity].reset();
-        --livingEntityCount;
+        if (livingEntityCount != 0)
+            livingEntityCount--;
         availableEntities.push(entity);
     }
 

@@ -63,9 +63,9 @@ namespace Graphics {
                 _entities[id].priority = {1};
                 _entities[id].name = "win";
             } else if (texturePath.find("bug") != std::string::npos) {
-                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_bug.png");
-                _entities[id].scale = {86, 48};
-                _entities[id].crop = {0, 0, 33.25, 34};
+                _graphics->LoadTextureFromFile(id, "Libs/Graphics/assets/texture/enemy_bug.gif");
+                _entities[id].scale = {66.5, 68};
+                _entities[id].crop = {33.25, 0, 33.25, 34};
                 _entities[id].priority = {1};
                 _entities[id].name = "bug";
             } else if (texturePath.find("wick") != std::string::npos) {

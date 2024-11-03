@@ -44,7 +44,7 @@ void Server::update()
     if (!_playerConnection) {
         behaviour(_coordinator);
         _coordinator.updateSystems();
-        for (auto entity: _coordinator.getEntities()) {
+        for (auto &entity: _coordinator.getEntities()) {
             if (_coordinator.getEntityUpdated(entity)) {
                 if (_coordinator.hasComponent(entity, _coordinator.getComponentType<ECS::Spacial>())) {
                     auto &spacial = _coordinator.getComponent<ECS::Spacial>(entity);
@@ -59,7 +59,6 @@ void Server::update()
             _coordinator.popKilledQueue();
             auto request = _factory.createKilledSprite(killed.first, 0.0f, 0.0f);
             this->sendRequestToAllClients(request);
-            std::cout << "Killed: " << killed.first << " Named: " << killed.second << std::endl;
         }
         while (!this->_incomingRequests.isEmpty()) {
             auto request = this->_incomingRequests.popFront();
@@ -78,7 +77,7 @@ bool Server::onClientConnection(std::shared_ptr<Network::UDPConnection<Network::
     entityTypePlayer.id = _id;
     auto request = _factory.createConnectionAccepted(newEntity);
     this->sendRequestToClient(request, client);
-    for (auto entity : _coordinator.getEntities()) {
+    for (auto &entity : _coordinator.getEntities()) {
         if (_coordinator.hasComponent(entity, _coordinator.getComponentType<ECS::Spacial>())) {
             auto &spacial = _coordinator.getComponent<ECS::Spacial>(entity);
             auto request = _factory.createPositionsRequests(_coordinator.getEntityName(entity), entity, spacial.position.x, spacial.position.y);

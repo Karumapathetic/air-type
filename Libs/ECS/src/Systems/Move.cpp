@@ -16,7 +16,7 @@ namespace ECS {
 
     bool Move::MoveEntities(Coordinator &coordinator, Entity entity) {
         auto &entityPos = coordinator.getComponent<Spacial>(entity);
-        auto entitySpeed = coordinator.getComponent<Speed>(entity);
+        auto &entitySpeed = coordinator.getComponent<Speed>(entity);
         std::string entityName = coordinator.getEntityName(entity);
             //std::cout << "System Move : " << params << std::endl;
         if (entityName == "player") {
