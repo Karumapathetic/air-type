@@ -14,7 +14,6 @@ namespace ECS {
 
     void Wave::makeEnemySpawn(Coordinator &_coordinator, std::string &name) {
         Entity entity = _coordinator.createEntity(name);
-        _coordinator.initEntities();
         auto &entityPos = _coordinator.getComponent<Spacial>(entity);
         int random = rand() % 400;
         entityPos.position.x = MAX_X - random;
