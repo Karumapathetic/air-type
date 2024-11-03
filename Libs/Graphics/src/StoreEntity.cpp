@@ -79,11 +79,13 @@ namespace Graphics {
                 _entities[id].crop = {0, 0, 81, 18};
                 _entities[id].priority = {1};
                 _entities[id].name = "missile";
+                _graphics->PlaySound("missile");
             } else if (texturePath.find("killed") != std::string::npos) {
                 _entities[id].scale = {66, 72};
                 _entities[id].crop = {0, 0, 33, 36};
                 _entities[id].priority = {1};
                 _entities[id].name = "killed";
+                _graphics->PlaySound("killed");
             } else {
                 _entities[id].scale = {1, 1};
                 _entities[id].crop = {0, 0, 1, 1};
@@ -139,19 +141,5 @@ namespace Graphics {
         if (id < 0 || id >= MAX_ENTITIES || _entities[id].priority == -1.0f) return;
         _entities[id] = EntityData();
         // std::cout << "Entité ID: " << id << " détruite avec succès" << std::endl;
-    }
-
-    void Game::PrintEntities()
-    {
-        for (int i = 0; i < MAX_ENTITIES; ++i) {
-            if (_entities[i].position.x != 0 || _entities[i].position.y != 0) {
-                std::cout << "Entity ID: " << i
-                          << " Position: (" << _entities[i].position.x << ", " << _entities[i].position.y << ")"
-                          << " Scale: (" << _entities[i].scale.x << ", " << _entities[i].scale.y << ")"
-                          << " Crop: (x: " << _entities[i].crop.x << ", y: " << _entities[i].crop.y 
-                          << ", width: " << _entities[i].crop.width << ", height: " << _entities[i].crop.height << ")"
-                          << " Priority : " << _entities[i].priority << std::endl;
-            }
-        }
     }
 }

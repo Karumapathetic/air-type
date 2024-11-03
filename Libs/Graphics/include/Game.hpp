@@ -156,18 +156,6 @@ namespace Graphics {
             void DestroyEntity(Entity id) override;
 
             /**
-             * @brief Prints all the entities currently registered in the game.
-             * 
-             * This function iterates through the entities stored in the game's coordinator and prints their unique IDs,
-             * positions, scales, textures, crop rectangles, and priorities. It is primarily used for debugging purposes.
-             * 
-             * @return void
-             * 
-             * @note This function does not return any meaningful value. It only prints the entities' information.
-             */
-            void PrintEntities();
-
-            /**
              * @brief Animates an entity from its old position to its new position.
              * 
              * This function takes the old and new positions of an entity and animates it from the old position to the new position.

@@ -412,20 +412,11 @@ namespace Graphics {
              */
             virtual bool IsWindowClosing() = 0;
 
-            // /**
-            //  * @brief Load a texture from a file
-            //  * 
-            //  * @param Id The unique identifier of the texture
-            //  * @param filename The filename of the texture
-            //  */
-            // virtual void LoadTextureFromFile(int Id, const char *filename) = 0;
-
-            // /**
-            //  * @brief Unload a texture by its unique identifier
-            //  * 
-            //  * @param Id The unique identifier of the texture
-            //  */
-            // virtual void UnloadTextureById(int Id) = 0;
+            /**
+             * @brief Play a sound with the music name linked to it
+             * 
+             */
+            virtual void PlaySound(std::string music) = 0;
         protected:
         private:
     };

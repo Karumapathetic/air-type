@@ -37,6 +37,10 @@ namespace Graphics {
                 _textures["geld"] = LoadTexture("Libs/Graphics/assets/texture/enemy_pata-pata.png");
                 _textures["missile"] = LoadTexture("Libs/Graphics/assets/texture/missile.gif");
                 _textures["killed"] = LoadTexture("Libs/Graphics/assets/texture/basic_explosion.gif");
+                _musics["missile"] = LoadSound("Libs/Graphics/assets/sounds/shoot.mp3");
+                _musics["killed"] = LoadSound("Libs/Graphics/assets/sounds/explosion.mp3");
+                _musics["background"] = LoadSound("Libs/Graphics/assets/sounds/background.mp3");
+                PlaySound("background");
             }
 
             void CloseGraphics() override {
@@ -129,8 +133,13 @@ namespace Graphics {
             bool IsWindowClosing() override {
                 return WindowShouldClose();
             }
+
+            void PlaySound(std::string music) override {
+                ::PlaySound(_musics[music]);
+            }
         protected:
         private:
             std::unordered_map<std::string, ::Texture2D> _textures;
+            std::unordered_map<std::string, ::Sound> _musics;
     };
 }
